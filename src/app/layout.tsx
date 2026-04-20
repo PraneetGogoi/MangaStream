@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   description: "Experience anime in a whole new manga-inspired dimension.",
 };
 
+import Script from "next/script";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,24 +30,16 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased cursor-none`}
+      suppressHydrationWarning
     >
-      <head>
-        <script
+      <body className="min-h-full flex flex-col cursor-none overflow-x-hidden bg-manga-paper text-manga-ink transition-colors duration-300">
+        <Script
+          id="theme-initialize"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('theme');
-                  if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                  }
-                } catch (e) {}
-              })();
-            `,
+            __html: `(function(){try{var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.classList.add("dark")}catch(e){}})()`,
           }}
         />
-      </head>
-      <body className="min-h-full flex flex-col cursor-none overflow-x-hidden bg-manga-paper text-manga-ink transition-colors duration-300">
         <MangaLoader />
         <CustomCursor />
         {children}

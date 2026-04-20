@@ -1,0 +1,312 @@
+import { Character } from "../types";
+
+export const hunterXHunterCharacters: Character[] = [
+  {
+    name: "Gon Freecss",
+    role: "Pro Rookie Hunter",
+    description: "A young boy who seeks his father, the legendary Hunter Ging Freecss.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/c/c4/Gon_Freecss_Part_II.png",
+    bio: "Gon Freecss is an athletic, rustic, and friendly boy who is searching for his father, Ging. Raised on Whale Island, Gon possesses a keen sense of smell and sight, along with a deep connection to nature. His journey to become a Hunter is defined by his simplicity, honesty, and an occasionally frightening level of determination. As an Enhancer, his Nen abilities are straightforward but devastating, most notably his signature 'Jajanken'. Gon's moral compass is unique, often leading him to befriend dangerous individuals while pushing himself to extreme, self-destructive lengths to achieve his goals.",
+    abilities: ["Jajanken (Enhancement / Emission / Transmutation)", "Exceptional Sensory Perception", "Advanced Stamina", "Instinctive Combat Mastery"],
+    affiliation: "Hunter Association (Pro Hunter)",
+    status: "Active (Powerless)",
+    origin: "Whale Island"
+  },
+  {
+    name: "Killua Zoldyck",
+    role: "Assassin / Godspeed Hunter",
+    description: "Gon's best friend and a prodigy from the infamous Zoldyck family.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/c/ca/Killua_Zoldyck_Part_II.png",
+    bio: "Killua Zoldyck is the heir to the world-renowned Zoldyck family of assassins. Despite his upbringing, Killua chose to walk his own path, finding a true friend and purpose in Gon. He is a genius in combat and strategy, utilizing electricity-based Nen abilities like 'Godspeed' which allows him to move and react at superhuman speeds. Killua's character arc is a poignant journey from a cold-hearted killer to a loyal friend and protective brother, constantly struggling to overcome the mental shackles placed on him by his family.",
+    abilities: ["Godspeed (Transmutation)", "Narukami (Lightning Bolt)", "Whirlwind & Thunderbolt", "Assassin Techniques (Rhythym Echo, Claws)"],
+    affiliation: "Hunter Association / Zoldyck Family (Formerly)",
+    status: "Active",
+    origin: "Kukuroo Mountain, Republic of Padokea"
+  },
+  {
+    name: "Kurapika",
+    role: "Hunter / Last of the Kurta",
+    description: "The sole survivor of the Kurta Clan who seeks vengeance against the Phantom Troupe.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/9/96/Kurapika_Part_II.png",
+    bio: "Kurapika is the last of the Kurta Clan, a people known for their 'Scarlet Eyes'. Driven by a thirst for vengeance after the Phantom Troupe slaughtered his clan, Kurapika has dedicated his life to recovering his people's stolen eyes. He utilizes Conjuration Nen to create specialized chains, including 'Emperor Time' which allows him to use all Nen types at 100% efficiency. His intellect and tactical brilliance make him a terrifyingly effective hunter.",
+    abilities: ["Conjured Chains (Holy, Dowsing, Chain Jail, Judgment)", "Emperor Time (Specialization)", "Scarlet Eyes Power Boost", "Master Strategist"],
+    affiliation: "Hunter Association / Nostrade Family / Zodiacs (Rat)",
+    status: "Active",
+    origin: "Kurta Clan Village"
+  },
+  {
+    name: "Leorio Paradinight",
+    role: "Medical Student / Hunter",
+    description: "A loyal friend who aims to become a doctor to help those in need.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/f/f0/Leorio_Paradinight_Part_II.png",
+    bio: "Leorio Paradinight vowed to become a doctor and provide free aid to those in need after losing a childhood friend to a treatable disease. He joined the Hunter Exam to fund his education. While he may lack the raw combat potential of his friends, Leorio's absolute loyalty and grounded perspective make him the emotional heart of the group. His Emission-based Nen abilities reflect his straightforward and punchy personality.",
+    abilities: ["Warp Punch (Emission)", "Ultrasound Detection", "Expert Medical Knowledge", "Negotiation & Charisma"],
+    affiliation: "Hunter Association / Medical Academy / Zodiacs (Boar)",
+    status: "Active",
+    origin: "Unknown"
+  },
+  {
+    name: "Hisoka Morow",
+    role: "Enigmatic Magician / Floor Master",
+    description: "A master of deception and Bungee Gum who lives for the thrill of battle.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/3/3d/Hisoka_Morow_Part_II.png",
+    bio: "Hisoka Morow is a whimsical and self-serving magician who seeks out powerful opponents to satisfy his bloodlust. He viewed Gon and Killua as 'unripe fruit' with immense potential. Hisoka's 'Bungee Gum'—which possesses properties of both rubber and gum—is a deceptively simple but incredibly versatile Nen ability. He thrives in chaos and deception, always playing his own game.",
+    abilities: ["Bungee Gum (Transmutation)", "Texture Surprise (Conjuration)", "Master Card Thrower", "Exceptional Stealth & Deception"],
+    affiliation: "Phantom Troupe (#4 - Faked) / Independent",
+    status: "Active",
+    origin: "Unknown"
+  },
+  {
+    name: "Chrollo Lucilfer",
+    role: "Leader of the Phantom Troupe",
+    description: "A calm and brilliant strategist who leads the infamous Spider.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/d/df/Chrollo_Lucilfer.png",
+    bio: "Chrollo Lucilfer is the founder and leader of the Phantom Troupe. He is a cold, intelligent, and highly capable individual who views his troupe as a family, yet remains detached enough to accept its members' deaths if the group survives. His Hatsu, 'Skill Hunter', allows him to steal the Nen abilities of others and store them in a book called the 'Bandit's Secret'.",
+    abilities: ["Bandit's Secret (Specialization)", "Nen Ability Theft", "Double Face Mastery", "Genius Strategic Leadership"],
+    affiliation: "Phantom Troupe (Leader / #0)",
+    status: "Active",
+    origin: "Meteor City"
+  },
+  {
+    name: "Isaac Netero",
+    role: "12th Hunter Association Chairman",
+    description: "The former strongest Nen user in the world and master of the 100-Type Guanyin Bodhisattva.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/7/7e/Isaac_Netero.png",
+    bio: "Isaac Netero was the 12th Chairman of the Hunter Association. Widely considered the strongest Nen user in his prime, Netero spent years in isolation perfecting a single punch, eventually achieving speeds that surpassed sound. His '100-Type Guanyin Bodhisattva' is a manifestation of his immense aura and gratitude. Even in his old age, Netero remained a formidable warrior who sought a challenge worthy of his status.",
+    abilities: ["100-Type Guanyin Bodhisattva (Emission / Enhancement)", "Superhuman Speed & Reflexes", "Expert Hand-to-Hand Combat", "Indomitable Will"],
+    affiliation: "Hunter Association (Chairman)",
+    status: "Deceased (KIA)",
+    origin: "Unknown"
+  },
+  {
+    name: "Meruem",
+    role: "The Chimera Ant King",
+    description: "The ultimate peak of evolution who struggled between his ant nature and human empathy.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/0/05/Meruem.png",
+    bio: "Meruem was the most powerful offspring of the Chimera Ant Queen. Born with a sense of absolute superiority, he initially viewed humans as livestock. However, through his games with the Gungi master Komugi, Meruem began to question his own nature. His arc is a profound exploration of evolution, leadership, and the duality of the soul, as he transitioned from a ruthless conqueror to a being who sought to coexist.",
+    abilities: ["Aura Synthesis (Specialization / Absorption)", "Photon Manipulation", "Unmatched Physical Prowess", "Genius Intellectual Evolution"],
+    affiliation: "Chimera Ants (King)",
+    status: "Deceased (Died of Poisoning)",
+    origin: "NGL (Neo-Green Life)"
+  },
+  {
+    name: "Neferpitou",
+    role: "Chimera Ant Royal Guard / #1",
+    description: "A cat-like Chimera Ant of immense power and terrifying bloodlust.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/a/a2/Neferpitou_Part_II.png",
+    bio: "Neferpitou was the first of the Chimera Ant King's three Royal Guards. Characterized by cat-like features and a playful yet lethal personality, Pitou possessed a massive En that could cover miles. Their Nen ability, 'Doctor Blythe', allowed for advanced surgical repair, while 'Terpsichora' pushed their body beyond physical limits for combat. Pitou was fiercely loyal to Meruem, eventually sacrificing themselves to ensure the King's safety during the palace invasion.",
+    abilities: ["Terpsichora (Specialization / Manipulation)", "Doctor Blythe (Conjuration)", "Massive En (Aura Detection)", "Supernatural Physical Agility"],
+    affiliation: "Chimera Ant Royal Guard",
+    status: "Deceased (KIA)",
+    origin: "NGL (Neo-Green Life)"
+  },
+  {
+    name: "Shiapouf",
+    role: "Chimera Ant Royal Guard / #2",
+    description: "The intellectual and dramatic strategist of the Royal Guard.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/e/ea/Shiapouf_Part_II.png",
+    bio: "Shiapouf was the second member of the Royal Guard, possessing butterfly-like wings and a theatrical, often obsessive devotion to the King's 'perfection'. He was the most manipulative of the Guard, utilizing his 'Beelzebub' ability to divide his body into miniature clones and 'Spiritual Message' to read the emotions of others through his scales. Pouf's primary goal was to preserve Meruem's status as a supreme ruler, even if it meant defying the King's personal desires.",
+    abilities: ["Beelzebub (Manipulation)", "Spiritual Message (Manipulation / Transmutation)", "Winged Flight", "Advanced Strategic Deduction"],
+    affiliation: "Chimera Ant Royal Guard",
+    status: "Deceased (Died of Poisoning)",
+    origin: "NGL (Neo-Green Life)"
+  },
+  {
+    name: "Menthuthuyoupi",
+    role: "Chimera Ant Royal Guard / #3",
+    description: "A titan of raw power and the only Guard with no human DNA.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/6/66/Menthuthuyoupi_Part_II.png",
+    bio: "Menthuthuyoupi was the youngest member of the Royal Guard and the only one formed solely from Magical Beast DNA. Initially straightforward and focused only on combat, Youpi underwent significant growth during the palace invasion, learning to respect his human opponents. His ability to shapeshift and manifest dozens of limbs and eyes made him a chaotic force on the battlefield, eventually evolving into his 'Centaur' form to maximize his destructive output.",
+    abilities: ["Metamorphosis (Enhancement / Conjuration)", "Rage Incarnate (Explosive Aura Release)", "Centaur Transformation", "Immeasurable Physical Resilience"],
+    affiliation: "Chimera Ant Royal Guard",
+    status: "Deceased (Died of Poisoning)",
+    origin: "NGL (Neo-Green Life)"
+  },
+  {
+    name: "Ging Freecss",
+    role: "Double-Star Hunter / Zodiac",
+    description: "Gon's elusive father and one of the world's top five Nen users.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/5/52/Ging_Freecss_Part_II.png",
+    bio: "Ging Freecss is a world-renowned Double-Star Ruins Hunter and the primary motivation for Gon's journey. A man of immense intellect and eccentric personality, Ging is a member of the Zodiac Twelve, codename 'Boar'. He is notorious for his elusive nature and his philosophy of enjoying the 'little detours' in life. Ging possesses an incredible talent for mimicking any strike-type Nen ability he has been hit by, a testament to his genius-level aura mastery. He played a pivotal role in the creation of Greed Island and remains one of the most influential and mysterious figures in the Hunter Association.",
+    abilities: ["Generic Strike Mimicry", "Genius-Level Nen Proficiency", "Exceptional Strategic Intellect", "Deep Knowledge of Ancient Lore"],
+    affiliation: "Hunter Association / Zodiac Twelve (Former - Boar)",
+    status: "Active",
+    origin: "Whale Island"
+  },
+  {
+    name: "Silva Zoldyck",
+    role: "Head of the Zoldyck Family",
+    description: "Killua's father and a legendary assassin of immense physical power.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/2/23/Silva_Zoldyck_Part_II.png",
+    bio: "Silva Zoldyck is the current head of the infamous Zoldyck family. A silent and imposing figure, he possesses immeasurable physical strength and an immunity to all known poisons and electrical discharges. Silva is a master of Transmutation Nen, capable of manifesting devastating orbs of raw aura. He is a pragmatic leader who deeply values the family's traditions and legacy, often taking personal interest in Killua's development to ensure the Zoldyck name remains the most feared in the world of assassination.",
+    abilities: ["Explosive Aura Orbs (Transmutation)", "Indestructible Physique", "Poison & Electricity Immunity", "Advanced Assassin Combat"],
+    affiliation: "Zoldyck Family (Head)",
+    status: "Active",
+    origin: "Kukuroo Mountain, Republic of Padokea"
+  },
+  {
+    name: "Zeno Zoldyck",
+    role: "Assassin Emeritus",
+    description: "Killua's grandfather and a master of Dragon-based Nen techniques.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/f/f6/Zeno_Zoldyck_Part_II.png",
+    bio: "Zeno Zoldyck is the retired head of the Zoldyck family and a legendary assassin known for his 'A Kill a Day' philosophy. Despite his advanced age, Zeno remains one of the most lethal Nen users in existence. He specializes in Transmutation, shaping his aura into dragons for both transportation and devastating area-of-effect attacks. Zeno is a man of high professional ethics, often seen as a calm and calculating contrast to his family's more volatile members. His experience and aura control allow him to strike from miles away with pin-point accuracy.",
+    abilities: ["Dragon Head (Transmutation)", "Dragon Lance & Dragon Dive", "High-Range En (300m+)", "Master Tactical Analysis"],
+    affiliation: "Zoldyck Family",
+    status: "Active",
+    origin: "Kukuroo Mountain, Republic of Padokea"
+  },
+  {
+    name: "Illumi Zoldyck",
+    role: "Assassin / Manipulator",
+    description: "Killua's manipulative older brother who uses needles to control others.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/8/82/Illumi_Zoldyck_Part_II.png",
+    bio: "Illumi Zoldyck is the eldest child of Silva and Kikyo Zoldyck. He possesses a cold, emotionless demeanor and a twisted, overprotective love for Killua. As a master Manipulator, Illumi uses Nen-infused needles to alter his appearance, control the behavior of others, or even turn them into 'Needle People'—braindead puppets that serve his will. Illumi's obsession with controlling his family's fate makes him one of the most unsettling and dangerous figures in the series, often collaborating with Hisoka for their own mutually beneficial goals.",
+    abilities: ["Needle Manipulation", "Body Alteration (Disguise)", "Needle People Creation", "Enhanced Assassin Stealth"],
+    affiliation: "Zoldyck Family / Hunter Association (Gittarackur)",
+    status: "Active",
+    origin: "Kukuroo Mountain, Republic of Padokea"
+  },
+  {
+    name: "Alluka Zoldyck",
+    role: "The Wish-Granting Child",
+    description: "Killua's younger sister who hosts the mysterious entity Nanika.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/8/87/Alluka_Zoldyck_Part_II.png",
+    bio: "Alluka Zoldyck is the second youngest child of the Zoldyck family. She is the host of 'Nanika', a mysterious entity from the Dark Continent capable of granting any wish once three of Alluka's requests are fulfilled. However, the greater the wish, the more horrifying the subsequent requests become, often leading to large-scale loss of life. Only Killua can command Nanika to grant wishes without conditions, a power that made Alluka both the most dangerous and the most coveted member of the family. Her bond with Killua is the only thing that keeps her humanity intact.",
+    abilities: ["Wish Granting (Specialization / Dark Continent Power)", "Nanika Possession", "Universal Reality Alteration", "Conditional Life/Death Control"],
+    affiliation: "Zoldyck Family (Isolated) / Killua's Ward",
+    status: "Active",
+    origin: "Kukuroo Mountain, Republic of Padokea"
+  },
+  {
+    name: "Biscuit Krueger",
+    role: "Double-Star Treasure Hunter / Mentor",
+    description: "A master of Shingen-ryu kung fu who trained Gon and Killua.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/b/b3/Biscuit_Krueger_Part_II.png",
+    bio: "Biscuit Krueger, also known as Bisky, is a legendary Double-Star Treasure Hunter and a master of the Shingen-ryu school of kung fu. Despite appearing as a delicate young girl, she is actually a 57-year-old woman with a massive, muscular true form that she hides to maintain her aesthetic preferences. Bisky served as a crucial mentor to Gon and Killua during the Greed Island arc, refining their Nen fundamentals with brutal efficiency. Her Hatsu, 'Magical Esthetician', allows her to conjure a massage therapist who can restore vitality and even handle complex skin care, a reflection of her desire for eternal youth.",
+    abilities: ["Magical Esthetician (Conjuration / Transmutation)", "Piano Massage (Fatigue Recovery)", "True Form Transformation (Enhancement)", "Mastery of All Nen Fundamentals"],
+    affiliation: "Hunter Association / Shingen-ryu Kung Fu",
+    status: "Active",
+    origin: "Unknown"
+  },
+  {
+    name: "Kite",
+    role: "Contract Hunter",
+    description: "Ging's former apprentice and a skilled user of Crazy Slots.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/c/c9/Kite_Part_II.png",
+    bio: "Kite was a Double-Star Contract Hunter and the man who first told Gon about his father, Ging. He was a dedicated researcher of biological diversity and a formidable warrior. Kite's Nen ability, 'Crazy Slots', allowed him to conjure a sentient clown that would randomly select one of nine weapons, ranging from a scythe to a carbine. Regardless of the weapon, Kite was required to use it before it would disappear. His tragic death at the hands of Neferpitou served as the psychological breaking point for Gon, leading to the series' most intense confrontation.",
+    abilities: ["Crazy Slots (Conjuration)", "Sentient Weapon Randomization", "Expert Biological Research", "Master Swordsmanship"],
+    affiliation: "Hunter Association / Kite's Research Team",
+    status: "Deceased (Reborn as a Chimera Ant)",
+    origin: "Unknown"
+  },
+  {
+    name: "Knuckle Bine",
+    role: "Beast Hunter / UMA Specialist",
+    description: "A tough-looking but soft-hearted Hunter who specializes in Nen-based debt.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/c/c1/Knuckle_Bine_Part_II.png",
+    bio: "Knuckle Bine is an apprentice to Morel and a participant in the Chimera Ant extermination mission. Despite his delinquent appearance and aggressive combat style, he is a deeply compassionate man who often helps stray animals. His unique ability, 'A.P.R. (All-or-Nothing)', allows him to lend aura to his opponents through physical strikes. The debt then accrues interest over time, eventually forcing the opponent into 'Zetsu' (Nen bankruptcy) once the debt exceeds their remaining aura capacity. Knuckle's combat style is a perfect blend of high-speed mathematics and raw endurance.",
+    abilities: ["A.P.R. / Hakoware (Emission / Manipulation)", "Aura Interest Accrual", "Superior Stamina & Physical Speed", "Exceptional Animal Empathy"],
+    affiliation: "Hunter Association / Morel's Team",
+    status: "Active",
+    origin: "Unknown"
+  },
+  {
+    name: "Shoot McMahon",
+    role: "UMA Hunter",
+    description: "Knuckle's partner who overcomes his crippling anxiety through battle.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/d/df/Shoot_McMahon_Part_II.png",
+    bio: "Shoot McMahon is a UMA Hunter and a key member of the Chimera Ant extermination squad. He was initially characterized by a severe lack of confidence and overwhelming fear, often hesitating to take risks in combat. However, during the palace invasion, Shoot found the courage to push past his limits, demonstrating incredible aerial maneuverability. His ability, 'Hotel Rafflesia', allows him to shrink and store parts of his opponent's body (or their entire being) inside a floating cage after dealing sufficient damage, requiring him to maintain a state of intense focus.",
+    abilities: ["Hotel Rafflesia (Conjuration / Manipulation)", "Floating Hands Control", "Aerial Combat Mastery", "Strategic Tactical Placement"],
+    affiliation: "Hunter Association / Morel's Team",
+    status: "Active",
+    origin: "Unknown"
+  },
+  {
+    name: "Morel Mackernasey",
+    role: "Sea Hunter / Strategic Leader",
+    description: "A veteran Hunter who uses his giant pipe to manipulate smoke.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/c/c7/Morel_Mackernasey_Part_II.png",
+    bio: "Morel Mackernasey is a veteran Sea Hunter and a foundational figure in the Hunter Association's leadership. Known for his immense lung capacity and calm tactical mind, Morel is a master of smoke manipulation. By exhaling through his signature giant pipe, he can create 'Deep Purple'—an army of smoke soldiers that can be programmed to perform complex tasks. Morel prides himself on his ability to win battles of attrition, often outlasting opponents through superior aura management and psychological warfare. He served as the primary strategist during the assault on East Gorteau.",
+    abilities: ["Deep Purple (Manipulation / Transmutation)", "Smoke Warriors & Jail", "Superhuman Lung Capacity", "Expert Strategic Planning"],
+    affiliation: "Hunter Association / Chimera Ant Extermination Team",
+    status: "Active",
+    origin: "Unknown"
+  },
+  {
+    name: "Knov",
+    role: "Hunter / Infiltration Specialist",
+    description: "A highly professional Hunter who uses alternate dimensions for logistics.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/f/f0/Knov_Part_II.png",
+    bio: "Knov is a seasoned Hunter and a close associate of Chairman Netero. He is a man of clinical professionalism, specializing in infiltration and logistics. His Nen ability, 'Hide and Seek (4th-Dimensional Mansion)', allows him to create portals to a multi-room dimension where he can store equipment or transport allies safely across long distances. Knov's contribution to the Chimera Ant mission was vital for the team's mobility, though the overwhelming pressure of seeing the Royal Guard's aura caused him to suffer a severe mental breakdown, demonstrating the psychological horrors of high-level Nen combat.",
+    abilities: ["Hide and Seek (Conjuration / Emission)", "4th-Dimensional Mansion", "Scream (Portal-Based Assassination)", "Advanced Long-Distance Teleportation"],
+    affiliation: "Hunter Association / Chimera Ant Extermination Team",
+    status: "Active (Retired from Frontline)",
+    origin: "Unknown"
+  },
+  {
+    name: "Palm Siberia",
+    role: "Beast Hunter / Chimera Ant Hybrid",
+    description: "Knov's apprentice who underwent a terrifying transformation.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/b/be/Palm_Siberia_Part_II.png",
+    bio: "Palm Siberia was initially Knov's erratic and obsessive apprentice, possessing a unique precognitive ability called 'Wink Blue'. After being captured and experimented on by the Chimera Ants, she was reborn as an ant-human hybrid. This transformation stabilized her psyche and enhanced her combat potential, allowing her to manifest 'Black Widow'—a suit of armor made from her own fast-growing hair. Palm's dual nature as a former Hunter and a Chimera Ant makes her a unique bridge between the two species, combining her original loyalty with newfound physical power.",
+    abilities: ["Wink Blue (Specialization)", "Black Widow (Enhancement)", "Hair-Based Armor & Manipulation", "Advanced Aura Sensing"],
+    affiliation: "Hunter Association / Kite's Research Team (Formerly)",
+    status: "Active (Chimera Ant Hybrid)",
+    origin: "Unknown"
+  },
+  {
+    name: "Feitan Portor",
+    role: "Phantom Troupe #2 / Interrogator",
+    description: "The Troupe's ruthless interrogator with a lethal sun-based ability.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/e/ed/Feitan_Portor_Part_II.png",
+    bio: "Feitan Portor is a core member of the Phantom Troupe and its primary interrogator. He is a small, soft-spoken individual who speaks in broken sentences when agitated, but possesses a terrifying capacity for cruelty. Feitan is a master of Transmutation and Emission, with his signature ability 'Pain Packer'. This allows him to transmute the pain he has received into a miniature sun called 'Rising Sun', which incinerates everything in a wide radius. His speed and swordsmanship are among the best in the Troupe, making him a lethal threat in both individual duels and large-scale massacres.",
+    abilities: ["Pain Packer (Transmutation / Emission)", "Rising Sun (Heat Radiation)", "High-Speed Swordsmanship", "Master of Psychological Torture"],
+    affiliation: "Phantom Troupe (#2)",
+    status: "Active",
+    origin: "Meteor City"
+  },
+  {
+    name: "Phinks Magcub",
+    role: "Phantom Troupe #5 / Combatant",
+    description: "A physically powerful combatant who uses a rotating arm technique.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/1/1a/Phinks_Magcub_Part_II.png",
+    bio: "Phinks Magcub is one of the most physically imposing members of the Phantom Troupe. He is a straightforward and often hot-tempered warrior who values the Troupe's unity and loyalty above all else. Phinks is an Enhancer whose primary ability, 'Ripper Cyclotron', allows him to increase the power of his punches by rotating his arm in a clockwise direction. The more rotations he performs, the more devastating the impact, capable of shattering heavy armor and overwhelming most Nen-based defenses. He frequently partners with Feitan, providing the raw physical force for the Troupe's frontlines.",
+    abilities: ["Ripper Cyclotron (Enhancement)", "Arm Rotation Power Scaling", "Superhuman Physical Strength", "Master Hand-to-Hand Combat"],
+    affiliation: "Phantom Troupe (#5)",
+    status: "Active",
+    origin: "Meteor City"
+  },
+  {
+    name: "Machi Komacine",
+    role: "Phantom Troupe #3 / Support",
+    description: "A cold and intuitive member who uses Nen-infused threads.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/6/65/Machi_Komacine_Part_II.png",
+    bio: "Machi Komacine is one of the original members of the Phantom Troupe from Meteor City. She is a stoic and highly intuitive individual, often relying on her 'hunches' which Chrollo deeply trusts. Machi is a Transmuter who shapes her aura into incredibly thin, durable, and versatile threads. These 'Nen Stiches' can be used for everything from strangling opponents and controlling people like puppets to surgically reattaching severed limbs with perfect precision. Despite her cold exterior, she is fiercely loyal to the Troupe and its leader, often acting as a silent protector of its members.",
+    abilities: ["Nen Stitches (Transmutation)", "Thread Manipulation & Trapping", "Master Surgical Repair", "Exceptional Intuition & Speed"],
+    affiliation: "Phantom Troupe (#3)",
+    status: "Active",
+    origin: "Meteor City"
+  },
+  {
+    name: "Uvogin",
+    role: "Phantom Troupe #11 / Vanguard",
+    description: "The strongest member of the Troupe in terms of raw physical power.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/1/14/Uvogin_Part_II.png",
+    bio: "Uvogin was the physically strongest member of the Phantom Troupe and its primary vanguard. He was a pure Enhancer who lived for the thrill of battle, finding joy in overwhelming his opponents with raw strength. His goal was to make his fist as powerful as a nuclear warhead, an ambition reflected in his 'Big Bang Impact'—a punch infused with a massive amount of aura. Uvogin was practically immune to standard weaponry and possessed a roar that could roar that could rupture the eardrums of those nearby. He died with a smile on his face, refusing to betray the location of his fellow Troupe members to Kurapika.",
+    abilities: ["Big Bang Impact (Enhancement)", "Sonic Roar (Emission)", "Indestructible Physical Frame", "Master of Raw Aura Release"],
+    affiliation: "Phantom Troupe (#11)",
+    status: "Deceased (KIA)",
+    origin: "Meteor City"
+  },
+  {
+    name: "Pakunoda",
+    role: "Phantom Troupe #9 / Intelligence",
+    description: "An original member whose ability allows for memory extraction.",
+    image: "https://static.wikia.nocookie.net/hunterxhunter/images/4/41/Pakunoda_Part_II.png",
+    bio: "Pakunoda was one of the founding members of the Phantom Troupe and played a vital role as its intelligence gatherer. She was a tall, sophisticated woman with a calm demeanor and absolute loyalty to Chrollo. Her Nen ability allowed her to read the memories of anyone she touched by asking them a specific question. She could also manifest these memories as 'Memory Bombs'—Nen bullets that, when fired into the minds of her fellow Troupe members, would share the gathered information. Pakunoda eventually sacrificed her life to convey the truth about Kurapika and Chrollo's situation to the other Spiders.",
+    abilities: ["Psychometry (Specialization)", "Memory Bomb Extraction & Sharing", "Advanced Interrogation", "Expert Firearms Proficiency"],
+    affiliation: "Phantom Troupe (#9)",
+    status: "Deceased (Died of Judgment Chain)",
+    origin: "Meteor City"
+  }
+];

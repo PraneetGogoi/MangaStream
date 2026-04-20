@@ -76,7 +76,7 @@ export default function Home() {
     return MOCK_ANIME.filter(
       (anime) =>
         anime.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-        anime.categories.some((cat) =>
+        anime.categories.some((cat: string) =>
           cat.toLowerCase().includes(debouncedSearch.toLowerCase())
         )
     );

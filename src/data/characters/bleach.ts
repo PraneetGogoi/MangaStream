@@ -1,0 +1,290 @@
+import { Character } from "../types";
+
+export const bleachCharacters: Character[] = [
+  {
+    name: "Ichigo Kurosaki",
+    role: "Substitute Shinigami / True Zangetsu",
+    description: "The savior of the Soul Society who must face his own heritage.",
+    image: "https://static.wikia.nocookie.net/bleach/images/c/c4/Ichigo_Kurosaki_TYBW_Anime.png",
+    bio: "Ichigo Kurosaki is the Substitute Soul Reaper who has repeatedly saved both the world of the living and the Soul Society. In the Thousand-Year Blood War, Ichigo discovers the truth of his lineage—that he is a hybrid of Shinigami, Quincy, and Hollow powers. This realization allows him to forge his 'True Zangetsu', dual blades representing the balance of his complex existence. His resolve and transcendent power are the final hope against the Quincy extinction of the Soul Society.",
+    abilities: ["True Getsuga Tensho", "Gran Rey Cero-Getsuga", "Blut Vene", "Dual Blade Mastery"],
+    affiliation: "Kurosaki Group / Gotei 13 Ally",
+    status: "Active",
+    origin: "Karakura Town"
+  },
+  {
+    name: "Rukia Kuchiki",
+    role: "Captain of Squad 13 / Hakka no Togame",
+    description: "The Soul Reaper who started it all. She has finally mastered the absolute zero.",
+    image: "https://static.wikia.nocookie.net/bleach/images/6/6b/Rukia_Kuchiki_TYBW_Anime.png",
+    bio: "Rukia Kuchiki is the captain of the 13th Division and the woman who first gave Ichigo his Shinigami powers. Throughout her journey, she has grown from a powerless exile to a master of her Zanpakuto, Sode no Shirayuki. In the TYBW arc, she reveals her Bankai, Hakka no Togame, which allows her to reach the temperature of absolute zero, instantly freezing everything in her path in a beautiful but deadly display of power.",
+    abilities: ["Sode no Shirayuki", "Hakka no Togame (Absolute Zero)", "Advanced Kido", "Tsugi no Mai: Hakuren"],
+    affiliation: "Gotei 13 (Squad 13 Captain)",
+    status: "Active",
+    origin: "Soul Society"
+  },
+  {
+    name: "Yhwach",
+    role: "The Almighty / Father of Quincies",
+    description: "The primary antagonist who seeks to merge all worlds by erasing the concept of death.",
+    image: "https://static.wikia.nocookie.net/bleach/images/3/36/Yhwach_TYBW_Anime.png",
+    bio: "Yhwach is the Emperor of the Wandenreich and the son of the Soul King. As the father of all Quincy, he can bestow fragments of his soul upon others. His primary ability, 'The Almighty', allows him to see all possible futures and alter them to his advantage, making him an omnipotent threat to the cycle of rebirth. His singular goal is to dissolve the boundaries between life and death, creating a world where no one has to fear passing away.",
+    abilities: ["The Almighty (Future Alteration)", "Sankt Bogen", "Auswahlen", "Soul Distribution Mastery"],
+    affiliation: "Wandenreich (Emperor)",
+    status: "Active (Supreme Command)",
+    origin: "Soul King Palace / Wandenreich"
+  },
+  {
+    name: "Shunsui Kyoraku",
+    role: "Captain-Commander",
+    description: "The leader of the Gotei 13 during its darkest hour.",
+    image: "https://static.wikia.nocookie.net/bleach/images/9/9f/Shunsui_Anime_Infobox.png",
+    bio: "Shunsui Kyoraku is the laid-back yet deeply responsible Captain-Commander of the Gotei 13. Following the death of Yamamoto, Shunsui was chosen to lead the Soul Society through the Quincy invasion. He utilizes a dual-blade Zanpakuto, Katen Kyokotsu, which forces opponents into 'children's games' with lethal consequences. His Bankai, Katen Kyokotsu: Karamatsu Shinju, is a haunting masterpiece of spiritual pressure that drains the life of everyone caught in its area.",
+    abilities: ["Katen Kyokotsu (Games)", "Karamatsu Shinju (Bankai)", "Advanced Shunpo", "Supreme Spiritual Pressure"],
+    affiliation: "Gotei 13 (Captain-Commander)",
+    status: "Active",
+    origin: "Soul Society"
+  },
+  {
+    name: "Kenpachi Zaraki",
+    role: "The Beast / Captain of Squad 11",
+    description: "A man who lives only for the thrill of the fight.",
+    image: "https://static.wikia.nocookie.net/bleach/images/3/36/Kenpachi_Zaraki_TYBW_Anime.png",
+    bio: "Kenpachi Zaraki is the most ferocious warrior in the Soul Society. For centuries, he fought with a mental limiter, unaware of the name of his own sword. During the war, he finally hears the call of 'Nozarashi' and unlocks its true form. His physical strength is so immense it can cleave through the very fabric of space, and his thirst for battle makes him an unstoppable force of nature that even the Quincy fear.",
+    abilities: ["Nozarashi (Giant Cleaver)", "Unbound Spiritual Pressure", "Savage Mastery", "Enhanced Durability"],
+    affiliation: "Gotei 13 (Squad 11 Captain)",
+    status: "Active",
+    origin: "Rukongai (District 80)"
+  },
+  {
+    name: "Mayuri Kurotsuchi",
+    role: "Mad Scientist / Captain of Squad 12",
+    description: "The man who turns the battlefield into a laboratory.",
+    image: "https://static.wikia.nocookie.net/bleach/images/7/77/Mayuri_Anime_Infobox.png",
+    bio: "Mayuri Kurotsuchi is the brilliant and ruthless scientist behind the Gotei 13's technological edge. He views combat as a series of experiments, often preparing counters for his enemies' abilities before even meeting them. His interventions during the TYBW arc were critical in resurrecting fallen allies and taking down elite Sternritters. His Bankai, Konjiki Ashisogi Jizo: Matai Fukuin Shotai, is a biological nightmare that creates newborn poisons tailored to his current opponent.",
+    abilities: ["Biological Reconstruction", "Poison Tailoring", "Matai Fukuin Shotai (Bankai)", "Strategic Technology"],
+    affiliation: "Gotei 13 (Squad 12 Captain)",
+    status: "Active",
+    origin: "Soul Society"
+  },
+  {
+    name: "Genryusai Shigekuni Yamamoto",
+    role: "Captain-Commander / Squad 1",
+    description: "The eldest and most powerful soul reaper, wielding a blade of absolute cremation.",
+    image: "https://static.wikia.nocookie.net/bleach/images/7/77/Yamamoto_TYBW_Anime.png",
+    bio: "Yamamoto is the founder of the Gotei 13 and its commander for over a millennium. His Bankai, Zanka no Tachi, manifests the entirety of his flames into a single, charred blade. It possesses four distinct techniques representing the cardinal directions: East (Absolute Erasure), West (15 Million Degree Armor), South (Army of the Dead), and North (Focused Incineration). He represents the absolute history and power of the Shinigami, standing as the ultimate wall against the Quincy invasion.",
+    abilities: ["Zanka no Tachi: Higashi", "Zanka no Tachi: Nishi", "Zanka no Tachi: Minami", "Zanka no Tachi: Kita"],
+    affiliation: "Gotei 13 (High Command)",
+    status: "Deceased",
+    origin: "Soul Society"
+  },
+  {
+    name: "Uryu Ishida",
+    role: "The Antithesis / Schrift A",
+    description: "Yhwach's successor who carries the pride of the Quincy and a hidden agenda.",
+    image: "https://static.wikia.nocookie.net/bleach/images/c/c3/Uryu_Ishida_TYBW_Anime.png",
+    bio: "Uryu Ishida is a survivor of the Quincy genocide who joins the Wandenreich as Yhwach's chosen successor. Bestowed with the Schrift 'A' – The Antithesis, he possesses the power to choose two points and completely reverse any events that have occurred between them. This allows him to instantaneously transfer his own injuries to his opponent. While seemingly allied with the enemy, Uryu's true loyalty remains a dangerous variable in the war for the Soul Society.",
+    abilities: ["The Antithesis (Event Reversal)", "Heilig Bogen", "Licht Regen", "Hirenkyaku Mastery"],
+    affiliation: "Wandenreich / Sternritter",
+    status: "Active",
+    origin: "World of the Living"
+  },
+  {
+    name: "Jugram Haschwalth",
+    role: "The Balance / Schrift B",
+    description: "The Grandmaster of the Sternritter and Yhwach's other half.",
+    image: "https://static.wikia.nocookie.net/bleach/images/6/64/Haschwalth_TYBW_Anime.png",
+    bio: "Jugram Haschwalth is the advisor to the Emperor and the second-in-command of the Wandenreich. His Schrift 'B' – The Balance, allows him to manipulate the luck of those in his vicinity, redirecting any 'misfortune' (damage) he suffers back onto his enemy as 'bad luck'. At night, he shares the power of The Almighty with Yhwach. His cold, clinical approach to judgment makes him one of the most efficient and terrifying combatants in the Quincy army.",
+    abilities: ["The Balance (Fortune Manipulation)", "Freund Schild", "The Almighty (Shared)", "Reishi Execution"],
+    affiliation: "Wandenreich / Grandmaster",
+    status: "Deceased",
+    origin: "Wandenreich"
+  },
+  {
+    name: "Retsu Unohana",
+    role: "The First Kenpachi / Squad 4",
+    description: "The Soul Society's greatest healer who hides a bloodthirsty past.",
+    image: "https://static.wikia.nocookie.net/bleach/images/2/23/Retsu_Unohana_TYBW_Anime.png",
+    bio: "Captain Unohana is known for her serene demeanor as the head of the medical division. However, she is secretly Yachiru Unohana, the first woman to ever hold the title of Kenpachi and the most prolific murderer in Soul Society history. During the TYBW, she reveals her true nature to Zaraki, using her Bankai, Minazuki, to engage in an endless cycle of slaughter and healing to unlock his full potential. Her legacy is one of absolute combat and supreme sacrifice.",
+    abilities: ["Minazuki (Blood/Corrosive Bankai)", "Kenpachi Mastery", "Master Healer (Kido)", "Unrivaled Swordsmanship"],
+    affiliation: "Gotei 13 (Squad 4)",
+    status: "Deceased",
+    origin: "Soul Society"
+  },
+  {
+    name: "Byakuya Kuchiki",
+    role: "Squad 6 Captain / Senbonzakura",
+    description: "A noble who transcended his limits through Royal Guard training.",
+    image: "https://static.wikia.nocookie.net/bleach/images/0/07/Byakuya_Kuchiki_TYBW_Anime.png",
+    bio: "After a near-fatal defeat at the hands of As Nodt, Byakuya was taken to the Royal Palace for specialized training. He returned with a deeper understanding of his Zanpakuto, Senbonzakura Kageyoshi. No longer relying just on the volume of blades, he now controls each individual petal with lethal precision. His new technique, Ikka Senjinka, compresses all his blades into a single, massive strike. Byakuya has evolved from a rigid aristocrat into the Soul Society's most refined and resilient defender.",
+    abilities: ["Senbonzakura Kageyoshi", "Ikka Senjinka", "Gokei Mastery", "Enhanced Shunpo"],
+    affiliation: "Gotei 13 (Squad 6)",
+    status: "Active",
+    origin: "Soul Society"
+  },
+  {
+    name: "Toshiro Hitsugaya",
+    role: "Squad 10 Captain / Mature Bankai",
+    description: "The prodigy who has finally reached the full maturity of his ice.",
+    image: "https://static.wikia.nocookie.net/bleach/images/b/b8/Hitsugaya_Adult_TYBW.png",
+    bio: "Hitsugaya is the youngest captain in history, and during the TYBW, he reveals the true form of Daiguren Hyorinmaru. When all the ice petals behind him vanish, his body ages into a mature form capable of wielding his full power. In this state, he can flash-freeze any matter or energy instantly, effectively negating the abilities of his opponents. His ice no longer just freezes; it stops the very function of anything it touches, making him the supreme master of the elements.",
+    abilities: ["Shikai Hyoketsu (Four Worlds Freeze)", "Atmospheric Ice Control", "Matter Negation", "Absolute Zero Flash-Freeze"],
+    affiliation: "Gotei 13 (Squad 10)",
+    status: "Active",
+    origin: "Soul Society"
+  },
+  {
+    name: "Kisuke Urahara",
+    role: "Master Strategist / Former Capt.",
+    description: "The man who prepares for every possible end of the world.",
+    image: "https://static.wikia.nocookie.net/bleach/images/a/a2/Urahara_Anime_Infobox.png",
+    bio: "Kisuke Urahara is the brains of the group, a former captain who was exiled for his radical experiments. During the war, he finally unseals his Bankai, Kannonbiraki Benihime Aratame. This allows him to 'restructure' anything within its reach, from healing his own eyes to physically modifying his arm for more power. Urahara's combat style is entirely focused on contingency; he doesn't just fight with his heart—he solves the battle like a lethal puzzle.",
+    abilities: ["Restructuring Bankai", "Advanced Kido Master", "Tactical Omniscience", "Portable Gigai Tech"],
+    affiliation: "Kurosaki Group / Former Gotei",
+    status: "Active",
+    origin: "Tokyo / Soul Society"
+  },
+  {
+    name: "Ichibe Hyosube",
+    role: "Leader of Squad Zero / Monk",
+    description: "The guardian of the Soul King and the man who names all things.",
+    image: "https://static.wikia.nocookie.net/bleach/images/2/25/Ichibe_TYBW_Anime.png",
+    bio: "Ichibe is the leader of the Royal Guard and the oldest Soul Reaper. He is the one who named everything in the Soul Society, from Zanpakuto to the very concept of Bankai. His Shikai, Ichimonji, uses ink to erase the names (and thus the powers) of his enemies. His Bankai, Shirafude Ichimonji, can then 'rename' his opponents, stripping them of their divinity and reducing them to the power level of things as weak as 'Black Ants'. He is the ultimate gatekeeper of the afterlife.",
+    abilities: ["Ichimonji (Erase Name)", "Shirafude Ichimonji (Rename)", "Blackness Aura Control", "1000-Ri Palm Strike"],
+    affiliation: "Royal Guard (Squad Zero)",
+    status: "Transcendent",
+    origin: "Royal Palace"
+  },
+  {
+    name: "Yoruichi Shihoin",
+    role: "Thunder God / Former Capt.",
+    description: "The Flash Goddess who embodies the raw speed of lightning.",
+    image: "https://static.wikia.nocookie.net/bleach/images/6/66/Yoruichi_Anime_Infobox.png",
+    bio: "Yoruichi is the former captain of Squad 2 and the master of Shunpo. In the TYBW, she demonstrates her ultimate Shunkō form: Raiju Senkei: Shunryu Kokubyo Senki. In this state, she takes on cat-like characteristics and her spiritual pressure changes 48 times per second, making it impossible for anyone to map or resist her energy. She is the physical pinnacle of Shinigami combat, moving at speeds that blur the line between science and divinity.",
+    abilities: ["Shunko: Raijin Senkei", "Beast Form (God of Thunder)", "Ultimate Shunpo", "Hand-to-Hand Mastery"],
+    affiliation: "Kurosaki Group / Noble Houses",
+    status: "Active",
+    origin: "Soul Society"
+  },
+  {
+    name: "Renji Abarai",
+    role: "Lieutenant / True Zabimaru",
+    description: "The snake who finally achieved his true dragon's form.",
+    image: "https://static.wikia.nocookie.net/bleach/images/8/87/Renji_Abarai_TYBW_Anime.png",
+    bio: "Renji spent centuries using an incomplete Bankai. After training with the Royal Guard, he learned the true name of his blade: Soo Zabimaru. This new form is more compact and efficient, combining the raw power of Hihio (the bone arm) and the lethal strike of Orochi (the blade). Renji has finally bridged the gap between a lieutenant and a captain-level warrior, becoming a powerhouse capable of taking down elite Sternritters single-handedly.",
+    abilities: ["Soo Zabimaru (Twin King)", "Hihio Bone Arm", "Zaga Teppo (Snake Fangs Cannon)", "Extreme Physical Durability"],
+    affiliation: "Gotei 13 (Squad 6)",
+    status: "Active",
+    origin: "Soul Society"
+  },
+  {
+    name: "Bazz-B",
+    role: "The Heat / Schrift H",
+    description: "A hot-headed Quincy who channels the destructive power of flame.",
+    image: "https://static.wikia.nocookie.net/bleach/images/9/91/Bazz-B_TYBW_Anime.png",
+    bio: "Bazz-B is a high-ranking Sternritter with the Schrift 'H' – The Heat. He can generate and manipulate fire through his fingers, with each additional finger increasing the density and heat of the blast. His Burner Finger techniques are powerful enough to offset Yamamoto's flames and easily melt through high-density Reishi. Driven by a childhood vendetta against Yhwach alongside Haschwalth, Bazz-B is one of the most aggressive and combat-oriented members of the Wandenreich.",
+    abilities: ["Burner Finger 1-4", "Burning Full Fingers", "Reishi Manipulation", "Extreme Pyrokinesis"],
+    affiliation: "Wandenreich / Sternritter",
+    status: "Deceased",
+    origin: "Wandenreich"
+  },
+  {
+    name: "As Nödt",
+    role: "The Fear / Schrift F",
+    description: "The embodiment of psychological terror who kills with your own fright.",
+    image: "https://static.wikia.nocookie.net/bleach/images/4/44/As_Nodt_TYBW_Anime.png",
+    bio: "As Nodt is a Sternritter who uses thorns to inject his targets with a supernatural, paralyzing fear. His Schrift 'F' – The Fear, bypasses logic and targets the instinctual terror within all living things. His Vollstandig, Tatarforas, transforms him into a horrific being whose very sight induces fear directly into the brain's optic nerves. He nearly killed Byakuya Kuchiki by forcing him to witness his own decay, proving that even a noble's pride can be broken by terror.",
+    abilities: ["Supernatural Fear Induction", "Fear Thorns", "Tatarforas (Vollstandig)", "Mental Breakdown Scenarios"],
+    affiliation: "Wandenreich / Sternritter",
+    status: "Deceased",
+    origin: "Wandenreich"
+  },
+  {
+    name: "Quilge Opie",
+    role: "The Jail / Schrift J",
+    description: "The executive hunter who traps souls in an inescapable cage.",
+    image: "https://static.wikia.nocookie.net/bleach/images/6/64/Quilge_Opie_TYBW_Anime.png",
+    bio: "Quilge Opie is the leader of the First Jagdarmee and the first major Quincy threat encountered in Hueco Mundo. His Schrift 'J' – The Jail, allows him to create cages of Reishi that are physically impossible to break from the inside. He can also absorb enormous amounts of energy through Sklaverei, even absorbing the bodies of Ayon to increase his own power. He is the ultimate containment expert, tasked with neutralizing threats like Ichigo before they can reach the war.",
+    abilities: ["The Jail (Holy Cage)", "Sklaverei (Reishi Absorption)", "Biskiel (Vollstandig)", "Ransotengai"],
+    affiliation: "Wandenreich / Jagdarmee",
+    status: "Deceased",
+    origin: "Wandenreich"
+  },
+  {
+    name: "Gremmy Thoumeaux",
+    role: "The Visionary / Schrift V",
+    description: "A boy-like entity who can turn imagination into reality.",
+    image: "https://static.wikia.nocookie.net/bleach/images/4/45/Gremmy_Thoumeaux_Anime.png",
+    bio: "Gremmy is arguably the most powerful Sternritter due to his Schrift 'V' – The Visionary. Anything he imagines becomes an absolute reality. He has turned bones into cookies, created meteorites from thin air, and even manifested his own life from a brain in a jar. During his battle with Kenpachi Zaraki, he attempted to imagine a power greater than the Captain's, leading to his own body's self-destruction when his mind could not contain the concept. He is a god-like threat limited only by his own sanity.",
+    abilities: ["Reality Warping", "Molecular Rearranging", "Meteor Summons", "Self-Cloning (Power Multiplier)"],
+    affiliation: "Wandenreich / Sternritter",
+    status: "Deceased",
+    origin: "Wandenreich"
+  },
+  {
+    name: "Bambietta Basterbine",
+    role: "The Explode / Schrift E",
+    description: "A ruthless leader who turns the very world into a detonator.",
+    image: "https://static.wikia.nocookie.net/bleach/images/d/df/Bambietta_Basterbine_Anime.png",
+    bio: "Bambietta is the leader of the female Sternritter (The Bambies). Her Schrift 'E' – The Explode, allows her to turn any object touched by her Reishi into a bomb. Because her target *becomes* the explosive, her attacks are nearly impossible to deflect or block tradicionalmente. She is sadistic and unpredictable, often killing her own subordinates when she is in a bad mood, making her a chaotic and terrifying presence on any battlefield.",
+    abilities: ["Omnidirectional Bombardment", "Reishi Explosion Induction", "Bielakiel (Vollstandig)", "Explosive Energy Orbs"],
+    affiliation: "Wandenreich / Sternritter",
+    status: "Zombie (Integrated)",
+    origin: "Wandenreich"
+  },
+  {
+    name: "Sosuke Aizen",
+    role: "The Prisoner / Transcendent",
+    description: "The ultimate traitor who waits in the shadows of the deep prison.",
+    image: "https://static.wikia.nocookie.net/bleach/images/c/c5/Aizen_TYBW_Anime.png",
+    bio: "Sosuke Aizen remains bound in Muken, the deepest level of the Soul Society's prison. Despite his imprisonment, his spiritual pressure has continued to grow, reaching a level where he can shoot down the Soul Palace by merely flexing his power. During the war, he is temporarily released by Shunsui to assist against Yhwach. Even bound to his chair, his Kyoka Suigetsu (Absolute Hypnosis) remains the only power capable of deceiving Yhwach's 'Almighty', proving Aizen is still the Soul Society's greatest wildcard.",
+    abilities: ["Kyoka Suigetsu (Absolute Hypnosis)", "Transcendent Reiatsu", "Hado #90: Kurohitsugi", "Infinite Evolution"],
+    affiliation: "Independent",
+    status: "Transcendent (Prisoner)",
+    origin: "Soul Society"
+  },
+  {
+    name: "Sajin Komamura",
+    role: "Vengeful Wolf / Squad 7",
+    description: "A man who gave up his heart to become a beast of vengeance.",
+    image: "https://static.wikia.nocookie.net/bleach/images/1/1a/Komamura_TYBW_Anime.png",
+    bio: "Desperate for revenge after the death of Yamamoto, Komamura underwent a forbidden transformation by ripping out his own heart. This granted him the 'Human Transformation' technique, giving him temporary immortality and a human appearance. His Bankai evolved into Kokujo Tengen Myoo: Dangai Joue—a giant of pure armorless energy that cannot be killed. However, the price for this power was his permanent transformation into a mindless dog, a tragic end for a once-noble captain.",
+    abilities: ["Dangai Joue (Immortality)", "Human Transformation Tech", "Giant Manifestation", "Absolute Physical Strikes"],
+    affiliation: "Gotei 13 (Squad 7)",
+    status: "Retired (Beast Form)",
+    origin: "Soul Society"
+  },
+  {
+    name: "Mask De Masculine",
+    role: "The Warrior / Schrift S",
+    description: "A wrestler-like Quincy who draws strength from his fan's cheers.",
+    image: "https://static.wikia.nocookie.net/bleach/images/c/c1/Mask_De_Masculine_Anime.png",
+    bio: "Mask De Masculine is a Sternritter obsessed with the 'hero' persona. His Schrift 'S' – The Star/Warrior, allows him to grow exponentially stronger whenever his fan, James, cheers for him. He can heal from lethal injuries and increase his physical mass to monumental proportions simply through the power of popularity. His 'Star Flash' is a highly concentrated beam of Reishi that can obliterate buildings, making him a brute force threat that overwhelmed multiple captains at once.",
+    abilities: ["Popularity-Based Strength", "Regenerative Cheering", "Star Flash Beam", "Superslam Physicality"],
+    affiliation: "Wandenreich / Sternritter",
+    status: "Deceased",
+    origin: "Wandenreich"
+  },
+  {
+    name: "Orihime Inoue",
+    role: "Healer / Event Refusal",
+    description: "The girl with the power to deny the very facts of reality.",
+    image: "https://static.wikia.nocookie.net/bleach/images/a/a2/Orihime_Inoue_TYBW_Anime.png",
+    bio: "Orihime is Ichigo's longtime friend whose power, Shun Shun Rikka, has evolved into something far beyond traditional healing. She specializes in 'event refusal', allowing her to erase damage, repair objects, and create shields that can withstand even the attacks of Yhwach. During the TYBW, her role is vital as she protects Ichigo during the final confrontation and restores those who have been completely obliterated by Quincy energy. Her kindness is her ultimate shield.",
+    abilities: ["Soten Kisshun (Event Refusal)", "Santen Kesshun (Shield)", "Reality Reconstruction", "High-Level Spiritual Shielding"],
+    affiliation: "Kurosaki Group",
+    status: "Active",
+    origin: "World of the Living"
+  },
+  {
+    name: "Yasutora Sado (Chad)",
+    role: "The Giant / Fullbringer",
+    description: "The silent giant whose fists carry the weight of his resolve.",
+    image: "https://static.wikia.nocookie.net/bleach/images/6/6f/Sado_TYBW_Anime.png",
+    bio: "Chad is a Fullbringer whose powers manifest as armor on his arms. His right arm, 'Brazo Derecho de Gigante', is for defense, while his left arm, 'Brazo Izquierdo del Diablo', is for offense. Throughout the TYBW, Chad serves as the frontline muscle for the group, clearing physical obstacles and fighting off waves of Soldat so Ichigo can advance. His physical strength is unmatched among humans, and his loyalty to Ichigo is the foundation of his power.",
+    abilities: ["Brazo Izquierdo del Diablo", "Brazo Derecho de Gigante", "La Muerte (Death Blow)", "El Directo Strike"],
+    affiliation: "Kurosaki Group",
+    status: "Active",
+    origin: "World of the Living"
+  }
+];

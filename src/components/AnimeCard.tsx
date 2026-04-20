@@ -180,6 +180,23 @@ export const AnimeCard = ({ anime, onOpenVideo, onOpenManga }: AnimeCardProps) =
               >
                 Vol. 01
               </motion.div>
+
+              {/* Quick Access Archive Button */}
+              {anime.characters && anime.characters.length > 0 && (
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/archive/${anime.id}`);
+                  }}
+                  className="absolute bottom-4 right-4 z-20 w-12 h-12 bg-manga-paper border-[4px] border-manga-ink rounded-full flex items-center justify-center shadow-[4px_4px_0px_0px_var(--manga-shadow-color)] hover:shadow-none translate-y-2 transition-all cursor-pointer"
+                >
+                  <User className="w-6 h-6 text-manga-ink" />
+                </motion.div>
+              )}
             </div>
           
           <div className="p-3 bg-manga-paper border-t-[4px] border-manga-ink transition-colors">

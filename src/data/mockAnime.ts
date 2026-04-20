@@ -1,29 +1,27 @@
-export type Anime = {
-  id: string;
-  title: string;
-  description: string;
-  posterImage: string;
-  categories: string[];
-  trailerUrl: string;
-  openings: { title: string; url: string }[]; 
-  previews: string[];
-  mangaChapters?: {
-    id: string;
-    title: string;
-    pages: string[];
-  }[];
-  characters?: {
-    name: string;
-    role: string;
-    description: string;
-    image: string;
-    bio: string;
-    abilities?: string[];
-    affiliation?: string;
-    status?: string;
-    origin?: string;
-  }[];
-};
+import { Character, Anime } from "./types";
+export type { Character, Anime };
+
+import { demonSlayerCharacters } from "./characters/demon-slayer";
+import { attackOnTitanCharacters } from "./characters/attack-on-titan";
+import { jujutsuKaisenCharacters } from "./characters/jujutsu-kaisen";
+import { cyberpunkEdgerunnersCharacters } from "./characters/cyberpunk-edgerunners";
+import { onePieceCharacters } from "./characters/one-piece";
+import { fmaCharacters } from "./characters/fma";
+import { deathNoteCharacters } from "./characters/death-note";
+import { hunterXHunterCharacters as hxhCharacters } from "./characters/hunter-x-hunter";
+import { narutoCharacters } from "./characters/naruto";
+import { dbzCharacters } from "./characters/dbz";
+import { evangelionCharacters } from "./characters/evangelion";
+import { jojoCharacters } from "./characters/jojo";
+import { bleachCharacters } from "./characters/bleach";
+import { chainsawManCharacters } from "./characters/chainsaw-man";
+import { spyXFamilyCharacters } from "./characters/spy-x-family";
+import { blueLockCharacters } from "./characters/blue-lock";
+import { cowboyBebopCharacters } from "./characters/cowboy-bebop";
+import { haikyuCharacters } from "./characters/haikyu";
+import { codeGeassCharacters } from "./characters/code-geass";
+import { monsterCharacters } from "./characters/monster";
+
 
 export const MOCK_ANIME: Anime[] = [
   {
@@ -34,21 +32,21 @@ export const MOCK_ANIME: Anime[] = [
     posterImage: "/assets/demon-slayer/ren.jpg",
     trailerUrl: "https://www.youtube.com/embed/VQGCKyvzIM4?autoplay=1&mute=1",
     openings: [
-      { 
-        title: "Opening 1", 
-        url: "https://www.youtube.com/embed/pmanD_s7G3U?autoplay=1&mute=1" 
+      {
+        title: "Opening 1",
+        url: "https://www.youtube.com/embed/pmanD_s7G3U?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 2", 
-        url: "https://www.youtube.com/embed/st4wcpjZeQQ?autoplay=1&mute=1" 
+      {
+        title: "Opening 2",
+        url: "https://www.youtube.com/embed/st4wcpjZeQQ?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 3", 
-        url: "https://www.youtube.com/embed/OWBCIRhly4U?autoplay=1&mute=1" 
+      {
+        title: "Opening 3",
+        url: "https://www.youtube.com/embed/OWBCIRhly4U?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 4", 
-        url: "https://www.youtube.com/embed/I-a8Ma0f1GA?autoplay=1&mute=1" 
+      {
+        title: "Opening 4",
+        url: "https://www.youtube.com/embed/I-a8Ma0f1GA?autoplay=1&mute=1"
       }
     ],
     previews: [
@@ -386,17 +384,17 @@ export const MOCK_ANIME: Anime[] = [
     posterImage: "/assets/attack-on-titan/4.jpg",
     trailerUrl: "https://www.youtube.com/embed/MGRm4IzK1SQ?autoplay=1&mute=1",
     openings: [
-      { 
-        title: "Opening 1", 
-        url: "https://www.youtube.com/embed/OBqw818mQ1E?autoplay=1&mute=1" 
+      {
+        title: "Opening 1",
+        url: "https://www.youtube.com/embed/OBqw818mQ1E?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 2", 
-        url: "https://www.youtube.com/embed/vy63u2hKoPE?autoplay=1&mute=1" 
+      {
+        title: "Opening 2",
+        url: "https://www.youtube.com/embed/vy63u2hKoPE?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 3", 
-        url: "https://www.youtube.com/embed/8OkpRK2_gVs?autoplay=1&mute=1" 
+      {
+        title: "Opening 3",
+        url: "https://www.youtube.com/embed/8OkpRK2_gVs?autoplay=1&mute=1"
       }
     ],
     previews: [
@@ -580,17 +578,17 @@ export const MOCK_ANIME: Anime[] = [
     posterImage: "/assets/jujutsu-kaisen/1.jpg",
     trailerUrl: "https://www.youtube.com/embed/MPfZhgLiK6w?autoplay=1&mute=1",
     openings: [
-      { 
-        title: "Opening 1: Kaikai Kitan", 
-        url: "https://www.youtube.com/embed/1tk1pqwrOys?autoplay=1&mute=1" 
+      {
+        title: "Opening 1: Kaikai Kitan",
+        url: "https://www.youtube.com/embed/1tk1pqwrOys?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 2: VIVID VICE", 
-        url: "https://www.youtube.com/embed/5yb2N3pnztU?autoplay=1&mute=1" 
+      {
+        title: "Opening 2: VIVID VICE",
+        url: "https://www.youtube.com/embed/5yb2N3pnztU?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 3: SPECIALZ", 
-        url: "https://www.youtube.com/embed/Xr032EhUDPw?autoplay=1&mute=1" 
+      {
+        title: "Opening 3: SPECIALZ",
+        url: "https://www.youtube.com/embed/Xr032EhUDPw?autoplay=1&mute=1"
       }
     ],
     previews: [
@@ -1038,37 +1036,37 @@ export const MOCK_ANIME: Anime[] = [
     posterImage: "/assets/one-piece/1.jpg",
     trailerUrl: "https://www.youtube.com/embed/lgAwlnGLTUg?autoplay=1&mute=1",
     openings: [
-      { 
-        title: "Opening 1", 
-        url: "https://www.youtube.com/embed/YoeP9w5UIlg?autoplay=1&mute=1" 
+      {
+        title: "Opening 1",
+        url: "https://www.youtube.com/embed/YoeP9w5UIlg?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 2", 
-        url: "https://www.youtube.com/embed/5aPf1c6eg58?autoplay=1&mute=1" 
+      {
+        title: "Opening 2",
+        url: "https://www.youtube.com/embed/5aPf1c6eg58?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 3", 
-        url: "https://www.youtube.com/embed/Oo52vQyAR6w?autoplay=1&mute=1" 
+      {
+        title: "Opening 3",
+        url: "https://www.youtube.com/embed/Oo52vQyAR6w?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 4", 
-        url: "https://www.youtube.com/embed/hBi9wavp2w4?autoplay=1&mute=1" 
+      {
+        title: "Opening 4",
+        url: "https://www.youtube.com/embed/hBi9wavp2w4?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 5", 
-        url: "https://www.youtube.com/embed/EP3FLYhE7Nc?autoplay=1&mute=1" 
+      {
+        title: "Opening 5",
+        url: "https://www.youtube.com/embed/EP3FLYhE7Nc?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 6", 
-        url: "https://www.youtube.com/embed/kmEHSsRAIJs?autoplay=1&mute=1" 
+      {
+        title: "Opening 6",
+        url: "https://www.youtube.com/embed/kmEHSsRAIJs?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 7", 
-        url: "https://www.youtube.com/embed/M340RGHsIO8?autoplay=1&mute=1" 
+      {
+        title: "Opening 7",
+        url: "https://www.youtube.com/embed/M340RGHsIO8?autoplay=1&mute=1"
       },
-      { 
-        title: "Opening 8", 
-        url: "https://www.youtube.com/embed/JqUWua4MrIM?autoplay=1&mute=1" 
+      {
+        title: "Opening 8",
+        url: "https://www.youtube.com/embed/JqUWua4MrIM?autoplay=1&mute=1"
       }
     ],
     previews: [
@@ -1604,9 +1602,9 @@ export const MOCK_ANIME: Anime[] = [
     posterImage: "/assets/full-metal-alchemist/1.jpg",
     trailerUrl: "https://www.youtube.com/embed/-GoNo0DGroU?autoplay=1&mute=1",
     openings: [
-      { 
-        title: "Opening 1", 
-        url: "https://www.youtube.com/embed/elyXcwunIYA?autoplay=1&mute=1" 
+      {
+        title: "Opening 1",
+        url: "https://www.youtube.com/embed/elyXcwunIYA?autoplay=1&mute=1"
       }
     ],
     previews: [
@@ -2592,6 +2590,7 @@ export const MOCK_ANIME: Anime[] = [
       "/assets/cowboy-bebop/3.jpg",
       "/assets/cowboy-bebop/4.jpg",
     ],
+    characters: cowboyBebopCharacters,
   },
   {
     id: "dragon-ball-z",
@@ -3139,6 +3138,7 @@ export const MOCK_ANIME: Anime[] = [
       "/assets/code-geass/3.jpg",
       "/assets/code-geass/4.jpg",
     ],
+    characters: codeGeassCharacters,
   },
   {
     id: "haikyu",
@@ -3155,6 +3155,7 @@ export const MOCK_ANIME: Anime[] = [
       "/assets/haikyu/3.jpg",
       "/assets/haikyu/4.jpg",
     ],
+    characters: haikyuCharacters,
   },
   {
     id: "monster",
@@ -3171,6 +3172,7 @@ export const MOCK_ANIME: Anime[] = [
       "/assets/monster/3.jpg",
       "/assets/monster/4.jpg",
     ],
+    characters: monsterCharacters,
   },
   {
     id: "jojo",
@@ -4268,6 +4270,7 @@ export const MOCK_ANIME: Anime[] = [
       "/assets/blue-lock/3.jpg",
       "/assets/blue-lock/4.jpg",
     ],
+    characters: blueLockCharacters,
   },
   {
     id: "vinland-saga",

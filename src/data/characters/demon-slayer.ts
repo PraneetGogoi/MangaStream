@@ -1,0 +1,312 @@
+import { Character } from "../types";
+
+export const demonSlayerCharacters: Character[] = [
+  {
+    name: "Tanjiro Kamado",
+    role: "Main Protagonist / Demon Slayer",
+    description: "A kindhearted boy who became a Demon Slayer to save his sister Nezuko.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/0/07/Tanjiro_Kamado_Anime.png",
+    bio: "Tanjiro Kamado is a young man who joins the Demon Slayer Corps to find a cure to turn his sister, Nezuko Kamado, back into a human. He is known for having a naturally kind and empathetic soul, often feeling sadness for the demons he slays. Tanjiro utilizes the Water Breathing style taught to him by Sakonji Urokodaki, but later discovers he is a practitioner of the Hinokami Kagura, a sun-based breathing technique passed down through his family for generations.",
+    abilities: ["Sun Breathing", "Water Breathing", "Enhanced Smell", "Recovery Breathing"],
+    affiliation: "Demon Slayer Corps",
+    status: "Active",
+    origin: "Mount Kumotori"
+  },
+  {
+    name: "Nezuko Kamado",
+    role: "Demon / Sister of Tanjiro",
+    description: "Tanjiro's younger sister who was turned into a demon.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/a/ae/Nezuko_Anime.png",
+    bio: "Nezuko Kamado is the younger sister of Tanjiro Kamado and a former human. After her family was slaughtered by Muzan Kibutsuji, she was transformed into a demon. Despite her state, she retains her human feelings and refuses to harm humans, protected by a hypnotic suggestion and her own strong will. Nezuko possesses immense strength and regenerative abilities, and can utilize her Blood Demon Art: Exploding Blood to assist Tanjiro in battle.",
+    abilities: ["Blood Demon Art: Exploding Blood", "Size Manipulation", "Immense Strength", "Sunlight Resistance"],
+    affiliation: "Kamado Family / Demon Slayer Corps Support",
+    status: "Active",
+    origin: "Mount Kumotori"
+  },
+  {
+    name: "Zenitsu Agatsuma",
+    role: "Demon Slayer / Thunder Breather",
+    description: "A talented but cowardly Demon Slayer who masters the Thunder Breathing technique.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/b/ba/Zenitsu_Anime.png",
+    bio: "Zenitsu Agatsuma is a Demon Slayer in the Demon Slayer Corps. He is a traveling companion of Tanjiro Kamado and one of the main protagonists of Demon Slayer: Kimetsu no Yaiba. Zenitsu's most defining trait is his cowardice; he often claims he doesn't have long to live due to his dangerous job. However, when he falls asleep or passes out from fear, his true strength awakens, allowing him to perform the Thunder Breathing First Form: Thunderclap and Flash with god-like speed.",
+    abilities: ["Thunder Breathing", "Extreme Hearing", "Godspeed", "Thunderclap and Flash"],
+    affiliation: "Demon Slayer Corps",
+    status: "Active",
+    origin: "Mount Kurama"
+  },
+  {
+    name: "Inosuke Hashibira",
+    role: "Demon Slayer / Beast Breather",
+    description: "A young man who was raised by boars, who wears a boar mask and uses 'Beast Breathing'.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/1/11/Inosuke_Anime.png",
+    bio: "Raised by wild boars in the mountains, Inosuke developed a unique, self-taught breathing style known as Beast Breathing. He is incredibly proud and always seeks to prove his strength by challenging others to combat. His dual Nichirin blades are uniquely chipped to mimic the tearing of a beast's fangs. Beneath his boar mask lies a surprisingly feminine face, a contrast to his aggressive and muscular build.",
+    abilities: ["Beast Breathing", "Extrasensory Touch", "Extreme Flexibility", "Dual Wielding"],
+    affiliation: "Demon Slayer Corps",
+    status: "Active",
+    origin: "Mount Okutama"
+  },
+  {
+    name: "Shinobu Kocho",
+    role: "Insect Hashira",
+    description: "The Insect Hashira. She uses poison to slay demons since she lacks the strength to decapitate them.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/d/df/Shinobu_Anime.png",
+    bio: "Shinobu Kocho is the Insect Hashira of the Demon Slayer Corps and a master of chemical warfare. Despite her small stature and lack of physical strength to decapitate demons, she compensated by developing a unique fighting style using a stinger-like Nichirin blade. She is a brilliant pharmacist who creates lethal wisteria-based poisons to eliminate her targets. Beneath her constantly smiling and calm facade lies a deep-seated, righteous fury against the demons who killed her older sister, Kanae.",
+    abilities: ["Insect Breathing", "Wisteria Poison Mastery", "Superhuman Agility", "Medical Expertise"],
+    affiliation: "Demon Slayer Corps (Hashira)",
+    status: "KIA",
+    origin: "Tokyo-fu"
+  },
+  {
+    name: "Kyojuro Rengoku",
+    role: "Flame Hashira",
+    description: "The Flame Hashira. A man of unwavering optimism and fiery spirit.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/d/d4/Kyojuro_Anime.png",
+    bio: "Kyojuro Rengoku was the Flame Hashira, a man whose spirit burned as brightly as his techniques. He was defined by his unwavering optimism and a profound sense of duty to protect the weak, a value instilled in him by his mother. Kyojuro was a master of the Flame Breathing style, passed down through the Rengoku family for generations. His heroic stand against the Upper Rank Three demon, Akaza, during the Mugen Train incident served as a legendary inspiration for the entire Demon Slayer Corps.",
+    abilities: ["Flame Breathing", "Indomitable Will", "Superhuman Strength", "Advanced Mark"],
+    affiliation: "Demon Slayer Corps (Hashira)",
+    status: "KIA",
+    origin: "Tokyo-fu"
+  },
+  {
+    name: "Giyu Tomioka",
+    role: "Water Hashira",
+    description: "The Water Hashira. Stoic and reserved, he was the first Hashira Tanjiro encountered.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/1/1a/Giyu_Anime.png",
+    bio: "Giyu Tomioka is the Water Hashira and the one who spared Nezuko's life, setting Tanjiro on his path as a slayer. He is a man of few words, often socially withdrawn and plagued by survivor's guilt from his final selection exam. Giyu is a consummate master of Water Breathing, even developing his own unique Eleventh Form: Dead Calm. His stoic exterior masks a deeply compassionate heart and an absolute dedication to the preservation of human life and the Corps' mission.",
+    abilities: ["Water Breathing (Mastery)", "Eleventh Form: Dead Calm", "Enhanced Observation", "Demon Slayer Mark"],
+    affiliation: "Demon Slayer Corps (Hashira)",
+    status: "Active",
+    origin: "Nogata, Tokyo-fu"
+  },
+  {
+    name: "Tengen Uzui",
+    role: "Sound Hashira",
+    description: "The Sound Hashira. A flamboyant former shinobi who values his wives above all else.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/c/c8/Tengen_Anime.png",
+    bio: "Tengen Uzui, the Sound Hashira, is a man of 'flamboyant' tastes and high energy who defined the term 'flashy'. A former shinobi, he abandoned his cold ninja upbringing for a more spectacular life, carrying heavy double-cleaver Nichirin blades. He utilizes Sound Breathing, which incorporates sound-based combat and explosive beads to overwhelm demons with sensory overload. During the Entertainment District battle, he showed incredible resilience and tactical genius, eventually retiring as a veteran after a brutal victory alongside Tanjiro's team.",
+    abilities: ["Sound Breathing", "Shinobi Sensory Training", "Explosive Beads", "Musical Score Technique"],
+    affiliation: "Demon Slayer Corps (Hashira/Retired)",
+    status: "Active (Retired)",
+    origin: "Unknown Shinobi Village"
+  },
+  {
+    name: "Mitsuri Kanroji",
+    role: "Love Hashira",
+    description: "The Love Hashira. A woman of immense physical strength hidden beneath a warm and affectionate personality.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/e/ef/Mitsuri_Anime.png",
+    bio: "Mitsuri Kanroji is the Love Hashira, known for her unique physical composition which makes her muscles eight times denser than a normal human's. She joined the Demon Slayer Corps to find a husband who could accept her strength and eccentricities, eventually finding a family in the slayers. Mitsuri utilizes Love Breathing, a custom style derived from Flame Breathing, and a whip-like Nichirin sword that allows for incredibly fast and flexible attacks. Her radiant personality and deep compassion make her a vital pillar of support for her fellow slayers.",
+    abilities: ["Love Breathing", "Superhuman Muscle Density", "Whip-Sword Mastery", "Demon Slayer Mark"],
+    affiliation: "Demon Slayer Corps (Hashira)",
+    status: "KIA",
+    origin: "Azabu, Tokyo-fu"
+  },
+  {
+    name: "Muichiro Tokito",
+    role: "Mist Hashira",
+    description: "The Mist Hashira. A young prodigy who achieved Hashira status in just two months.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/1/14/Muichiro_Anime.png",
+    bio: "Muichiro Tokito is the Mist Hashira and a direct descendant of the first Sun Breather. He is a genius who became a Hashira within only two months of picking up a sword, a feat nearly unheard of in the Corps. Initially presented as airheaded and often lost in thought, Muichiro’s true nature was suppressed by the trauma of his past. After regaining his memories during the Swordsmith Village arc, he demonstrated incredible mastery over Mist Breathing and a resolve as sharp as his blade, eventually unlocking the Transparent World.",
+    abilities: ["Mist Breathing", "Seventh Form: Obscuring Clouds", "Transparent World", "Demon Slayer Mark"],
+    affiliation: "Demon Slayer Corps (Hashira)",
+    status: "KIA",
+    origin: "Unknown Mountain Region"
+  },
+  {
+    name: "Gyomei Himejima",
+    role: "Stone Hashira",
+    description: "The Stone Hashira. The blind giant who is widely considered the strongest of the current Hashira.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/b/b3/Gyomei_Anime.png",
+    bio: "Gyomei Himejima is the Stone Hashira and the most physically imposing member of the Demon Slayer Corps. Despite being blind, his other senses are heightened to a level of near-supernatural perception through 'Echoes'. He utilizes an enormous spiked ball and axe on a chain, a unique combination that requires immense strength to master. Gyomei is a deeply philosophical and compassionate man, often seen praying for his comrades and even the demons he slays, embodying the stoic and unbreakable spirit of a mountain.",
+    abilities: ["Stone Breathing", "Superhuman Strength", "Transparent World", "Enhanced Hearing"],
+    affiliation: "Demon Slayer Corps (Hashira)",
+    status: "KIA",
+    origin: "Mount Hinode"
+  },
+  {
+    name: "Sanemi Shinazugawa",
+    role: "Wind Hashira",
+    description: "The Wind Hashira. A fierce and aggressive warrior who bears many scars from countless battles.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/0/05/Sanemi_Anime.png",
+    bio: "Sanemi Shinazugawa is the Wind Hashira, characterized by his volatile temper and his absolute hatred for demons. His body is covered in scars from years of fighting without any concern for his own safety. Sanemi possesses 'Marechi' blood, which is incredibly intoxicating and disorienting to demons, a trait he uses to his advantage in combat. His aggressive Wind Breathing style is as relentless as a storm, and beneath his abrasive exterior lies a man who has sacrificed everything to protect his younger brother, Genya.",
+    abilities: ["Wind Breathing", "Marechi Blood Poisoning", "Superhuman Speed", "Demon Slayer Mark"],
+    affiliation: "Demon Slayer Corps (Hashira)",
+    status: "Active",
+    origin: "Kyoto-fu"
+  },
+  {
+    name: "Obanai Iguro",
+    role: "Serpent Hashira",
+    description: "The Serpent Hashira. A disciplined and mysterious warrior who fights alongside his pet snake, Kaburamaru.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/b/b2/Obanai_Anime.png",
+    bio: "Obanai Iguro is the Serpent Hashira, known for his strict adherence to the rules of the Corp and his mysterious past. He wears bandages over his mouth to hide a childhood wound and is always seen with his companion snake, Kaburamaru, who helps him perceive his surroundings and fight with absolute precision. Obanai utilizes Serpent Breathing and a uniquely curved Nichirin blade, allowing for slithering, unpredictable attacks. His devotion to the Corps is rivaled only by his secret affection for the Love Hashira, Mitsuri Kanroji.",
+    abilities: ["Serpent Breathing", "Kaburamaru Synergy", "Master Tactician", "Demon Slayer Mark"],
+    affiliation: "Demon Slayer Corps (Hashira)",
+    status: "KIA",
+    origin: "Hachijo Island"
+  },
+  {
+    name: "Kanao Tsuyuri",
+    role: "Demon Slayer / Flower Breather",
+    description: "The adopted daughter of the Kocho sisters and a highly talented Flower Breathing user.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/6/6d/Kanao_Anime.png",
+    bio: "Kanao Tsuyuri is a Demon Slayer and the 'Tsuguko' of the Insect Hashira, Shinobu Kocho. Rescued from a life of poverty and abuse, she initially struggled with showing emotion or making decisions on her own. Through her training and her bond with Tanjiro, Kanao eventually learned to follow her heart and find her own path. Her mastery over Flower Breathing and her extraordinary visual perception make her one of the most promising young slayers in the Corps, eventually unlocking the legendary Scarlet Spider Lily technique.",
+    abilities: ["Flower Breathing", "Equinoctial Vermilion Eye", "Superhuman Visual Perception", "Advanced Mark"],
+    affiliation: "Demon Slayer Corps (Tsuguko)",
+    status: "Active",
+    origin: "Unknown Slum, Tokyo-fu"
+  },
+  {
+    name: "Muzan Kibutsuji",
+    role: "The Demon King / Progenitor",
+    description: "The first of his kind and the creator of all other demons in the world.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/a/ab/Muzan_Anime.png",
+    bio: "Muzan Kibutsuji is the primary antagonist and the source of all demonic suffering in the world. Having lived for over a thousand years, he is obsessed with achieving absolute immortality and conquering the sun. Muzan is a cold, narcissistic, and terrifyingly powerful entity who can change his appearance at will. He controls his demons through a biological link and his own blood, punishing any failure with absolute finality. His pursuit of the Blue Spider Lily and his vendetta against the Kamado family have shaped the history of the Demon Slayer Corps.",
+    abilities: ["Biokinesis (Shapeshifting)", "Demon Progenitor Blood", "Near-Infinite Regeneration", "Tentacle Manipulation"],
+    affiliation: "Twelve Kizuki (Leader)",
+    status: "KIA",
+    origin: "Heian Era Japan"
+  },
+  {
+    name: "Akaza",
+    role: "Upper Moon Three",
+    description: "A martial arts master who values strength and honors his formidable opponents.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/b/b6/Akaza_Anime.png",
+    bio: "Akaza is the holder of the Upper Rank Three position in the Twelve Kizuki. A martial arts fanatic who abandoned his humanity to achieve the peak of strength, he primarily utilizes his bare hands in combat. His Blood Demon Art, Compass Needle, allows him to sense an opponent's 'battle spirit' and predict their every move with flawless precision. Despite being a demon, Akaza possesses a unique sense of honor, often offering his strongest opponents the chance to become demons themselves to continue their growth together.",
+    abilities: ["Blood Demon Art: Compass Needle", "Destructive Death Mastery", "Martial Arts Expertise", "High-Speed Combat"],
+    affiliation: "Twelve Kizuki (Upper Rank Three)",
+    status: "KIA",
+    origin: "Edo Period Japan"
+  },
+  {
+    name: "Doma",
+    role: "Upper Moon Two",
+    description: "A charismatic and remorseless demon who uses ice-based Blood Demon Arts.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/3/30/Douma_Anime.png",
+    bio: "Doma is the Upper Rank Two demon and the leader of the Eternal Paradise Faith cult. Characterized by his perpetual smile and friendly demeanor, he is actually completely devoid of human emotion or empathy. Doma utilizes ice-based Blood Demon Arts that can freeze the very air his opponents breathe, making him a nightmare for any breathing style user. His history is deeply entwined with the deaths of several individuals close to the main cast, making him one of the most loathed and dangerous enemies in the series.",
+    abilities: ["Blood Demon Art: Cryokinesis", "Barren Hanging Garden", "Crystalline Child", "Enhanced Biological Durability"],
+    affiliation: "Twelve Kizuki (Upper Rank Two)",
+    status: "KIA",
+    origin: "Late Edo / Early Meiji Japan"
+  },
+  {
+    name: "Kokushibo",
+    role: "Upper Moon One",
+    description: "The strongest of the Twelve Kizuki and a master of the Moon Breathing style.",
+    image: "https://static.wikia.nocookie.net/kimemet-no-yaiba/images/d/df/Kokushibo_Anime.png",
+    bio: "Kokushibo is the pinnacle of the Twelve Kizuki, holding the Upper Rank One position for over four centuries. A former Demon Slayer from the Sengoku era, he is the elder brother of the legendary Yoriichi Tsugikuni. He utilizes Moon Breathing, a style characterized by Crescent Moon blades that can change size and shape rapidly. With six eyes that grant him supernatural perception, Kokushibo represents the terrifying union of a master swordsman's skill and a demon's absolute power, driven by an eternal envy of his brother's genius.",
+    abilities: ["Moon Breathing", "Transparent World", "Biological Blade Manipulation", "Demon Slayer Mark (Permanent)"],
+    affiliation: "Twelve Kizuki (Upper Rank One)",
+    status: "KIA",
+    origin: "Sengoku Era Japan"
+  },
+  {
+    name: "Genya Shinazugawa",
+    role: "Demon Slayer / Demon Eater",
+    description: "The younger brother of the Wind Hashira who possesses a unique ability to gain demon powers.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/9/9f/Genya_Anime.png",
+    bio: "Genya Shinazugawa is a Demon Slayer and the younger brother of Sanemi Shinazugawa. Unable to use Breathing Styles, Genya compensates through his unique physiology that allows him to temporarily gain demonic traits and abilities by consuming the flesh of demons. He fights using a western-style double-barreled shotgun loaded with Nichirin bullets and a short sword. His arc is one of the series' most moving, focusing on his desperate desire for his brother's acknowledgment and his growth from a hostile loner to a selfless hero.",
+    abilities: ["Repetitive Action", "Demon Consumption (Temporary)", "Nichirin Firearm Mastery", "Superhuman Resilience"],
+    affiliation: "Demon Slayer Corps",
+    status: "KIA",
+    origin: "Unknown Region"
+  },
+  {
+    name: "Yoriichi Tsugikuni",
+    role: "Legendary Slayer / First Sun Breather",
+    description: "The strongest Demon Slayer in history and the creator of the original Sun Breathing style.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/2/22/Yoriichi_Anime.png",
+    bio: "Yoriichi Tsugikuni is the legendary figure from the Sengoku Era who nearly killed Muzan Kibutsuji. Born with the Demon Slayer Mark and the 'Transparent World' ability, he was a being of singular talent who revolutionized combat against demons by creating Sun Breathing. Known for his profound humility and his deep sense of tragedy, Yoriichi's existence was a divine-like anomaly that Muzan spent centuries trying to erase from history. His legacy survives through the Hanafuda earrings and the Hinokami Kagura passed down through the Kamado family.",
+    abilities: ["Sun Breathing (Original)", "Transparent World (Permanent)", "Selfless State", "Innate Demon Slayer Mark"],
+    affiliation: "First Demon Slayers (Sengoku Era)",
+    status: "KIA (Natural Causes)",
+    origin: "Tsugikuni Clan Estate"
+  },
+  {
+    name: "Tamayo",
+    role: "Demon Physician / Ally",
+    description: "A skilled physician and a demon who broke free from Muzan's control to help humanity.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/a/a2/Tamayo_Anime.png",
+    bio: "Tamayo is a demon who spent centuries looking for a way to destroy Muzan Kibutsuji after he tricked her into killing her own family. A brilliant physician, she modified her own body to survive on minimal human blood and developed Blood Demon Arts focused on illusions and truth-telling. Her collaboration with Tanjiro and Shinobu Kocho was vital in developing a cure for demonism and a poison capable of weakening Muzan to a human level, proving that even a demon can possess a heart dedicated to redemption and life.",
+    abilities: ["Blood Demon Art: Blood Bewitchment", "Advanced Pharmaceutical Science", "Anti-Demon Poison Development", "Demon Cure Research"],
+    affiliation: "Independent / Demon Slayer Corps Ally",
+    status: "KIA",
+    origin: "Unknown Region"
+  },
+  {
+    name: "Yushiro",
+    role: "Demon / Tamayo's Assistant",
+    description: "A demon created by Tamayo who possesses unique sensory and illusionary powers.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/6/64/Yushiro_Anime.png",
+    bio: "Yushiro was a terminally ill human who chose to become a demon under Tamayo's care to survive. He is fiercely loyal—often aggressively so—to Tamayo, whom he views with absolute adoration and devotion. His Blood Demon Art, 'Blind Spell', allows him to manipulate perception, hide structures, and share visual data between allies. Though he initially viewed Tanjiro with suspicion, his contributions during the final battles were instrumental in coordinating the slayers' attacks and providing the necessary support to overcome the Twelve Kizuki.",
+    abilities: ["Blood Demon Art: Blind Spell", "Paper Talismans (Visual Sharing)", "Invisibility / Camouflage", "High-Precision Perception"],
+    affiliation: "Independent / Demon Slayer Corps Ally",
+    status: "Active",
+    origin: "Unknown Region"
+  },
+  {
+    name: "Hantengu",
+    role: "Upper Moon Four",
+    description: "A multifaceted demon whose cowardice manifests as several powerful, emotion-based clones.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/b/b8/Hantengu_Anime.png",
+    bio: "Hantengu was the holder of the Upper Rank Four position, a demon characterized by an extreme, hypocritical sense of victimhood. When threatened, he manifested his 'emotions' as separate, powerful entities—Sekido (Anger), Karaku (Relaxation), Aizetsu (Sorrow), and Urogi (Joy)—which eventual merge into the terrifying Zohakuten (Hatred). This unique ability makes him incredibly difficult to defeat, as his true, tiny body remains hidden while his clones unleash elemental devastation on his behalf.",
+    abilities: ["Blood Demon Art: Emotional Manifestation", "Cloning / Division", "Zohakuten Fusion", "Size Alteration"],
+    affiliation: "Twelve Kizuki (Upper Rank Four)",
+    status: "KIA",
+    origin: "Unknown Region"
+  },
+  {
+    name: "Gyokko",
+    role: "Upper Moon Five",
+    description: "A grotesque demon obsessed with 'art' who resides within various porcelain pots.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/e/e0/Gyokko_Anime.png",
+    bio: "Gyokko was the Upper Rank Five demon, a narcissistic entity who viewed his horrific acts of violence as high art. His body was composed of multiple disjointed limbs and eyes, usually emerging from one of his many teleporting pots. His Blood Demon Arts revolved around aquatic themes, allowing him to trap opponents in water basins or summon poisonous fish. Gyokko’s arrogance and his desire to be acknowledged as a supreme artist led to one of the series' most visually striking battles against the Mist Hashira.",
+    abilities: ["Blood Demon Art: Porcelain Pot Manipulation", "Aquatic Summons", "Teleportation (Between Pots)", "Molting Transformation"],
+    affiliation: "Twelve Kizuki (Upper Rank Five)",
+    status: "KIA",
+    origin: "Unknown Fishing Village"
+  },
+  {
+    name: "Gyutaro",
+    role: "Upper Moon Six",
+    description: "The true holder of Upper Rank Six, a sickly but lethal demon who fights with poisoned sickles.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/a/af/Gyutaro_Anime.png",
+    bio: "Gyutaro was the elder brother of Daki and the primary strength behind their shared Upper Rank Six position. Born into the lowest depths of the Entertainment District, his life was defined by ugliness and starvation, fueling a deep resentment toward anything beautiful or fortunate. He utilized Blood Manipulation to create lethal, blood-infused sickles that could deliver a fast-acting poison. His bond with his sister was absolute, a tragic partnership born from a lifetime of shared suffering and a refusal to be separated even in death.",
+    abilities: ["Blood Demon Art: Flying Blood Sickles", "Blood Manipulation", "Lethal Poison Secretion", "Shared Life-Link (with Daki)"],
+    affiliation: "Twelve Kizuki (Upper Rank Six)",
+    status: "KIA",
+    origin: "Yoshiwara Entertainment District, Tokyo-fu"
+  },
+  {
+    name: "Daki",
+    role: "Upper Moon Six",
+    description: "Gyutaro's sister and a beautiful but cruel demon who uses living sashes as weapons.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/7/77/Daki_Anime.png",
+    bio: "Daki, originally known as Ume, shared the Upper Rank Six position with her brother, Gyutaro. She operated as an Oiran in the Entertainment District, utilizing her supernatural beauty to lure and consume victims. Her Blood Demon Art allowed her to manipulate her Obi sashes as sharp, sentient weapons that could also serve as storage for her victims. While she was arrogant and temperamental, her power was deeply tied to her brother's presence, representing a twisted version of familial love that endured through their transformation into monsters.",
+    abilities: ["Blood Demon Art: Obi Sash Manipulation", "Detachable Limb Sentience", "Superhuman Beauty / Infiltration", "Shared Life-Link (with Gyutaro)"],
+    affiliation: "Twelve Kizuki (Upper Rank Six)",
+    status: "KIA",
+    origin: "Yoshiwara Entertainment District, Tokyo-fu"
+  },
+  {
+    name: "Kaigaku",
+    role: "Upper Moon Six / Traitor",
+    description: "A former Demon Slayer and Zenitsu's senior who betrayed the Corps for demonic power.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/a/ab/Kaigaku_Anime.png",
+    bio: "Kaigaku was a high-ranking student of the former Thunder Hashira and Zenitsu's senior. Driven by an absolute cowardice and a refusal to accept death, he chose to become a demon after being defeated by Kokushibo. He eventually rose to the rank of Upper Rank Six, utilizing a demon-enhanced version of Thunder Breathing. His betrayal is the personal shadow that Zenitsu had eventually to confront, representing the dark path of those who value their own survival above all honor and brotherhood.",
+    abilities: ["Demonized Thunder Breathing", "Black Lightning Manipulation", "Enhanced Durability", "Master Swordsmanship"],
+    affiliation: "Twelve Kizuki (Upper Rank Six) / Former Demon Slayer Corps",
+    status: "KIA",
+    origin: "Unknown Region"
+  },
+  {
+    name: "Nakime",
+    role: "Upper Moon Four / Biwa Demon",
+    description: "The mysterious demon who controls the Infinite Castle through her Biwa playing.",
+    image: "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/5/5e/Nakime_Anime.png",
+    bio: "Nakime was originally a low-rank demon who served as Muzan's 'receptionist', but she eventually rose to Upper Rank Four due to her indispensable ability to manipulate the Infinite Castle. By playing her Biwa, she could instantly rearrange the architecture of the sprawling, extra-dimensional fortress, teleporting allies and enemies at will. Her single-eyed form and constant composure hide a powerful sensory ability, making her the tactical backbone of Muzan's forces during the final confrontation.",
+    abilities: ["Blood Demon Art: Infinite Castle Manipulation", "Space Teleportation", "Ocular Remote Surveillance", "Structural Rearrangement"],
+    affiliation: "Twelve Kizuki (Upper Rank Four)",
+    status: "KIA",
+    origin: "Unknown Region"
+  }
+];
