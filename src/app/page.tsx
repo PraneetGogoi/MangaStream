@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { MOCK_ANIME, Anime } from "@/data/mockAnime";
 import { AnimeCard } from "@/components/AnimeCard";
-import { TrailerModal } from "@/components/TrailerModal";
-import { LandingPage } from "@/components/LandingPage";
-import { MangaReader } from "@/components/MangaReader";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ThemeSlice } from "@/components/ThemeSlice";
-import { Search, Play, Zap } from "lucide-react";
+import { Search, Zap } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+
+// Dynamic imports for heavy components
+const TrailerModal = dynamic(() => import("@/components/TrailerModal").then(mod => mod.TrailerModal));
+const LandingPage = dynamic(() => import("@/components/LandingPage").then(mod => mod.LandingPage));
+const MangaReader = dynamic(() => import("@/components/MangaReader").then(mod => mod.MangaReader));
 
 export default function Home() {
   const [showLanding, setShowLanding] = useState(true);
@@ -61,15 +64,15 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  const handleOpenVideo = (anime: Anime, url: string, label: string) => {
+  const handleOpenVideo = useCallback((anime: Anime, url: string, label: string) => {
     setSelectedAnime(anime);
     setSelectedVideoUrl(url);
     setSelectedVideoLabel(label);
-  };
+  }, []);
 
-  const handleOpenManga = (anime: Anime) => {
+  const handleOpenManga = useCallback((anime: Anime) => {
     setSelectedMangaAnime(anime);
-  };
+  }, []);
 
   const filteredAnime = useMemo(() => {
     if (!debouncedSearch) return MOCK_ANIME;

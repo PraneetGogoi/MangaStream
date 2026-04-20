@@ -2,8 +2,10 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { X, User, ArrowLeft, Layers, BookOpen } from "lucide-react";
-import { useState, use } from "react";
+import { useState, use, useEffect } from "react";
 import { MOCK_ANIME } from "@/data/mockAnime";
+import { getCharactersForAnime } from "@/data/characterRegistry";
+import { Character } from "@/data/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -11,12 +13,26 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
   const { id } = use(params);
   const router = useRouter();
   const [selectedCharIdx, setSelectedCharIdx] = useState(0);
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   const anime = MOCK_ANIME.find(a => a.id === id);
-  const characters = anime?.characters || [];
+
+  useEffect(() => {
+    async function loadData() {
+      if (id) {
+        setIsLoading(true);
+        const data = await getCharactersForAnime(id);
+        setCharacters(data);
+        setIsLoading(false);
+      }
+    }
+    loadData();
+  }, [id]);
+
   const selectedChar = characters[selectedCharIdx];
 
-  if (!anime || characters.length === 0) {
+  if (!anime || (!isLoading && characters.length === 0)) {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center p-8">
         <h1 className="text-white text-4xl font-black uppercase italic mb-8">404: ARCHIVE LOST</h1>
@@ -26,6 +42,19 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
         >
           Return to Library
         </Link>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8 gap-6">
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="w-16 h-16 border-8 border-black border-t-transparent rounded-full"
+        />
+        <h1 className="text-black text-4xl font-black uppercase italic animate-pulse">DECRYPTING ARCHIVE...</h1>
       </div>
     );
   }
@@ -135,15 +164,21 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
         <main className="flex-1 overflow-y-auto p-6 sm:p-12 lg:p-20 scrollbar-hide">
           <AnimatePresence mode="wait">
             <motion.div
-              key={selectedChar.name}
+              key={selectedChar?.name || "empty"}
               initial={{ opacity: 0, x: 50, scale: 0.95, skewY: 1 }}
               animate={{ opacity: 1, x: 0, scale: 1, skewY: 0 }}
               exit={{ opacity: 0, x: -50, scale: 0.95, skewY: -1 }}
               transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
               className="grid grid-cols-1 xl:grid-cols-2 gap-16 items-start"
             >
-              {/* Character Visual Side */}
-              <div className="space-y-8">
+              {!selectedChar ? (
+                <div className="col-span-full py-20 text-center border-4 border-dashed border-black">
+                  <p className="text-2xl font-black uppercase italic">Scanning Archive... Record Not Found</p>
+                </div>
+              ) : (
+                <>
+                  {/* Character Visual Side */}
+                  <div className="space-y-8">
                 <motion.div 
                   initial={{ rotate: 1, scale: 0.9 }}
                   animate={{ rotate: 0, scale: 1 }}
@@ -162,7 +197,7 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
                     transition={{ delay: 0.3 }}
                     className="absolute top-6 right-6 bg-black text-white px-6 py-2 font-black uppercase text-2xl rotate-[3deg] z-20 shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]"
                   >
-                    {selectedChar.role.split('/')[0]}
+                    {selectedChar.role?.split('/')[0] || "Personnel"}
                   </motion.div>
                   <div className="absolute bottom-6 left-6 flex flex-col gap-2 z-20">
                     <motion.div 
@@ -304,7 +339,7 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
                                 }}
                                 className="grid grid-cols-1 gap-2"
                               >
-                                {selectedChar.abilities.map((ability) => (
+                                {selectedChar.abilities?.map((ability) => (
                                   <motion.li 
                                     key={ability}
                                     variants={{
@@ -347,7 +382,7 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
                                 >
                                   <h5 className="font-black uppercase text-[10px] tracking-widest opacity-40">Operational Status</h5>
                                   <div className={`px-4 py-1 font-black uppercase italic text-sm border-2 border-black ${
-                                    selectedChar.status.toLowerCase() === 'active' 
+                                    selectedChar.status?.toLowerCase() === 'active' 
                                       ? "bg-green-500 text-white animate-pulse" 
                                       : "bg-red-500 text-white"
                                   }`}>
@@ -404,8 +439,10 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
                   >
                     Authenticity Guaranteed
                   </motion.div>
+                  </div>
                 </div>
-              </div>
+              </>
+            )}
             </motion.div>
           </AnimatePresence>
         </main>

@@ -1,12 +1,13 @@
 "use client";
 
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import { BookOpen, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Anime } from "@/data/mockAnime";
 import { PreviewNode } from "./PreviewNode";
 import { OpeningSelector } from "./OpeningSelector";
+import Image from "next/image";
 
 interface AnimeCardProps {
   anime: Anime;
@@ -41,7 +42,7 @@ const containerVariants = {
   },
 };
 
-export const AnimeCard = ({ anime, onOpenVideo, onOpenManga }: AnimeCardProps) => {
+export const AnimeCard = memo(({ anime, onOpenVideo, onOpenManga }: AnimeCardProps) => {
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -157,11 +158,12 @@ export const AnimeCard = ({ anime, onOpenVideo, onOpenManga }: AnimeCardProps) =
           style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
         >
             <div className="flex-1 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all duration-700 delay-500 group-hover:delay-0 ease-in-out">
-              <img
+              <Image
                 src={anime.posterImage}
                 alt={anime.title}
-                className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-700"
-                loading="lazy"
+                fill
+                className="object-cover scale-100 group-hover:scale-110 transition-transform duration-700"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
               
               {/* Interaction Glint */}
@@ -182,7 +184,7 @@ export const AnimeCard = ({ anime, onOpenVideo, onOpenManga }: AnimeCardProps) =
               </motion.div>
 
               {/* Quick Access Archive Button */}
-              {anime.characters && anime.characters.length > 0 && (
+              {anime.hasArchive && (
                 <motion.div
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -285,7 +287,7 @@ export const AnimeCard = ({ anime, onOpenVideo, onOpenManga }: AnimeCardProps) =
                 WATCH OPENING
               </motion.button>
 
-              {anime.characters && anime.characters.length > 0 && (
+              {anime.hasArchive && (
                 <motion.button 
                   whileHover={{ y: -4, scale: 1.02, transition: { type: "spring", stiffness: 400, damping: 10 } }}
                   whileTap={{ scale: 0.95 }}
@@ -322,4 +324,4 @@ export const AnimeCard = ({ anime, onOpenVideo, onOpenManga }: AnimeCardProps) =
     </motion.div>
     </div>
   );
-};
+});

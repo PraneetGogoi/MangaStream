@@ -25,4 +25,5 @@ export type Anime = {
     pages: string[];
   }[];
   characters?: Character[];
+  hasArchive?: boolean;
 };
