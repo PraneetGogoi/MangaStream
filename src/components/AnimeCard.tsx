@@ -164,6 +164,7 @@ export const AnimeCard = memo(({ anime, onOpenVideo, onOpenManga }: AnimeCardPro
                 fill
                 className="object-cover scale-100 group-hover:scale-110 transition-transform duration-700"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                unoptimized={anime.posterImage.startsWith("/")}
               />
               
               {/* Interaction Glint */}

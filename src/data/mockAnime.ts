@@ -6,7 +6,7 @@ export type { Character, Anime };
 
 export const MOCK_ANIME: Anime[] = [
   {
-    id: "a1",
+    id: "demon-slayer",
     title: "Demon Slayer: Kimetsu no Yaiba",
     description: "It is the Taisho Period in Japan. Tanjiro, a kindhearted boy who sells charcoal for a living, finds his family slaughtered by a demon.",
     categories: ["Action", "Supernatural"],
@@ -49,7 +49,7 @@ export const MOCK_ANIME: Anime[] = [
     hasArchive: true,
   },
   {
-    id: "a7",
+    id: "attack-on-titan",
     title: "Attack on Titan",
     description: "After his hometown is destroyed and his mother is killed, young Eren Jaeger vows to cleanse the earth of the giant humanoid Titans that have brought humanity to the brink of extinction.",
     categories: ["Action", "Drama"],
@@ -77,7 +77,7 @@ export const MOCK_ANIME: Anime[] = [
     hasArchive: true,
   },
   {
-    id: "a3",
+    id: "jujutsu-kaisen",
     title: "Jujutsu Kaisen",
     description: "A boy swallows a cursed talisman - the finger of a demon - and becomes cursed himself. He enters a shaman's school to be able to locate the demon's other body parts and thus exorcise himself.",
     categories: ["Action", "Supernatural"],
@@ -116,7 +116,7 @@ export const MOCK_ANIME: Anime[] = [
     hasArchive: true,
   },
   {
-    id: "a4",
+    id: "cyberpunk-edgerunners",
     title: "Cyberpunk: Edgerunners",
     description: "A Street Kid trying to survive in a technology and body modification-obsessed city of the future. Having everything to lose, he chooses to stay alive by becoming an Edgerunner.",
     categories: ["Action", "Sci-Fi"],
@@ -181,7 +181,7 @@ export const MOCK_ANIME: Anime[] = [
     hasArchive: true,
   },
   {
-    id: "5114",
+    id: "fma",
     title: "Fullmetal Alchemist: Brotherhood",
     description: "The foundation of alchemy is based on the law of equivalent exchange. After losing their mother, brothers Edward and Alphonse Elric attempt to bring her back, but the cost is high. Now they search for the Philosopher's Stone.",
     categories: ["Action", "Adventure", "Drama", "Fantasy"],
@@ -201,7 +201,7 @@ export const MOCK_ANIME: Anime[] = [
     hasArchive: true,
   },
   {
-    id: "1535",
+    id: "death-note",
     title: "Death Note",
     description: "Light Yagami finds the Death Note, a notebook dropped by a rogue death god. Any human whose name is written in the notebook dies, and now Light vows to use this power to rid the world of evil.",
     categories: ["Mystery", "Psychological", "Supernatural", "Thriller"],
@@ -237,7 +237,7 @@ export const MOCK_ANIME: Anime[] = [
     hasArchive: true,
   },
   {
-    id: "11061",
+    id: "hunter-x-hunter",
     title: "Hunter x Hunter (2011)",
     description: "Gon Freecss discovers that his father is a world-renowned Hunter. To find him, Gon must become a Hunter himself, passing a dangerous exam and exploring an unknown world.",
     categories: ["Action", "Adventure", "Fantasy"],
@@ -254,7 +254,7 @@ export const MOCK_ANIME: Anime[] = [
     hasArchive: true,
   },
   {
-    id: "20",
+    id: "naruto",
     title: "Naruto",
     description: "Naruto Uzumaki seeks recognition from his peers and dreams of becoming the Hokage. Deep inside him is the power of a Nine-Tailed Fox, which he must learn to harness.",
     categories: ["Action", "Adventure", "Fantasy"],
@@ -289,7 +289,7 @@ export const MOCK_ANIME: Anime[] = [
     hasArchive: true,
   },
   {
-    id: "dragon-ball-z",
+    id: "dbz",
     title: "Dragon Ball Z",
     description: "Five years after the events of Dragon Ball, Goku is now a young adult and father to his son Gohan. New threats emerge from space, revealing Goku's true heritage.",
     categories: ["Action", "Adventure", "Fantasy"],
@@ -394,14 +394,14 @@ export const MOCK_ANIME: Anime[] = [
     hasArchive: true,
   },
   {
-    id: "bleach-tybw",
+    id: "bleach",
     title: "Bleach: Thousand-Year Blood War",
     description: "The peace is suddenly broken when warning sirens wail through the Soul Society. Residents are disappearing without a trace and nobody knows who's behind it.",
     categories: ["Action", "Adventure", "Supernatural"],
     posterImage: "/assets/bleach/1.jpg",
     trailerUrl: "https://www.youtube.com/embed/e8YBesRKq_U?autoplay=1&mute=1",
     openings: [
-      { title: "Opening 1: Scar", url: "https://www.youtube.com/embed/vO8Zf9WlK8s?autoplay=1&mute=1" }
+      { title: "Opening: STARS (w.o.d.)", url: "https://www.youtube.com/embed/FsKuu-0RUcM?autoplay=1&mute=1" }
     ],
     previews: [
       "/assets/bleach/2.jpg",
@@ -416,7 +416,7 @@ export const MOCK_ANIME: Anime[] = [
     description: "Denji is a teenage boy living with a Chainsaw Devil named Pochita. Due to the debt his father left behind, he has been living a rock-bottom life while repaying his debt by harvesting devil corpses.",
     categories: ["Action", "Comedy", "Drama", "Horror", "Supernatural"],
     posterImage: "/assets/chainsaw-man/1.jpg",
-    trailerUrl: "https://www.youtube.com/embed/dvL8hZ-V01Y?autoplay=1&mute=1",
+    trailerUrl: "https://www.youtube.com/embed/j9sSzNmB5po?autoplay=1&mute=1",
     openings: [
       { title: "Opening 1: Kick Back", url: "https://www.youtube.com/embed/dFlDRhvM4L0?autoplay=1&mute=1" }
     ],
@@ -466,36 +466,50 @@ export const MOCK_ANIME: Anime[] = [
     title: "Vinland Saga",
     description: "Thorfinn, son of one of the Vikings' greatest warriors, is among the finest fighters in the merry band of mercenaries run by the crafty Askeladd.",
     categories: ["Action", "Adventure", "Drama"],
-    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101348-8UR7r9MNVpz2.jpg",
+    posterImage: "/assets/vinland-saga/1.jpg",
     trailerUrl: "https://www.youtube.com/embed/pahdCwHJjaU?autoplay=1&mute=1",
     openings: [
-      { title: "Opening 1: Mukanjyo", url: "https://www.youtube.com/embed/fWAbz5OHe3M?autoplay=1&mute=1" }
+      { title: "Opening 1: Mukanjyo", url: "https://www.youtube.com/embed/fWAbz5OHe3M?autoplay=1&mute=1" },
+      { title: "Opening 2: River", url: "https://www.youtube.com/embed/l5wAdQ-UkWY?autoplay=1&mute=1" }
     ],
-    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/101348-MhlCoeqnODso.jpg"],
+    previews: [
+      "/assets/vinland-saga/2.jpg",
+      "/assets/vinland-saga/3.jpg",
+      "/assets/vinland-saga/4.jpg",
+    ],
+    hasArchive: true,
   },
   {
     id: "no-game-no-life",
     title: "No Game No Life",
     description: "Sora and Shiro are legendary shut-in gamer siblings. One day, they are summoned to a world where everything is decided by games.",
     categories: ["Adventure", "Comedy", "Fantasy", "Ecchi"],
-    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx19815-8UR7r9MNVpz2.jpg",
+    posterImage: "/assets/no-game-no-life/1.jpg",
     trailerUrl: "https://www.youtube.com/embed/ETQUp-Omp-A?autoplay=1&mute=1",
     openings: [
-      { title: "Opening 1: This Game", url: "https://www.youtube.com/embed/CaksNInHshg?autoplay=1&mute=1" }
+      { title: "Opening: This Game", url: "https://www.youtube.com/embed/8p4e0URzGyE?autoplay=1&mute=1" }
     ],
-    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/19815-MhlCoeqnODso.jpg"],
+    previews: [
+      "/assets/no-game-no-life/2.jpg",
+      "/assets/no-game-no-life/3.jpg",
+      "/assets/no-game-no-life/4.jpg",
+    ],
   },
   {
     id: "re-zero",
     title: "Re:ZERO -Starting Life in Another World-",
     description: "Subaru Natsuki is suddenly transported to another world. He discovers he can return from death to a certain point in time, allowing him to change his fate.",
     categories: ["Action", "Adventure", "Drama", "Fantasy", "Psychological"],
-    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21355-8UR7r9MNVpz2.jpg",
+    posterImage: "/assets/re-zero/1.jpg",
     trailerUrl: "https://www.youtube.com/embed/vFfXjuVA1Jk?autoplay=1&mute=1",
     openings: [
-      { title: "Opening 1: Redo", url: "https://www.youtube.com/embed/0Vwwr3VGsYg?autoplay=1&mute=1" }
+      { title: "Opening 1: Redo", url: "https://www.youtube.com/embed/zoqqPshRCuQ?autoplay=1&mute=1" }
     ],
-    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/21355-MhlCoeqnODso.jpg"],
+    previews: [
+      "/assets/re-zero/2.jpg",
+      "/assets/re-zero/3.jpg",
+      "/assets/re-zero/4.jpg",
+    ],
   },
   {
     id: "mob-psycho",

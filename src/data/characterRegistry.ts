@@ -21,6 +21,7 @@ export const CharacterRegistry: Record<string, () => Promise<{ [key: string]: Ch
   "haikyu": () => import("./characters/haikyu"),
   "code-geass": () => import("./characters/code-geass"),
   "monster": () => import("./characters/monster"),
+  "vinland-saga": () => import("./characters/vinland-saga"),
 };
 
 export async function getCharactersForAnime(id: string): Promise<Character[]> {
