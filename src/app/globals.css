@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@theme {
+  --color-manga-ink: var(--manga-ink);
+  --color-manga-paper: var(--manga-paper);
+  --color-manga-accent: var(--manga-accent);
+}
+
+@layer base {
+  :root {
+    --manga-ink: #000000;
+    --manga-paper: #ffffff;
+    --manga-accent: #000000;
+    --manga-border-color: #000000;
+    --manga-shadow-color: rgba(0, 0, 0, 1);
+    --manga-shadow-glow: rgba(0, 0, 0, 0.1);
+    --manga-halftone-color: #000000;
+  }
+
+  .dark {
+    --manga-ink: #ffffff;
+    --manga-paper: #000000;
+    --manga-accent: #000000;
+    --manga-border-color: #ffffff;
+    --manga-shadow-color: rgba(255, 255, 255, 1);
+    --manga-shadow-glow: rgba(255, 255, 255, 0.2);
+    --manga-halftone-color: #ffffff;
+  }
+
+  body {
+    background-color: var(--manga-paper);
+    color: var(--manga-ink);
+    background-image: radial-gradient(var(--manga-halftone-color) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-attachment: fixed;
+    min-height: 100vh;
+    --manga-border: 4px;
+    --manga-border-thick: 8px;
+    --manga-border-mega: 12px;
+    --manga-shadow: 6px 6px 0px 0px var(--manga-shadow-color);
+    --manga-shadow-large: 12px 12px 0px 0px var(--manga-shadow-color);
+    --manga-shadow-mega: 20px 20px 0px 0px var(--manga-shadow-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@layer utilities {
+  .manga-panel {
+    border-width: 4px;
+    border-color: var(--manga-border-color);
+    box-shadow: 8px 8px 0px 0px var(--manga-shadow-color);
+  }
+
+  .halftone-bg {
+    background-image: radial-gradient(var(--manga-halftone-color) 20%, transparent 20%);
+    background-size: 4px 4px;
+    opacity: 0.1;
+  }
+
+  .manga-panel-clip {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-2px, 2px) rotate(-1deg); }
+    50% { transform: translate(2px, -2px) rotate(1deg); }
+    75% { transform: translate(-1px, -1px) rotate(0.5deg); }
+  }
+
+  .animate-manga-shake {
+    animation: shake 0.1s infinite;
+  }
+
+  @keyframes ink-wipe {
+    from { clip-path: circle(0% at 50% 50%); }
+    to { clip-path: circle(150% at 50% 50%); }
+  }
+
+  .ink-reveal-mask {
+    animation: ink-wipe 1.2s cubic-bezier(0.9, 0, 0.1, 1) forwards;
+  }
+
+  .manga-grid-line {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--manga-ink),
+      var(--manga-ink) 2px,
+      transparent 2px,
+      transparent 12px
+    );
+  }
+
+  .halftone-subtle {
+    background-image: radial-gradient(circle, var(--manga-halftone-color) 1px, transparent 1px);
+    background-size: 5px 5px;
+    opacity: 0.1;
+  }
+
+  .manga-impact {
+    animation: impact 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  @keyframes impact {
+    0% { transform: scale(1.1); filter: blur(5px); opacity: 0; }
+    100% { transform: scale(1); filter: blur(0px); opacity: 1; }
+  }
+
+  .manga-background-texture {
+    background-image: radial-gradient(var(--manga-halftone-color) 0.5px, transparent 0.5px);
+    background-size: 32px 32px;
+    background-attachment: fixed;
+  }
+
+  .text-stroke-ink {
+    -webkit-text-stroke: 1px var(--manga-ink);
+  }
+
+  .animate-jitter-subtle {
+    animation: jitter-subtle 0.3s infinite ease-in-out;
+  }
+
+  @keyframes jitter-subtle {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(0.5px, 0.5px); }
+    50% { transform: translate(-0.5px, -0.5px); }
+    75% { transform: translate(0.5px, -0.5px); }
+  }
+
+  .halftone {
+    background-image: radial-gradient(var(--manga-halftone-color) 20%, transparent 20%);
+    background-size: 4px 4px;
+  }
+}
