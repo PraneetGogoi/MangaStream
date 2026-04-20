@@ -4364,5 +4364,245 @@ export const MOCK_ANIME: Anime[] = [
       { title: "Opening 1: The Hero!!", url: "https://www.youtube.com/embed/atxYe-nOa9w?autoplay=1&mute=1" }
     ],
     previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/21087-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "steins-gate",
+    title: "Steins;Gate",
+    description: "Rintarou Okabe is a self-proclaimed 'Mad Scientist' who accidentally discovers a way to send text messages to the past, triggering a chain of events that threatens to alter the future and cause unforgivable tragedy.",
+    categories: ["Sci-Fi", "Thriller", "Psychological", "Drama"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx9253-8UR7r9MNVpz2.jpg",
+    trailerUrl: "https://www.youtube.com/embed/gaOip_UvO_Y?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 1: Hacking to the Gate", url: "https://www.youtube.com/embed/gaOip_UvO_Y?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/9253-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "violet-evergarden",
+    title: "Violet Evergarden",
+    description: "Violet Evergarden, a young female ex-child soldier, seeks the meaning of 'I Love You' as she works as an 'Auto Memory Doll', writing letters that connect the hearts of people in a post-war world.",
+    categories: ["Drama", "Masterpiece", "Slice of Life", "Fantasy"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21827-8UR7r9MNVpz2.jpg",
+    trailerUrl: "https://www.youtube.com/embed/g5xWqjFglsk?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 1: Sincerely", url: "https://www.youtube.com/embed/g5xWqjFglsk?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/21827-8Y3fs8S9S8pS.jpg"],
+  },
+  {
+    id: "tokyo-ghoul",
+    title: "Tokyo Ghoul",
+    description: "Ken Kaneki's life changes forever after a date with a mysterious woman leads to a horrific accident, transforming him into a half-ghoul who must navigate a world of flesh-eating monsters and hidden societies.",
+    categories: ["Action", "Horror", "Psychological", "Supernatural"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20605-8UR7r9MNVpz2.jpg",
+    trailerUrl: "https://www.youtube.com/embed/o6O6aYshq28?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 1: Unravel", url: "https://www.youtube.com/embed/uMeR2W19wNE?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/20605-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "mha",
+    title: "My Hero Academia",
+    description: "In a world where 80% of the population has superpowered 'Quirks', Izuku Midoriya was born without one. But a chance encounter with the world's greatest hero changes his destiny forever.",
+    categories: ["Action", "Adventure", "Comedy", "Super-Power"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21459-C6pe1zd3hJu3.jpg",
+    trailerUrl: "https://www.youtube.com/embed/EPV6T_M6E3U?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 1: The Day", url: "https://www.youtube.com/embed/EPV6T_M6E3U?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/21459-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "your-lie-in-april",
+    title: "Your Lie in April",
+    description: "A piano prodigy who lost his ability to hear the sound of his own playing after his mother's death has his world turned vibrant again by a free-spirited and eccentric violinist.",
+    categories: ["Drama", "Music", "Romance", "Slice of Life"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20665-8UR7r9MNVpz2.jpg",
+    trailerUrl: "https://www.youtube.com/embed/vFfXjuVA1Jk?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 1: Hikaru Nara", url: "https://www.youtube.com/embed/nfK6UgLra7g?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/20665-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "parasyte-maxim",
+    title: "Parasyte -the maxim-",
+    description: "Hostile alien parasites descend on Earth, taking over human brains to feed. Shinichi Izumi manages to keep his brain intact, forming a symbiotic relationship with a parasite that occupies his right hand.",
+    categories: ["Action", "Horror", "Psychological", "Sci-Fi"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20623-8UR7r9MNVpz2.jpg",
+    trailerUrl: "https://www.youtube.com/embed/vFfXjuVA1Jk?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 1: Let Me Hear", url: "https://www.youtube.com/embed/Z0o9eXQ9w64?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/20623-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "dr-stone",
+    title: "Dr. Stone",
+    description: "Thousands of years after civilization was turned to stone, a genius boy named Senku Ishigami wakes up and vows to rebuild the world from scratch using the power of science.",
+    categories: ["Adventure", "Sci-Fi", "Comedy"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx105333-8UR7r9MNVpz2.jpg",
+    trailerUrl: "https://www.youtube.com/embed/vFfXjuVA1Jk?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 1: Good Morning World!", url: "https://www.youtube.com/embed/vFfXjuVA1Jk?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/105333-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "black-clover",
+    title: "Black Clover",
+    description: "In a world where magic is everything, Asta is born with nothing. But a 5-leaf clover grimoire and a sword that can negate magic itself might just make him the Wizard King.",
+    categories: ["Action", "Adventure", "Fantasy", "Shonen"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97940-C6pe1zd3hJu3.jpg",
+    trailerUrl: "https://www.youtube.com/embed/eXmByU_Wkpk?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 1: Haruka Mirai", url: "https://www.youtube.com/embed/8-W75bBivnQ?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/97940-C6pe1zd3hJu3.jpg"],
+  },
+  {
+    id: "fate-ubw",
+    title: "Fate/Stay Night: Unlimited Blade Works",
+    description: "Emiya Shirou is thrust into the Holy Grail War, a battle royale between seven mages and their heroic spirits. Together with his servant Saber, he must fight for a wish that can change history.",
+    categories: ["Action", "Fantasy", "Supernatural", "Epic"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx19603-8UR7r9MNVpz2.jpg",
+    trailerUrl: "https://www.youtube.com/embed/hB2v7S4U-aL0M?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 1: Brave Shine", url: "https://www.youtube.com/embed/Bt3D3Ca9nww?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/19603-8Y3fs8S9S8pS.jpg"],
+  },
+  {
+    id: "psycho-pass",
+    title: "Psycho-Pass",
+    description: "In a future where a system can measure a person's mental state and criminal intent, Enforcers and Inspectors hunt down those who possess a darkened Psycho-Pass.",
+    categories: ["Action", "Sci-Fi", "Psychological", "Police"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx13601-8UR7r9MNVpz2.jpg",
+    trailerUrl: "https://www.youtube.com/embed/NRI_8PUXxyw?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 1: Abnormalize", url: "https://www.youtube.com/embed/NRI_8PUXxyw?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/13601-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "gintama",
+    title: "Gintama",
+    description: "In an era where aliens have invaded Edo-period Japan, a samurai with a heart of gold and a perennially empty stomach takes on any odd job to survive, often with chaotic and hilarious results.",
+    categories: ["Action", "Comedy", "Sci-Fi", "Samurai"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx918-lawi4n97caB1.jpg",
+    trailerUrl: "https://www.youtube.com/embed/9XGZl2D-Z-8?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 13: Sakura Mitsutsuki", url: "https://www.youtube.com/embed/8-W75bBivnQ?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/918-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "shield-hero",
+    title: "The Rising of the Shield Hero",
+    description: "Naofumi Iwatani is summoned to another world as the Shield Hero. Betrayed and left penniless, he must rise from the shadows to protect a world that hates him.",
+    categories: ["Action", "Adventure", "Fantasy", "Isekai"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx99263-XmqW39aQ9o7O.jpg",
+    trailerUrl: "https://www.youtube.com/embed/vFfXjuVA1Jk?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 1: RISE", url: "https://www.youtube.com/embed/vFfXjuVA1Jk?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/99263-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "mushoku-tensei",
+    title: "Mushoku Tensei: Jobless Reincarnation",
+    description: "A 34-year-old NEET is reincarnated into a world of magic as Rudeus Greyrat. Armed with his knowledge of his past life and a new resolve, he vows to truly succeed in this new world.",
+    categories: ["Adventure", "Fantasy", "Isekai", "Drama"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx108465-XmqW39aQ9o7O.jpg",
+    trailerUrl: "https://www.youtube.com/embed/x1Z1-S90M0E?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening: Tabibito no Uta", url: "https://www.youtube.com/embed/x1Z1-S90M0E?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/108465-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "fire-force",
+    title: "Fire Force",
+    description: "In a world where people spontaneously combust into living infernos, the Special Fire Force is the city's only hope. Shinra Kusakabe joins the force to uncover the truth behind the flames.",
+    categories: ["Action", "Supernatural", "Sci-Fi", "Shonen"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx105399-XmqW39aQ9o7O.jpg",
+    trailerUrl: "https://www.youtube.com/embed/vFfXjuVA1Jk?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening 1: Inferno", url: "https://www.youtube.com/embed/vFfXjuVA1Jk?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/105399-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "made-in-abyss",
+    title: "Made in Abyss",
+    description: "Riko and her robot friend Reg descend into the 'Abyss', a giant hole in the earth full of mysterious relics and dangerous creatures, in search of Riko's mother.",
+    categories: ["Adventure", "Mystery", "Fantasy", "Drama"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97986-C6pe1zd3hJu3.jpg",
+    trailerUrl: "https://www.youtube.com/embed/gaOip_UvO_Y?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening: Deep in Abyss", url: "https://www.youtube.com/embed/gaOip_UvO_Y?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/97986-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "gurren-lagann",
+    title: "Tengen Toppa Gurren Lagann",
+    description: "Simon and Kamina live in a subterranean village until they find a mysterious drill that changes the fate of humanity and the universe itself. Who the hell do you think we are?!",
+    categories: ["Action", "Adventure", "Mecha", "Sci-Fi"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx2001-lawi4n97caB1.jpg",
+    trailerUrl: "https://www.youtube.com/embed/NRI_8PUXxyw?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening: Sorairo Days", url: "https://www.youtube.com/embed/NRI_8PUXxyw?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/2001-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "kill-la-kill",
+    title: "Kill la Kill",
+    description: "Ryuko Matoi arrives at Honnouji Academy search for her father's killer, armed with a giant half of a pair of scissors and a sentient sailor suit that grants her immense power.",
+    categories: ["Action", "Comedy", "Super-Power", "Ecchi"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx18671-8UR7r9MNVpz2.jpg",
+    trailerUrl: "https://www.youtube.com/embed/NRI_8PUXxyw?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening: Sirius", url: "https://www.youtube.com/embed/NRI_8PUXxyw?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/18671-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "overlord",
+    title: "Overlord",
+    description: "A lonely gamer stays logged into his favorite MMO as it shuts down, only to find himself transported into a real fantasy world as his skeletal avatar, the Sorcerer King Ainz Ooal Gown.",
+    categories: ["Action", "Fantasy", "Isekai", "Supernatural"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20832-awA0mB1pAwZ.jpg",
+    trailerUrl: "https://www.youtube.com/embed/atxYe-nOa9w?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening: Clattanoia", url: "https://www.youtube.com/embed/atxYe-nOa9w?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/20832-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "erased",
+    title: "Erased",
+    description: "Satoru Fujinuma possesses an ability called 'Revival' that sends him back in time to prevent tragedies. After being framed for a crime, he is sent 18 years back to stop a serial kidnapper.",
+    categories: ["Mystery", "Psychological", "Supernatural", "Thriller"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21234-8UR7r9MNVpz2.jpg",
+    trailerUrl: "https://www.youtube.com/embed/vFfXjuVA1Jk?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening: Re:Re:", url: "https://www.youtube.com/embed/vFfXjuVA1Jk?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/21234-MhlCoeqnODso.jpg"],
+  },
+  {
+    id: "death-parade",
+    title: "Death Parade",
+    description: "After death, humans arrive at Quindecim, a bar in the afterlife where they must play high-stakes games to determine the fate of their souls: reincarnation or the eternal void.",
+    categories: ["Psychological", "Drama", "Supernatural", "Mystery"],
+    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20842-z77uS8vA6fS8.jpg",
+    trailerUrl: "https://www.youtube.com/embed/z77uS8vA6fS8?autoplay=1&mute=1",
+    openings: [
+      { title: "Opening: Flyers", url: "https://www.youtube.com/embed/z77uS8vA6fS8?autoplay=1&mute=1" }
+    ],
+    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/20842-MhlCoeqnODso.jpg"],
   }
 ];
