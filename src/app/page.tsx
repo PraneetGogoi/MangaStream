@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect, useCallback, Suspense } from "react";
 import dynamic from "next/dynamic";
 import { Anime } from "@/data/mockAnime";
-import { getAllAnime } from "./actions";
+import { getAllAnime, getPersonalizedAffinities } from "./actions";
 import { AnimeCard } from "@/components/AnimeCard";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ThemeSlice } from "@/components/ThemeSlice";
@@ -26,6 +26,7 @@ function HomeContent() {
   const [selectedVideoLabel, setSelectedVideoLabel] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [animeData, setAnimeData] = useState<Anime[]>([]);
+  const [affinities, setAffinities] = useState<Record<string, number>>({});
   const [isSlicing, setIsSlicing] = useState(false);
 
   // Initialize theme from localStorage
@@ -37,12 +38,16 @@ function HomeContent() {
     }
   }, []);
 
-  // Fetch anime data from MongoDB
+  // Fetch anime data and affinities
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getAllAnime();
+        const [data, affinityMap] = await Promise.all([
+          getAllAnime(),
+          getPersonalizedAffinities()
+        ]);
         setAnimeData(data);
+        setAffinities(affinityMap);
       } catch (error) {
         console.error("Failed to fetch anime data:", error);
       }
@@ -139,6 +144,7 @@ function HomeContent() {
                     <AnimeCard
                       key={anime.id}
                       anime={anime}
+                      syncRate={affinities[anime.id]}
                       onOpenVideo={handleOpenVideo}
                       onOpenManga={handleOpenManga}
                     />

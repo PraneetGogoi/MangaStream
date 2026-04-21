@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MangaStream - Discover Masterpieces",
-  description: "Experience anime in a whole new manga-inspired dimension.",
+  title: "MangaStream: The Digital Archival of Legendary Anime",
+  description: "A high-fidelity discovery engine designed for the next generation of archivists. Forge your watchlist, join legendary syndicates, and decode the annals of anime history.",
 };
 
 import { AuthProvider } from "@/components/AuthProvider";

@@ -7,6 +7,10 @@ import Review from "../models/Review";
 import { MOCK_ANIME } from "@/data/mockAnime";
 import fs from "fs/promises";
 import path from "path";
+import Syndicate from "@/models/Syndicate";
+import User from "@/models/User";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function getAllAnime() {
   try {
@@ -92,7 +96,6 @@ export async function upsertCharacters(animeId: string, characters: any[]) {
   }
 }
 
-import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
 export async function registerUser(formData: FormData) {
@@ -125,8 +128,7 @@ export async function registerUser(formData: FormData) {
   }
 }
 
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+// Redundant imports removed
 
 export async function toggleWatchlist(animeId: string) {
   const session = await getServerSession(authOptions);
@@ -143,17 +145,57 @@ export async function toggleWatchlist(animeId: string) {
       return { error: "User not found" };
     }
 
-    const index = user.watchlist.indexOf(animeId);
-    if (index === -1) {
-      user.watchlist.push(animeId);
+    // Handle both legacy (string[]) and new (object[]) formats gracefully
+    const existingIndex = user.watchlist.findIndex((item: any) => 
+      (typeof item === 'string' ? item : item.animeId) === animeId
+    );
+
+    if (existingIndex === -1) {
+      user.watchlist.push({ 
+        animeId, 
+        status: "Queued Artifact", 
+        addedAt: new Date() 
+      });
     } else {
-      user.watchlist.splice(index, 1);
+      user.watchlist.splice(existingIndex, 1);
     }
 
     await user.save();
-    return { success: true, inWatchlist: index === -1 };
+    return { success: true, inWatchlist: existingIndex === -1 };
   } catch (error) {
     return { error: "Watchlist currently locked (Offline Mode)" };
+  }
+}
+
+export async function updateWatchlistStatus(animeId: string, status: "Queued Artifact" | "Active Transmission" | "Synchronized") {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) return { error: "Authentication required" };
+
+  try {
+    await dbConnect();
+    const userId = (session.user as any).id;
+    const user = await User.findById(userId);
+
+    if (!user) return { error: "User not found" };
+
+    const item = user.watchlist.find((item: any) => 
+      (typeof item === 'string' ? item : item.animeId) === animeId
+    );
+
+    if (item) {
+      if (typeof item === 'string') {
+        // Migrate legacy entry on the fly
+        const idx = user.watchlist.indexOf(item);
+        user.watchlist[idx] = { animeId, status, addedAt: new Date() };
+      } else {
+        item.status = status;
+      }
+      await user.save();
+      return { success: true };
+    }
+    return { error: "Entry not found in watchlist" };
+  } catch (error) {
+    return { error: "Update failed" };
   }
 }
 
@@ -168,8 +210,24 @@ export async function getUserWatchlist() {
     
     if (!user) return [];
 
-    const anime = await Anime.find({ id: { $in: user.watchlist } }).lean();
-    return JSON.parse(JSON.stringify(anime));
+    const animeIds = user.watchlist.map((item: any) => 
+      typeof item === 'string' ? item : item.animeId
+    );
+
+    const animeList = await Anime.find({ id: { $in: animeIds } }).lean();
+    
+    // Map status back to anime objects for the UI
+    const results = animeList.map(anime => {
+      const entry = user.watchlist.find((item: any) => 
+        (typeof item === 'string' ? item : item.animeId) === anime.id
+      );
+      return {
+        ...JSON.parse(JSON.stringify(anime)),
+        watchlistStatus: typeof entry === 'string' ? "Queued Artifact" : entry?.status || "Queued Artifact"
+      };
+    });
+
+    return results;
   } catch (error) {
     return []; // Return empty watchlist in offline mode
   }
@@ -184,7 +242,9 @@ export async function isAnimeInWatchlist(animeId: string) {
     const userId = (session.user as any).id;
     const user = await User.findById(userId);
 
-    return user?.watchlist.includes(animeId) || false;
+    return user?.watchlist.some((item: any) => 
+      (typeof item === 'string' ? item : item.animeId) === animeId
+    ) || false;
   } catch (error) {
     return false;
   }
@@ -393,5 +453,359 @@ export async function getArchiveLogs(animeId: string) {
   } catch (error) {
     console.error("❌ Log Retrieval Error:", error);
     return [];
+  }
+}
+
+export async function getEngagementAnalytics() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user || (session.user as any).role !== "admin") {
+    return { error: "Administrative privileges required for Leyline Access." };
+  }
+
+  try {
+    await dbConnect();
+
+    // 1. Calculate Watchlist Pulse (How many users have each anime)
+    const watchlistStats = await User.aggregate([
+      { $unwind: "$watchlist" },
+      { $group: { _id: "$watchlist", count: { $sum: 1 } } }
+    ]);
+
+    // 2. Calculate Log Volume (Reviews per anime)
+    const reviewStats = await Review.aggregate([
+      { $group: { _id: "$animeId", count: { $sum: 1 } } }
+    ]);
+
+    // 3. Fetch All Anime for Mapping
+    const allAnime = await Anime.find({}).lean();
+    
+    // 4. Synthesize Engagement Decibel (ED) Score
+    const engagementData = allAnime.map(anime => {
+      const wStats = watchlistStats.find(s => s._id === anime.id);
+      const rStats = reviewStats.find(s => s._id === anime.id);
+      
+      const wCount = wStats ? wStats.count : 0;
+      const rCount = rStats ? rStats.count : 0;
+      
+      // Algorithm: ED = (Watchlist * 1.5) + (Reviews * 2.5)
+      const edScore = (wCount * 1.5) + (rCount * 2.5);
+      
+      return {
+        id: anime.id,
+        title: anime.title,
+        watchlistCount: wCount,
+        reviewCount: rCount,
+        edScore: Math.round(edScore * 10) / 10
+      };
+    });
+
+    // 5. Sort by ED Score (Trending Top 5)
+    const trending = [...engagementData]
+      .sort((a, b) => b.edScore - a.edScore)
+      .slice(0, 5);
+
+    // 6. Fetch Recent Signals (Latest activity)
+    const recentReviews = await Review.find({})
+      .populate("userId", "username profileImage")
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .lean();
+
+    const signals = recentReviews.map(r => ({
+      id: (r as any)._id.toString(),
+      user: (r.userId as any).username,
+      action: "Committed Archive Log",
+      target: r.animeId,
+      timestamp: r.createdAt
+    }));
+
+    return {
+      success: true,
+      trending,
+      signals,
+      totalUsers: await User.countDocuments(),
+      totalLogs: await Review.countDocuments()
+    };
+  } catch (error: any) {
+    console.error("❌ Leyline Analysis Error:", error);
+    return { error: "Failed to sync with global engagement leylines." };
+  }
+}
+
+export async function getSyndicates() {
+  try {
+    await dbConnect();
+    
+    // Auto-seed if no syndicates exist
+    const count = await Syndicate.countDocuments();
+    if (count === 0) {
+      await seedSyndicates();
+    }
+
+    const syndicates = await Syndicate.find({}).populate("members", "trustLevel").lean();
+    
+    // Calculate real-time Power Level (sum of member trust)
+    const processed = syndicates.map(s => {
+      const pLevel = ((s.members as any[]) || []).reduce((acc, member) => acc + (member.trustLevel || 1), 0);
+      return {
+        ...JSON.parse(JSON.stringify(s)),
+        powerLevel: pLevel
+      };
+    });
+
+    return JSON.parse(JSON.stringify(processed));
+  } catch (error) {
+    console.error("❌ Syndicate Retrieval Error:", error);
+    return [];
+  }
+}
+
+export async function joinSyndicate(slug: string) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) return { error: "Authentication required" };
+
+  try {
+    await dbConnect();
+    const userId = (session.user as any).id;
+    
+    const syndicate = await Syndicate.findOne({ slug });
+    if (!syndicate) return { error: "Syndicate not found" };
+
+    const memberIds = syndicate.members.map((id: any) => id.toString());
+    if (memberIds.includes(userId)) {
+      return { error: "Already a member of this Syndicate" };
+    }
+
+    syndicate.members.push(userId);
+    await syndicate.save();
+
+    // Reward the user for joining a faction
+    await User.findByIdAndUpdate(userId, { $inc: { trustLevel: 5 } });
+
+    return { success: true };
+  } catch (error) {
+    return { error: "Joining action failed" };
+  }
+}
+
+export async function leaveSyndicate(slug: string) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) return { error: "Authentication required" };
+
+  try {
+    await dbConnect();
+    const userId = (session.user as any).id;
+    
+    const syndicate = await Syndicate.findOne({ slug });
+    if (!syndicate) return { error: "Syndicate not found" };
+
+    syndicate.members = syndicate.members.filter((id: any) => id.toString() !== userId);
+    await syndicate.save();
+
+    return { success: true };
+  } catch (error) {
+    return { error: "Leaving action failed" };
+  }
+}
+
+async function seedSyndicates() {
+  const initialGroups = [
+    {
+      name: "The Seinen Syndicate",
+      slug: "seinen-syndicate",
+      description: "Dedicated to the complex architecture of Seinen masterpieces. Focus: Berserk, Vinland Saga, Monster.",
+      genre: "Seinen",
+      accentColor: "#dc2626",
+      iconType: "ShieldAlert"
+    },
+    {
+      name: "Cyberpunk Cell",
+      slug: "cyberpunk-cell",
+      description: "Analyzing the high-tech, low-life fragments of dystopian futures. Focus: Ghost in the Shell, Akira, Edgerunners.",
+      genre: "Cyberpunk",
+      accentColor: "#06b6d4",
+      iconType: "Zap"
+    },
+    {
+      name: "Shonen Front",
+      slug: "shonen-front",
+      description: "Archive of the battle-driven spirits and legendary growth artifacts. Focus: One Piece, Naruto, Bleach.",
+      genre: "Shonen",
+      accentColor: "#f97316",
+      iconType: "Flame"
+    },
+    {
+      name: "Psychological Node",
+      slug: "psychological-node",
+      description: "Deciphering the neural pathways and mind-bending distortions of the human psyche.",
+      genre: "Psychological",
+      accentColor: "#8b5cf6",
+      iconType: "Brain"
+    }
+  ];
+
+  try {
+    await Syndicate.insertMany(initialGroups);
+    console.log("✅ Seeded Legendary Syndicates");
+  } catch (e) {
+    console.error("❌ Seeding failed:", e);
+  }
+}
+
+/**
+ * Commits a binary artifact (image/file) to the local archival storage.
+ */
+export async function uploadArchiveAsset(formData: FormData) {
+  try {
+    const file = formData.get("file") as File;
+    if (!file) return { error: "No artifact detected." };
+
+    // Sanitization & Uniqueness Logic
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    
+    const sanitizedName = file.name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-0\.\-]/g, '');
+    const filename = `${Date.now()}-${sanitizedName}`;
+    
+    // Absolute Pathing to the Archival Vault
+    const uploadDir = path.join(process.cwd(), "public", "assets", "uploads");
+    const filePath = path.join(uploadDir, filename);
+
+    // Auto-create Vault directory
+    try {
+      await fs.access(uploadDir);
+    } catch {
+      await fs.mkdir(uploadDir, { recursive: true });
+    }
+
+    await fs.writeFile(filePath, buffer);
+    
+    return { 
+      success: true, 
+      url: `/assets/uploads/${filename}` 
+    };
+  } catch (error) {
+    console.error("❌ Artifact Commit Failed:", error);
+    return { error: "Leyline Transmission Failed: Unable to commit artifact." };
+  }
+}
+
+// --- ADVANCED CARD PROTOCOLS ---
+
+/**
+ * Tracks an interaction with an anime card (view/hover)
+ */
+export async function trackCardInteraction(animeId: string) {
+  try {
+    await dbConnect();
+    await Anime.findOneAndUpdate(
+      { id: animeId },
+      { $inc: { "telemetry.views": 1 } }
+    );
+    return { success: true };
+  } catch (error) {
+    return { success: false };
+  }
+}
+
+/**
+ * Generates a personalized affinity score for every anime based on the user's profile
+ */
+export async function getPersonalizedAffinities() {
+  try {
+    await dbConnect();
+    const session = await getServerSession(authOptions);
+    const userId = (session?.user as any)?.id;
+
+    const allAnime = await Anime.find({}).lean();
+    
+    // If guest, calculate global popularity sync instead
+    if (!userId) {
+      const affinities: Record<string, number> = {};
+      const maxViews = Math.max(...allAnime.map((a: any) => a.telemetry?.views || 1));
+      
+      allAnime.forEach((a: any) => {
+        const views = a.telemetry?.views || 1;
+        // Base popularity score (40-99%)
+        affinities[a.id] = Math.floor((views / maxViews) * 59) + 40;
+      });
+      return affinities;
+    }
+
+    const user = await User.findById(userId).lean();
+    if (!user || !user.watchlist || user.watchlist.length === 0) {
+      return {};
+    }
+
+    // 1. Forge the user's 'Genre Soul' (Weighted Genre Profile)
+    const genreSoul: Record<string, number> = {};
+    const statusWeights: Record<string, number> = {
+      "Active Transmission": 3,
+      "Synchronized": 2,
+      "Queued Artifact": 1
+    };
+
+    for (const entry of user.watchlist) {
+      const animeObj = allAnime.find((a: any) => a.id === entry.animeId);
+      if (animeObj && animeObj.categories) {
+        const weight = statusWeights[entry.status] || 1;
+        animeObj.categories.forEach((cat: string) => {
+          genreSoul[cat] = (genreSoul[cat] || 0) + weight;
+        });
+      }
+    }
+
+    // 2. Calculate Affinity for all anime
+    const finalAffinities: Record<string, number> = {};
+    const soulTotal = Object.values(genreSoul).reduce((a, b) => a + b, 0);
+
+    allAnime.forEach((anime: any) => {
+      let score = 0;
+      anime.categories.forEach((cat: string) => {
+        if (genreSoul[cat]) {
+          score += genreSoul[cat];
+        }
+      });
+
+      // Normalize to a 0-100% Sync Rate, with a healthy baseline (min 40%)
+      const syncPercentage = soulTotal > 0 ? (score / soulTotal) * 100 : 50;
+      finalAffinities[anime.id] = Math.min(Math.floor(syncPercentage + 40), 99); 
+    });
+
+    return finalAffinities;
+  } catch (error) {
+    console.error("Affinity calculation failed:", error);
+    return {};
+  }
+}
+
+/**
+ * Generates an AI Oracle Forge insight (Glimpse) for an anime. 
+ * This would typically use Gemini, but here we provide a high-fidelity archival fallback.
+ */
+export async function generateGlimpse(animeId: string) {
+  try {
+    await dbConnect();
+    const anime = await Anime.findOne({ id: animeId });
+    if (!anime) return { error: "Fragment not found" };
+
+    if (anime.glimpse) return { glimpse: anime.glimpse };
+
+    // Archetype-based generation for immediate high-fidelity feel
+    const insights = [
+      `A neural distortion of identity and existence. Reality is the first casualty.`,
+      `The architect of your own destruction lies within these archives.`,
+      `A visual transmission of unbridled kinetic energy and primal growth.`,
+      `Archive of a broken world where code and blood are indistinguishable.`,
+      `A strategic descent into the darkest corridors of the human psyche.`
+    ];
+
+    const randomGlimpse = insights[Math.floor(Math.random() * insights.length)];
+    anime.glimpse = randomGlimpse;
+    await anime.save();
+
+    return { glimpse: randomGlimpse };
+  } catch (error) {
+    return { error: "Oracle fail" };
   }
 }

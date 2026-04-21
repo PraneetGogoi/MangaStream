@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { getAllAnime, upsertAnime, deleteAnime, getCharactersForAnime, upsertCharacters } from "../actions";
+import { getAllAnime, upsertAnime, deleteAnime, getCharactersForAnime, upsertCharacters, uploadArchiveAsset } from "../actions";
 import { Anime } from "@/data/mockAnime";
 import { motion, AnimatePresence } from "framer-motion";
-import { Settings, Plus, Edit, Trash2, X, Save, AlertTriangle, ShieldCheck, Link as LinkIcon, Image as ImageIcon, Music, CheckCircle2, Circle, UserPlus, Users } from "lucide-react";
+import { Settings, Plus, Edit, Trash2, X, Save, AlertTriangle, ShieldCheck, Link as LinkIcon, Image as ImageIcon, Music, CheckCircle2, Circle, UserPlus, Users, Upload, HardDrive, FilePlus, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -17,12 +17,14 @@ export default function AdminDashboard() {
   const [editingAnime, setEditingAnime] = useState<Partial<Anime> | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   // Dynamic Form States
   const [formOpenings, setFormOpenings] = useState<{ title: string; url: string }[]>([]);
   const [formPreviews, setFormPreviews] = useState<string[]>([]);
   const [hasArchive, setHasArchive] = useState(false);
   const [formCharacters, setFormCharacters] = useState<any[]>([]);
+  const [isUploading, setIsUploading] = useState<string | null>(null);
 
   // Authentication & Authorization Check
   useEffect(() => {
@@ -64,14 +66,19 @@ export default function AdminDashboard() {
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("ARE YOU SURE YOU WANT TO DELETE THIS RECORD? THIS ACTION IS IRREVERSIBLE.")) {
-      const result = await deleteAnime(id);
-      if (result.success) {
-        setMessage({ type: 'success', text: "Record Expunged Successfully" });
-        fetchAnime();
-      } else {
-        setMessage({ type: 'error', text: result.error || "Expungement Failed" });
-      }
+    setDeleteConfirmId(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteConfirmId) return;
+    const id = deleteConfirmId;
+    setDeleteConfirmId(null);
+    const result = await deleteAnime(id);
+    if (result.success) {
+      setMessage({ type: 'success', text: "Record Expunged Successfully" });
+      fetchAnime();
+    } else {
+      setMessage({ type: 'error', text: result.error || "Expungement Failed" });
     }
   };
 
@@ -111,6 +118,33 @@ export default function AdminDashboard() {
       next[index] = { ...next[index], [field]: value };
       return next;
     });
+  };
+  
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'poster' | 'preview' | 'character', index?: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const uploadKey = index !== undefined ? `${type}-${index}` : type;
+    setIsUploading(uploadKey);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const result = await uploadArchiveAsset(formData);
+    
+    if (result.success && result.url) {
+        if (type === 'poster') {
+            setEditingAnime(prev => ({ ...prev, posterImage: result.url }));
+        } else if (type === 'preview' && index !== undefined) {
+            updatePreview(index, result.url);
+        } else if (type === 'character' && index !== undefined) {
+            updateCharacter(index, 'image', result.url);
+        }
+    } else {
+        setMessage({ type: 'error', text: result.error || "Upload Failed" });
+    }
+    
+    setIsUploading(null);
   };
 
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -189,9 +223,25 @@ export default function AdminDashboard() {
             </p>
           </div>
 
-          {/* Replaced with FAB */}
-          <div className="hidden md:block opacity-20 italic font-black uppercase text-sm">
-            Operational Dashboard v1.0
+          <div className="flex flex-col md:flex-row md:items-center gap-6">
+            <Link 
+              href="/admin/analytics"
+              className="group relative flex items-center gap-3 bg-manga-paper border-[4px] border-manga-ink px-6 py-3 font-black uppercase italic shadow-[8px_8px_0px_0px_var(--manga-shadow-color)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-manga-ink/5 group-hover:bg-manga-ink/10 transition-colors" />
+              <div className="relative flex items-center gap-3">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-blue-500/20 blur-lg animate-pulse" />
+                  <Settings className="relative text-manga-ink w-6 h-6 animate-[spin_4s_linear_infinite]" />
+                </div>
+                <span className="relative text-lg tracking-tighter">Leyline Access</span>
+              </div>
+            </Link>
+
+            {/* Operational Dashboard Version */}
+            <div className="hidden md:block opacity-20 italic font-black uppercase text-sm">
+              Operational Dashboard v1.1
+            </div>
           </div>
         </div>
 
@@ -370,18 +420,29 @@ export default function AdminDashboard() {
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] font-black uppercase tracking-widest opacity-40 mb-2">Visual Source (Poster Image URL)</label>
+                          <label className="block text-[10px] font-black uppercase tracking-widest opacity-40 mb-2">Visual Source (Artifact Upload)</label>
                           <div className="flex gap-4">
                             <div className="bg-manga-ink p-3 self-start">
-                              <ImageIcon className="text-manga-paper w-6 h-6" />
+                              {isUploading === 'poster' ? <Loader2 className="text-manga-paper w-6 h-6 animate-spin" /> : <ImageIcon className="text-manga-paper w-6 h-6" />}
                             </div>
-                            <input 
-                              name="posterImage" 
-                              defaultValue={editingAnime?.posterImage} 
-                              required 
-                              className="w-full bg-transparent border-b-4 border-manga-ink text-lg font-bold py-2 focus:outline-none transition-all font-geist-sans"
-                              placeholder="https://..."
-                            />
+                            <div className="flex-1 space-y-2">
+                                <div className="flex items-center gap-4">
+                                    <input 
+                                        name="posterImage" 
+                                        value={editingAnime?.posterImage || ""} 
+                                        readOnly
+                                        required 
+                                        className="flex-1 bg-transparent border-b-2 border-manga-ink/20 text-xs font-bold py-2 focus:outline-none transition-all font-geist-sans opacity-40"
+                                        placeholder="No artifact selected..."
+                                    />
+                                    <label className="cursor-pointer bg-manga-ink text-manga-paper px-4 py-2 font-black text-[10px] uppercase italic border-2 border-manga-ink hover:bg-manga-paper hover:text-manga-ink transition-all flex items-center gap-2">
+                                        <Upload className="w-3 h-3" />
+                                        {isUploading === 'poster' ? "SCANNING..." : "FORGE IMAGE"}
+                                        <input type="file" className="hidden" onChange={(e) => handleUpload(e, 'poster')} accept="image/*" />
+                                    </label>
+                                </div>
+                                {editingAnime?.posterImage && <p className="text-[8px] font-mono opacity-30 truncate">{editingAnime.posterImage}</p>}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -497,16 +558,28 @@ export default function AdminDashboard() {
                                 className="flex gap-4 items-center"
                               >
                                 <div className="bg-manga-ink/5 p-2">
-                                  <div className="w-10 h-10 border-2 border-manga-ink overflow-hidden bg-gray-200">
-                                    {url && <img src={url} alt="" className="w-full h-full object-cover grayscale" />}
+                                  <div className="w-10 h-10 border-2 border-manga-ink overflow-hidden bg-gray-200 flex items-center justify-center">
+                                    {isUploading === `preview-${idx}` ? (
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                    ) : url ? (
+                                        <img src={url} alt="" className="w-full h-full object-cover grayscale" />
+                                    ) : (
+                                        <ImageIcon className="w-4 h-4 opacity-20" />
+                                    )}
                                   </div>
                                 </div>
-                                <input 
-                                  value={url}
-                                  onChange={(e) => updatePreview(idx, e.target.value)}
-                                  className="flex-1 bg-transparent border-b-2 border-manga-ink font-bold text-xs py-2 focus:outline-none"
-                                  placeholder="IMAGE URL..."
-                                />
+                                <div className="flex-1 flex items-center gap-4 border-b-2 border-manga-ink/20">
+                                    <input 
+                                        value={url}
+                                        readOnly
+                                        className="flex-1 bg-transparent font-bold text-[10px] py-1 focus:outline-none opacity-40"
+                                        placeholder="UNIDENTIFIED ARTIFACT"
+                                    />
+                                    <label className="cursor-pointer text-manga-ink hover:text-blue-500 transition-colors p-1">
+                                        <Upload className={`w-4 h-4 ${isUploading === `preview-${idx}` ? 'animate-bounce' : ''}`} />
+                                        <input type="file" className="hidden" onChange={(e) => handleUpload(e, 'preview', idx)} accept="image/*" />
+                                    </label>
+                                </div>
                                 <button 
                                   type="button" 
                                   onClick={() => removePreview(idx)}
@@ -580,12 +653,18 @@ export default function AdminDashboard() {
                                                 className="w-full bg-transparent border-b-2 border-manga-ink font-bold text-xs p-1 focus:outline-none italic"
                                                 placeholder="ROLE..."
                                             />
-                                            <input 
-                                                value={char.image}
-                                                onChange={(e) => updateCharacter(idx, 'image', e.target.value)}
-                                                className="w-full bg-transparent border-b-2 border-manga-ink font-mono text-[8px] p-1 focus:outline-none opacity-40 hover:opacity-100"
-                                                placeholder="IMAGE URL..."
-                                            />
+                                            <div className="flex items-center gap-4 border-b-2 border-manga-ink/20 pt-1">
+                                                <input 
+                                                    value={char.image}
+                                                    readOnly
+                                                    className="flex-1 bg-transparent font-mono text-[8px] p-1 focus:outline-none opacity-40"
+                                                    placeholder="NO IMAGE COMMITTED"
+                                                />
+                                                <label className="cursor-pointer text-manga-ink hover:text-blue-500 transition-all">
+                                                    <Upload className={`w-3 h-3 ${isUploading === `character-${idx}` ? 'animate-bounce' : ''}`} />
+                                                    <input type="file" className="hidden" onChange={(e) => handleUpload(e, 'character', idx)} accept="image/*" />
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="mt-4 space-y-4">
@@ -622,6 +701,62 @@ export default function AdminDashboard() {
                   </motion.button>
                 </div>
               </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {deleteConfirmId && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setDeleteConfirmId(null)}
+              className="absolute inset-0 bg-manga-ink/95 backdrop-blur-md"
+            />
+            <motion.div 
+              initial={{ scale: 0.9, rotate: 5, opacity: 0 }}
+              animate={{ scale: 1, rotate: 0, opacity: 1 }}
+              exit={{ scale: 0.9, rotate: -5, opacity: 0 }}
+              className="relative w-full max-w-xl bg-manga-paper border-[12px] border-red-600 p-12 shadow-[20px_20px_0px_0px_rgba(0,0,0,0.5)] text-center"
+            >
+              <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-red-600 text-white px-6 py-2 font-black uppercase text-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                CRITICAL ALERT
+              </div>
+              
+              <AlertTriangle className="w-24 h-24 text-red-600 mx-auto mb-8 animate-bounce" />
+              
+              <h2 className="text-5xl font-black uppercase italic tracking-tighter mb-4 leading-none text-red-600">
+                INITIATE EXPUNGEMENT?
+              </h2>
+              
+              <p className="text-lg font-bold uppercase opacity-60 leading-tight mb-12">
+                You are about to purge this anime fragment from the global library. <br />
+                <span className="text-red-600">THIS ACTION IS IRREVERSIBLE.</span>
+              </p>
+
+              <div className="flex flex-col gap-4">
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={confirmDelete}
+                  className="w-full py-5 bg-red-600 text-white font-black uppercase italic text-2xl shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-none transition-all"
+                >
+                  Confirm Redaction
+                </motion.button>
+                <button 
+                  onClick={() => setDeleteConfirmId(null)}
+                  className="w-full py-3 font-black uppercase italic text-sm opacity-40 hover:opacity-100 transition-opacity"
+                >
+                  Abort Operation
+                </button>
+              </div>
+
+              {/* Decorative Redaction Bars */}
+              <div className="absolute top-0 right-0 w-20 h-20 bg-red-600/10 -z-10 rotate-45 translate-x-10 -translate-y-10" />
             </motion.div>
           </div>
         )}

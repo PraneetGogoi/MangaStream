@@ -10,10 +10,12 @@ import { OpeningSelector } from "./OpeningSelector";
 import Image from "next/image";
 import { Bookmark, CheckCircle2 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { toggleWatchlist, isAnimeInWatchlist } from "@/app/actions";
+import { toggleWatchlist, isAnimeInWatchlist, trackCardInteraction, generateGlimpse } from "@/app/actions";
+import { Activity, ShieldCheck, Zap, Brain, Target, Layers } from "lucide-react";
 
 interface AnimeCardProps {
-  anime: Anime;
+  anime: Anime & { telemetry?: { views: number } };
+  syncRate?: number;
   onOpenVideo: (anime: Anime, videoUrl: string, videoLabel: string) => void;
   onOpenManga: (anime: Anime) => void;
 }
@@ -45,11 +47,13 @@ const containerVariants = {
   },
 };
 
-export const AnimeCard = memo(({ anime, onOpenVideo, onOpenManga }: AnimeCardProps) => {
+export const AnimeCard = memo(({ anime, syncRate, onOpenVideo, onOpenManga }: AnimeCardProps) => {
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isOpeningSelectorOpen, setIsOpeningSelectorOpen] = useState(false);
+  const [glimpseText, setGlimpseText] = useState(anime.glimpse || "");
+  const hasTracked = useRef(false);
 
   // Motion values for 3D tilt
   const mouseX = useMotionValue(0);
@@ -111,8 +115,21 @@ export const AnimeCard = memo(({ anime, onOpenVideo, onOpenManga }: AnimeCardPro
   useEffect(() => {
     if (!isHovered) {
       setIsOpeningSelectorOpen(false);
+    } else {
+      // Track interaction when hovered
+      if (!hasTracked.current) {
+        trackCardInteraction(anime.id);
+        hasTracked.current = true;
+      }
+      
+      // Generate glimpse if missing
+      if (!glimpseText) {
+        generateGlimpse(anime.id).then(res => {
+          if (res.glimpse) setGlimpseText(res.glimpse);
+        });
+      }
     }
-  }, [isHovered]);
+  }, [isHovered, anime.id, glimpseText]);
 
   const getAngle = (index: number, total: number) => {
     if (total === 3) return [150, 30, 270][index];
@@ -249,6 +266,54 @@ export const AnimeCard = memo(({ anime, onOpenVideo, onOpenManga }: AnimeCardPro
                 )}
               </AnimatePresence>
 
+               {/* Sync Rate Gauge (Tactical Overlay) */}
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="absolute bottom-16 left-2 z-20 flex flex-col items-start"
+              >
+                <div className="flex items-center gap-2 bg-manga-ink text-manga-paper px-2 py-1 text-[10px] font-black italic shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]">
+                  <Target className={`w-3 h-3 ${syncRate && syncRate > 80 ? 'text-green-400' : 'text-yellow-400'}`} />
+                  {syncRate || 50}% SYNC
+                </div>
+                <div className="w-16 h-1.5 bg-white/20 mt-1 border border-manga-ink overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${syncRate || 50}%` }}
+                    className={`h-full ${syncRate && syncRate > 80 ? 'bg-green-500' : 'bg-yellow-500'}`}
+                  />
+                </div>
+              </motion.div>
+
+              {/* Telemetry Pulse (Live Views) */}
+              <div className="absolute top-14 left-2 z-20 flex items-center gap-2 bg-white/90 text-manga-ink border-2 border-manga-ink px-2 py-0.5 shadow-[2px_2px_0px_0px_var(--manga-shadow-color)]">
+                <Activity className="w-3 h-3 text-red-500 animate-pulse" />
+                <span className="text-[9px] font-black">{anime.telemetry?.views || 0}</span>
+              </div>
+
+               {/* Oracle Glimpse Overlay (Flipped but visible on front hover) */}
+               <AnimatePresence>
+                {isHovered && glimpseText && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute inset-x-4 top-1/2 -translate-y-1/2 z-40"
+                  >
+                    <div className="bg-manga-ink text-white p-4 border-l-8 border-purple-500 shadow-[10px_10px_0px_0px_rgba(0,0,0,0.5)]">
+                      <div className="text-[8px] font-black uppercase tracking-[0.3em] opacity-40 mb-2">Oracle Glimpse</div>
+                      <p className="text-xs font-black italic leading-tight uppercase">"{glimpseText}"</p>
+                    </div>
+                    {/* Scanning Line Effect */}
+                    <motion.div 
+                      animate={{ y: [0, 80, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-x-0 h-0.5 bg-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.5)]"
+                    />
+                  </motion.div>
+                )}
+               </AnimatePresence>
+
               {/* Quick Access Archive Button */}
               {anime.hasArchive && (
                 <motion.div
@@ -327,6 +392,22 @@ export const AnimeCard = memo(({ anime, onOpenVideo, onOpenManga }: AnimeCardPro
                 </motion.span>
               ))}
             </motion.div>
+
+            {/* Archival Certification Stamps */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              <motion.div 
+                whileHover={{ scale: 1.05, x: -2, y: -2, boxShadow: "4px 4px 0px 0px rgba(0,0,0,1)" }}
+                className="px-2 py-1 border-2 border-manga-ink bg-manga-paper text-manga-ink font-black uppercase italic text-[8px] cursor-default leading-none shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)]"
+              >
+                DNA VERIFIED
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.05, x: -2, y: -2, boxShadow: "4px 4px 0px 0px rgba(0,0,0,0.3)" }}
+                className="px-2 py-1 bg-manga-ink text-manga-paper font-black uppercase italic text-[8px] cursor-default leading-none border-2 border-manga-ink shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)]"
+              >
+                AUTH GUARANTEED
+              </motion.div>
+            </div>
 
             <div className="flex flex-col gap-3">
               <motion.button 

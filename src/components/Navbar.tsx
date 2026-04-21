@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Zap, LogIn, LogOut, Bookmark, UserCircle, Settings, Search, PlusCircle } from "lucide-react";
+import { Zap, LogIn, LogOut, Bookmark, UserCircle, Settings, Search, PlusCircle, Target } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -83,6 +83,15 @@ export const Navbar = () => {
                 >
                   <Bookmark className={`w-5 h-5 group-hover:fill-current transition-all ${pathname === '/watchlist' ? 'fill-current' : ''}`} />
                   <span className="hidden lg:inline">Watchlist</span>
+                </Link>
+
+                {/* Syndicate Link */}
+                <Link 
+                  href="/syndicate"
+                  className={`flex items-center gap-2 font-black uppercase italic text-sm group ${pathname === '/syndicate' ? 'text-blue-500' : ''}`}
+                >
+                  <Target className={`w-5 h-5 group-hover:scale-110 transition-all ${pathname === '/syndicate' ? 'text-blue-500' : ''}`} />
+                  <span className="hidden lg:inline">Syndicate</span>
                 </Link>
 
                 {/* Admin Link (Conditional) */}

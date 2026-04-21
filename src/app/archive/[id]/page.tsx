@@ -5,10 +5,18 @@ import { X, User, ArrowLeft, Layers, BookOpen, MessageSquare, Send, Quote, Spark
 import { useState, use, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Anime } from "@/data/mockAnime";
-import { getCharactersForAnime, getAnimeById, submitArchiveLog, getArchiveLogs } from "@/app/actions";
+import { 
+  getCharactersForAnime, getAnimeById, submitArchiveLog, 
+  getArchiveLogs, toggleWatchlist, isAnimeInWatchlist,
+  updateWatchlistStatus, getUserWatchlist
+} from "@/app/actions";
 import { Character } from "@/data/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { 
+  Clock, Play, CheckCircle2, Bookmark, 
+  ShieldCheck, Zap, ChevronDown
+} from "lucide-react";
 
 export default function ArchivePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -24,20 +32,33 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
   const [newLogContent, setNewLogContent] = useState("");
   const [newLogRating, setNewLogRating] = useState(10);
   const [isSubmittingLog, setIsSubmittingLog] = useState(false);
+  
+  // Watchlist State
+  const [inWatchlist, setInWatchlist] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState<string>("Queued Artifact");
+  const [isUpdatingWatchlist, setIsUpdatingWatchlist] = useState(false);
+  const [showStatusPicker, setShowStatusPicker] = useState(false);
 
   useEffect(() => {
     async function loadData() {
       if (id) {
         setIsLoading(true);
         try {
-          const [animeData, charData, reviewData] = await Promise.all([
+          const [animeData, charData, reviewData, watchlistData] = await Promise.all([
             getAnimeById(id),
             getCharactersForAnime(id),
-            getArchiveLogs(id)
+            getArchiveLogs(id),
+            getUserWatchlist()
           ]);
           setAnime(animeData);
           setCharacters(charData);
           setReviews(reviewData);
+
+          const watchlistEntry = watchlistData.find((a: any) => a.id === id);
+          if (watchlistEntry) {
+            setInWatchlist(true);
+            setCurrentStatus(watchlistEntry.watchlistStatus);
+          }
         } catch (error) {
           console.error("Failed to load archive data:", error);
         } finally {
@@ -63,6 +84,26 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
       setReviews(updatedLogs);
     } else {
       alert(result.error);
+    }
+  };
+
+  const handleToggleWatchlist = async () => {
+    setIsUpdatingWatchlist(true);
+    const result = await toggleWatchlist(id);
+    setIsUpdatingWatchlist(false);
+    if (result.success) {
+      setInWatchlist(result.inWatchlist || false);
+      if (result.inWatchlist) setCurrentStatus("Queued Artifact");
+    }
+  };
+
+  const handleStatusUpdate = async (status: any) => {
+    setIsUpdatingWatchlist(true);
+    const result = await updateWatchlistStatus(id, status);
+    setIsUpdatingWatchlist(false);
+    if (result.success) {
+      setCurrentStatus(status);
+      setShowStatusPicker(false);
     }
   };
 
@@ -129,6 +170,74 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
           </div>
           <div className="text-xs font-black uppercase tracking-tighter opacity-30 italic">
             Entry Code: 0X-{anime!.id.toUpperCase()}
+          </div>
+          
+          <div className="h-10 w-[2px] bg-black opacity-10" />
+
+          {/* Vault Control */}
+          <div className="relative">
+            <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => inWatchlist ? setShowStatusPicker(!showStatusPicker) : handleToggleWatchlist()}
+                className={`flex items-center gap-3 px-6 py-2 font-black uppercase italic text-sm border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all ${
+                    inWatchlist ? "bg-black text-white" : "bg-white text-black hover:bg-gray-50"
+                }`}
+            >
+                {isUpdatingWatchlist ? (
+                    <Zap className="w-5 h-5 animate-spin" />
+                ) : inWatchlist ? (
+                    <>
+                        {currentStatus === "Queued Artifact" && <Clock className="w-5 h-5" />}
+                        {currentStatus === "Active Transmission" && <Play className="w-5 h-5 animate-pulse text-blue-400" />}
+                        {currentStatus === "Synchronized" && <CheckCircle2 className="w-5 h-5 text-green-400" />}
+                        <span className="tracking-tighter">{currentStatus}</span>
+                        <ChevronDown className={`w-4 h-4 transition-transform ${showStatusPicker ? 'rotate-180' : ''}`} />
+                    </>
+                ) : (
+                    <>
+                        <Bookmark className="w-5 h-5" />
+                        <span>Add to Vault</span>
+                    </>
+                )}
+            </motion.button>
+
+            {/* Status Picker Popover */}
+            <AnimatePresence>
+                {showStatusPicker && (
+                    <motion.div 
+                        initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                        className="absolute top-full right-0 mt-4 w-64 bg-white border-4 border-black p-2 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] z-[100]"
+                    >
+                        {[
+                            { label: "Queued Artifact", icon: Clock },
+                            { label: "Active Transmission", icon: Play },
+                            { label: "Synchronized", icon: CheckCircle2 }
+                        ].map((s) => (
+                            <button
+                                key={s.label}
+                                onClick={() => handleStatusUpdate(s.label as any)}
+                                className={`w-full flex items-center gap-3 px-4 py-3 font-black uppercase italic text-xs hover:bg-black hover:text-white transition-all ${
+                                    currentStatus === s.label ? 'bg-gray-100' : ''
+                                }`}
+                            >
+                                <s.icon className="w-4 h-4" />
+                                {s.label}
+                            </button>
+                        ))}
+                        <div className="border-t-2 border-black my-2" />
+                        <button
+                            onClick={handleToggleWatchlist}
+                            className="w-full flex items-center gap-3 px-4 py-3 font-black uppercase italic text-xs text-red-500 hover:bg-red-500 hover:text-white transition-all"
+                        >
+                            <X className="w-4 h-4" />
+                            Purge from Vault
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
           </div>
         </div>
       </header>
@@ -462,21 +571,23 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
                   <div className="absolute inset-0 halftone opacity-[0.03] pointer-events-none" />
                 </div>
 
-                {/* Footer Badges */}
-                <div className="flex flex-wrap gap-4 pt-4">
+                {/* Footer Badges - Tactical Certification Stamps */}
+                <div className="flex flex-wrap gap-6 pt-8 border-t-4 border-black/5">
                   <motion.div 
-                    whileHover={{ scale: 1.05, backgroundColor: "#000", color: "#fff" }}
-                    className="px-6 py-2 border-4 border-black font-black uppercase italic text-sm transition-all cursor-default"
+                    whileHover={{ scale: 1.05, x: -4, y: -4, boxShadow: "12px 12px 0px 0px rgba(0,0,0,1)" }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-8 py-3 border-4 border-black bg-white text-black font-black uppercase italic text-sm transition-shadow cursor-pointer select-none"
                   >
                     DNA Verified
                   </motion.div>
                   <motion.div 
-                    whileHover={{ scale: 1.05, backgroundColor: "#fff", color: "#000", borderColor: "#000" }}
-                    className="px-6 py-2 bg-black text-white font-black uppercase italic text-sm transition-all cursor-default border-4 border-transparent"
+                    whileHover={{ scale: 1.05, x: -4, y: -4, boxShadow: "12px 12px 0px 0px rgba(0,0,0,0.3)" }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-8 py-3 bg-black text-white font-black uppercase italic text-sm transition-shadow cursor-pointer select-none border-4 border-black"
                   >
                     Authenticity Guaranteed
                   </motion.div>
-                  </div>
+                </div>
                 </div>
                 </>
               )}

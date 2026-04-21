@@ -26,4 +26,9 @@ export type Anime = {
   }[];
   characters?: Character[];
   hasArchive?: boolean;
+  glimpse?: string;
+  telemetry?: {
+    views: number;
+    watchlistAdds: number;
+  };
 };
