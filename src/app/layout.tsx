@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   description: "Experience anime in a whole new manga-inspired dimension.",
 };
 
+import { AuthProvider } from "@/components/AuthProvider";
+import { Navbar } from "@/components/Navbar";
 import Script from "next/script";
 
 export default function RootLayout({
@@ -42,7 +44,10 @@ export default function RootLayout({
         />
         <MangaLoader />
         <CustomCursor />
-        {children}
+        <AuthProvider>
+          <Navbar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

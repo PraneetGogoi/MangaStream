@@ -8,6 +8,9 @@ import { Anime } from "@/data/mockAnime";
 import { PreviewNode } from "./PreviewNode";
 import { OpeningSelector } from "./OpeningSelector";
 import Image from "next/image";
+import { Bookmark, CheckCircle2 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { toggleWatchlist, isAnimeInWatchlist } from "@/app/actions";
 
 interface AnimeCardProps {
   anime: Anime;
@@ -53,6 +56,37 @@ export const AnimeCard = memo(({ anime, onOpenVideo, onOpenManga }: AnimeCardPro
   const mouseY = useMotionValue(0);
   const springX = useSpring(mouseX, { stiffness: 150, damping: 20 });
   const springY = useSpring(mouseY, { stiffness: 150, damping: 20 });
+
+  const { data: session } = useSession();
+  const [inWatchlist, setInWatchlist] = useState(false);
+  const [isStamping, setIsStamping] = useState(false);
+
+  useEffect(() => {
+    const checkWatchlist = async () => {
+      if (session) {
+        const result = await isAnimeInWatchlist(anime.id);
+        setInWatchlist(result);
+      }
+    };
+    checkWatchlist();
+  }, [anime.id, session]);
+
+  const handleToggleWatchlist = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!session) {
+      router.push("/login");
+      return;
+    }
+
+    setIsStamping(true);
+    const result = await toggleWatchlist(anime.id);
+    if (result.success) {
+      setInWatchlist(!!result.inWatchlist);
+    }
+    
+    // Animation timeout
+    setTimeout(() => setIsStamping(false), 800);
+  };
 
   useEffect(() => {
     const checkMobile = () => {
@@ -183,6 +217,37 @@ export const AnimeCard = memo(({ anime, onOpenVideo, onOpenManga }: AnimeCardPro
               >
                 Vol. 01
               </motion.div>
+
+              {/* Watchlist Toggle Button */}
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: -5 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleToggleWatchlist}
+                className={`absolute top-2 left-2 z-20 w-10 h-10 flex items-center justify-center border-4 border-manga-ink shadow-[4px_4px_0px_0px_var(--manga-shadow-color)] hover:shadow-none transition-all ${
+                  inWatchlist ? "bg-red-500 text-white" : "bg-manga-paper text-manga-ink"
+                }`}
+              >
+                <Bookmark className={`w-6 h-6 ${inWatchlist ? 'fill-current' : ''}`} />
+              </motion.button>
+
+              {/* Stamp Animation Overlay */}
+              <AnimatePresence>
+                {isStamping && (
+                  <motion.div
+                    initial={{ scale: 2, opacity: 0, rotate: -20 }}
+                    animate={{ scale: 1, opacity: 1, rotate: 10 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
+                  >
+                    <div className="border-[12px] border-red-600 rounded-full px-8 py-4 bg-white/10 backdrop-blur-sm -rotate-12 flex flex-col items-center">
+                      <span className="text-red-600 text-6xl font-black italic uppercase leading-none tracking-tighter">
+                        {inWatchlist ? "SAVED" : "REMOVED"}
+                      </span>
+                      <div className="w-full h-2 bg-red-600 mt-2" />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Quick Access Archive Button */}
               {anime.hasArchive && (

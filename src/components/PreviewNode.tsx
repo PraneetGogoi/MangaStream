@@ -1,8 +1,7 @@
-"use client";
-
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 import { cn } from "@/utils/cn";
+import Image from "next/image";
 
 interface PreviewNodeProps {
   url: string;
@@ -37,20 +36,14 @@ const itemVariants = {
   }
 };
 
-export const PreviewNode = ({ url, posterImage, angle, radius, delayStart }: PreviewNodeProps) => {
-  const [showVideo, setShowVideo] = useState(false);
+export const PreviewNode = memo(({ url, posterImage, angle, radius, delayStart }: PreviewNodeProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const rad = (angle * Math.PI) / 180;
   const x = Math.cos(rad) * radius;
   const y = Math.sin(rad) * radius;
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowVideo(true);
-    }, delayStart + 300);
-    return () => clearTimeout(timer);
-  }, [delayStart]);
+  const isImage = url.match(/\.(jpeg|jpg|gif|png|webp|svg)$/i);
 
   return (
     <motion.div
@@ -76,43 +69,49 @@ export const PreviewNode = ({ url, posterImage, angle, radius, delayStart }: Pre
         left: `calc(50% - 64px + ${x}px)`,
       }}
     >
-      {/* Background Halftone for manga feel */}
-      <div className="absolute inset-0 halftone opacity-10 pointer-events-none" />
-      
-      {!showVideo && (
-        <img
+      {/* Background Poster (Acts as a blurry low-res placeholder) */}
+      <div className="absolute inset-0 z-0">
+        <Image
           src={posterImage}
-          alt="Preview"
-          className="w-full h-full object-cover grayscale opacity-40 blur-[1px]"
+          alt="Placeholder"
+          fill
+          className="object-cover grayscale opacity-20 blur-[2px]"
+          unoptimized={posterImage.startsWith("/")}
         />
-      )}
-      {showVideo && (
-        <>
-          {url.match(/\.(jpeg|jpg|gif|png|webp)$/i) ? (
-            <img
-              src={url}
-              alt="Preview"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <video
-              ref={videoRef}
-              src={url}
-              className="w-full h-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-            />
-          )}
-        </>
-      )}
+      </div>
+
+      {/* Background Halftone for manga feel */}
+      <div className="absolute inset-0 halftone opacity-10 pointer-events-none z-1" />
+      
+      <div className="relative w-full h-full z-10">
+        {isImage ? (
+          <Image
+            src={url}
+            alt="Preview"
+            fill
+            className="object-cover"
+            unoptimized={url.startsWith("/")}
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            src={url}
+            className="w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        )}
+      </div>
       
       {/* Decorative manga speed lines */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20 bg-[linear-gradient(45deg,transparent_45%,var(--manga-ink)_50%,transparent_55%)] bg-[length:10px_10px] transition-colors" />
-      <div className="absolute bottom-1 right-1 bg-manga-paper border-2 border-manga-ink text-manga-ink px-1 text-[8px] font-black uppercase transition-colors">
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20 bg-[linear-gradient(45deg,transparent_45%,var(--manga-ink)_50%,transparent_55%)] bg-[length:10px_10px] transition-colors z-20" />
+      <div className="absolute bottom-1 right-1 bg-manga-paper border-2 border-manga-ink text-manga-ink px-1 text-[8px] font-black uppercase transition-colors z-20">
         ZOOM
       </div>
     </motion.div>
   );
-};
+});
+
+PreviewNode.displayName = "PreviewNode";

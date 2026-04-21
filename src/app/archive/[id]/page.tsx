@@ -1,38 +1,75 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, User, ArrowLeft, Layers, BookOpen } from "lucide-react";
+import { X, User, ArrowLeft, Layers, BookOpen, MessageSquare, Send, Quote, Sparkle, ShieldAlert } from "lucide-react";
 import { useState, use, useEffect } from "react";
-import { MOCK_ANIME } from "@/data/mockAnime";
-import { getCharactersForAnime } from "@/data/characterRegistry";
+import { useSession } from "next-auth/react";
+import { Anime } from "@/data/mockAnime";
+import { getCharactersForAnime, getAnimeById, submitArchiveLog, getArchiveLogs } from "@/app/actions";
 import { Character } from "@/data/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function ArchivePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const { data: session } = useSession();
   const router = useRouter();
   const [selectedCharIdx, setSelectedCharIdx] = useState(0);
   const [characters, setCharacters] = useState<Character[]>([]);
+  const [anime, setAnime] = useState<Anime | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  const anime = MOCK_ANIME.find(a => a.id === id);
+  // Review Stats
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [newLogContent, setNewLogContent] = useState("");
+  const [newLogRating, setNewLogRating] = useState(10);
+  const [isSubmittingLog, setIsSubmittingLog] = useState(false);
 
   useEffect(() => {
     async function loadData() {
       if (id) {
         setIsLoading(true);
-        const data = await getCharactersForAnime(id);
-        setCharacters(data);
-        setIsLoading(false);
+        try {
+          const [animeData, charData, reviewData] = await Promise.all([
+            getAnimeById(id),
+            getCharactersForAnime(id),
+            getArchiveLogs(id)
+          ]);
+          setAnime(animeData);
+          setCharacters(charData);
+          setReviews(reviewData);
+        } catch (error) {
+          console.error("Failed to load archive data:", error);
+        } finally {
+          setIsLoading(false);
+        }
       }
     }
     loadData();
   }, [id]);
 
-  const selectedChar = characters[selectedCharIdx];
+  const handleSubmitLog = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newLogContent.trim() || isSubmittingLog) return;
 
-  if (!anime || (!isLoading && characters.length === 0)) {
+    setIsSubmittingLog(true);
+    const result = await submitArchiveLog(id, { content: newLogContent, rating: newLogRating });
+    setIsSubmittingLog(false);
+
+    if (result.success) {
+      setNewLogContent("");
+      // Refresh logs
+      const updatedLogs = await getArchiveLogs(id);
+      setReviews(updatedLogs);
+    } else {
+      alert(result.error);
+    }
+  };
+
+  const selectedChar = characters[selectedCharIdx];
+  const isAdmin = (session?.user as any)?.role === 'admin';
+
+  if (!isLoading && (!anime || characters.length === 0)) {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center p-8">
         <h1 className="text-white text-4xl font-black uppercase italic mb-8">404: ARCHIVE LOST</h1>
@@ -81,7 +118,7 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
             </div>
             <div>
               <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tighter italic leading-none">THE ARCHIVE</h1>
-              <p className="text-[10px] sm:text-xs font-bold opacity-50 uppercase tracking-widest">{anime.title}</p>
+              <p className="text-[10px] sm:text-xs font-bold opacity-50 uppercase tracking-widest">{anime!.title}</p>
             </div>
           </div>
         </div>
@@ -91,7 +128,7 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
             SECURED DATABASE v2.0
           </div>
           <div className="text-xs font-black uppercase tracking-tighter opacity-30 italic">
-            Entry Code: 0X-{anime.id.toUpperCase()}
+            Entry Code: 0X-{anime!.id.toUpperCase()}
           </div>
         </div>
       </header>
@@ -169,7 +206,7 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
               animate={{ opacity: 1, x: 0, scale: 1, skewY: 0 }}
               exit={{ opacity: 0, x: -50, scale: 0.95, skewY: -1 }}
               transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-              className="grid grid-cols-1 xl:grid-cols-2 gap-16 items-start"
+              className="grid grid-cols-1 xl:grid-cols-2 gap-16 items-start mb-32"
             >
               {!selectedChar ? (
                 <div className="col-span-full py-20 text-center border-4 border-dashed border-black">
@@ -282,7 +319,7 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
                   
                   <div className="relative z-10">
                     <div className="flex items-center gap-4 mb-8">
-                      <motion.div 
+                       <motion.div 
                         whileHover={{ scale: 1.1, rotate: 15 }}
                         className="bg-black p-2 rotate-[5deg] cursor-pointer"
                       >
@@ -441,10 +478,160 @@ export default function ArchivePage({ params }: { params: Promise<{ id: string }
                   </motion.div>
                   </div>
                 </div>
-              </>
-            )}
+                </>
+              )}
             </motion.div>
           </AnimatePresence>
+
+          {/* NEW: THE ARCHIVE LOGS (Review System) */}
+          <section className="mt-20 pt-20 border-t-[8px] border-black relative">
+             <div className="flex items-center justify-between mb-12">
+                <div className="flex items-center gap-6">
+                  <div className="bg-black p-4 rotate-[-3deg] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                    <MessageSquare className="text-white w-10 h-10" />
+                  </div>
+                  <div>
+                    <h2 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter italic">Archive <span className="bg-black text-white px-2">Logs</span></h2>
+                    <p className="text-xs font-black uppercase opacity-40 tracking-widest leading-none mt-2">Community Linkage & Intel Reports</p>
+                  </div>
+                </div>
+                
+                {isAdmin && (
+                   <div className="hidden md:flex items-center gap-2 bg-blue-500 text-white px-4 py-2 border-4 border-black font-black uppercase italic text-xs shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                      <ShieldAlert className="w-4 h-4 animate-pulse" />
+                      Beta Access Active
+                   </div>
+                )}
+             </div>
+
+             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                {/* Submit New Log (Admin Only for now) */}
+                {isAdmin && (
+                  <div className="lg:col-span-12 xl:col-span-4 order-last xl:order-first">
+                    <div className="bg-white border-[6px] border-black p-8 shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] sticky top-32">
+                        <h4 className="text-2xl font-black uppercase italic mb-8 border-b-6 border-black pb-2 flex items-center justify-between">
+                           Forge New Log
+                           <Sparkle className="w-6 h-6 animate-spin-slow" />
+                        </h4>
+                        <form onSubmit={handleSubmitLog} className="space-y-8">
+                           <div>
+                              <label className="block text-[10px] font-black uppercase opacity-40 mb-2">Detailed Intel (Review)</label>
+                              <textarea 
+                                value={newLogContent}
+                                onChange={(e) => setNewLogContent(e.target.value)}
+                                placeholder="REPORT FINDINGS..."
+                                className="w-full bg-gray-50 border-4 border-black p-4 min-h-[200px] text-lg font-bold focus:outline-none focus:bg-white placeholder:opacity-20 transition-all font-geist-sans"
+                              />
+                           </div>
+                           <div>
+                              <label className="block text-[10px] font-black uppercase opacity-40 mb-2">Power Level (1-10)</label>
+                              <div className="flex items-center gap-4">
+                                <input 
+                                  type="range" 
+                                  min="1" 
+                                  max="10" 
+                                  value={newLogRating}
+                                  onChange={(e) => setNewLogRating(parseInt(e.target.value))}
+                                  className="flex-1 accent-black h-4 cursor-pointer"
+                                />
+                                <span className="text-4xl font-black italic bg-black text-white px-4 py-1">{newLogRating}</span>
+                              </div>
+                           </div>
+                           <motion.button 
+                              whileHover={{ scale: 1.02, x: 4 }}
+                              whileTap={{ scale: 0.98 }}
+                              disabled={isSubmittingLog}
+                              className="w-full py-4 bg-black text-white border-4 border-black text-xl font-black uppercase italic shadow-[8px_8px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-none transition-all flex items-center justify-center gap-4 group"
+                           >
+                              {isSubmittingLog ? "DECRYPTING..." : (
+                                <>
+                                  <Send className="w-6 h-6 group-hover:-rotate-45 transition-transform" />
+                                  Commit Log
+                                </>
+                              )}
+                           </motion.button>
+                        </form>
+                    </div>
+                  </div>
+                )}
+
+                {/* Log List */}
+                <div className={`lg:col-span-12 xl:col-span-${isAdmin ? '8' : '12'} space-y-12`}>
+                   {reviews.length === 0 ? (
+                      <div className="py-20 text-center border-4 border-dashed border-black/20 bg-gray-50/50">
+                         <Quote className="w-16 h-16 text-black/5 mx-auto mb-4" />
+                         <p className="text-xl font-black uppercase italic opacity-20">The Archive is currently silent. No logs detected.</p>
+                      </div>
+                   ) : (
+                      <div className="grid grid-cols-1 gap-12">
+                        {reviews.map((log: any, idx: number) => (
+                           <motion.div 
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              key={log._id}
+                              className="relative group lg:max-w-3xl"
+                           >
+                              {/* Background "Stack of Letters" decorative layering */}
+                              <div className="absolute inset-0 bg-black translate-x-3 translate-y-3 -z-10" />
+                              <div className="absolute inset-0 bg-white border-6 border-black translate-x-1 translate-y-1 -z-10" />
+                              
+                              <div className="bg-white border-6 border-black p-8 md:p-12 relative overflow-hidden">
+                                 <div className="absolute top-0 right-0 p-4 rotate-12 opacity-5 pointer-events-none">
+                                    <MessageSquare className="w-32 h-32" />
+                                 </div>
+
+                                 {/* Log Header */}
+                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 border-b-4 border-black pb-6">
+                                    <div className="flex items-center gap-4">
+                                       <div className="w-16 h-16 bg-black flex-shrink-0 relative overflow-hidden group-hover:rotate-6 transition-transform">
+                                          {log.userId?.profileImage ? (
+                                             <img src={log.userId.profileImage} alt="" className="w-full h-full object-cover grayscale" />
+                                          ) : (
+                                             <div className="w-full h-full flex items-center justify-center"><User className="text-white w-8 h-8" /></div>
+                                          )}
+                                       </div>
+                                       <div>
+                                          <h5 className="text-2xl font-black uppercase italic tracking-tighter leading-none">{log.userId?.username}</h5>
+                                          <div className="flex items-center gap-2 mt-1">
+                                             <span className="text-[10px] font-black uppercase opacity-40">Trust Level</span>
+                                             <div className="bg-black text-white px-2 py-0.5 text-[10px] font-black">{log.userId?.trustLevel || 1}</div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div className="flex items-center gap-4">
+                                       <div className="text-right hidden md:block">
+                                          <p className="text-[10px] font-black uppercase opacity-40">Detection Date</p>
+                                          <p className="text-xs font-black uppercase italic">{new Date(log.createdAt).toLocaleDateString()}</p>
+                                       </div>
+                                       <div className="bg-black text-white px-6 py-2 rotate-[-2deg] font-black italic shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]">
+                                          PL: {log.rating}
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                 {/* Log Content */}
+                                 <div className="relative">
+                                    <Quote className="absolute -left-6 -top-4 w-12 h-12 text-black/5 -z-10" />
+                                    <p className="text-xl md:text-2xl font-bold leading-relaxed uppercase italic">
+                                       "{log.content}"
+                                    </p>
+                                 </div>
+
+                                 {/* Ink Stamp Deco */}
+                                 <div className="mt-8 flex justify-end">
+                                    <div className="border-4 border-red-500 text-red-500 px-4 py-1 rotate-[15deg] font-black uppercase text-xs opacity-40 border-double">
+                                       ARCHIVE VERIFIED
+                                    </div>
+                                 </div>
+                              </div>
+                           </motion.div>
+                        ))}
+                      </div>
+                   )}
+                </div>
+             </div>
+          </section>
         </main>
       </div>
     </div>
