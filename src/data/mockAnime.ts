@@ -516,24 +516,33 @@ export const MOCK_ANIME: Anime[] = [
     title: "Mob Psycho 100",
     description: "Shigeo 'Mob' Kageyama is a powerful esper who tries to suppress his emotions. He navigates middle school while dealing with supernatural threats.",
     categories: ["Action", "Comedy", "Supernatural"],
-    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21507-6YUSbh2m0N1p.jpg",
+    posterImage: "/assets/mob psycho 100/1.jpg",
     trailerUrl: "https://www.youtube.com/embed/mV39saBlBLI?autoplay=1&mute=1",
     openings: [
-      { title: "Opening 1: 99", url: "https://www.youtube.com/embed/vTvKn-S6S8w?autoplay=1&mute=1" }
+      { title: "Opening 1", url: "https://www.youtube.com/embed/FuKhBIoVuSg?autoplay=1&mute=1" }
     ],
-    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/21507-Qx8bGsLXUgLo.jpg"],
+    previews: [
+      "/assets/mob psycho 100/2.jpg",
+      "/assets/mob psycho 100/3.jpg",
+      "/assets/mob psycho 100/4.jpg"
+    ],
+    hasArchive: true,
   },
   {
     id: "your-name",
     title: "Kimi no Na wa.",
     description: "Mitsuha and Taki are two strangers who suddenly start swapping bodies, forging a bond that transcends space and time.",
     categories: ["Drama", "Romance", "Supernatural"],
-    posterImage: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21511-8UR7r9MNVpz2.jpg",
+    posterImage: "/assets/kimi no na wa/1.jpg",
     trailerUrl: "https://www.youtube.com/embed/NooIc3dMncc?autoplay=1&mute=1",
     openings: [
       { title: "Zenzenzense", url: "https://www.youtube.com/embed/Z0o9eXQ9w64?autoplay=1&mute=1" }
     ],
-    previews: ["https://s4.anilist.co/file/anilistcdn/media/anime/banner/21511-MhlCoeqnODso.jpg"],
+    previews: [
+      "/assets/kimi no na wa/2.jpg",
+      "/assets/kimi no na wa/3.jpg",
+      "/assets/kimi no na wa/4.jpg"
+    ],
   },
   {
     id: "silent-voice",
