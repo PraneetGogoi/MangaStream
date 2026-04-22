@@ -10,6 +10,26 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'static.wikia.nocookie.net',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.alphacoders.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'uploads.mangadex.org',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.imgur.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'mangadex.org',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.mangadex.org',
+      },
     ],
   },
   experimental: {

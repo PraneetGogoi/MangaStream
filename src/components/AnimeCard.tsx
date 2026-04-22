@@ -11,13 +11,15 @@ import Image from "next/image";
 import { Bookmark, CheckCircle2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { toggleWatchlist, isAnimeInWatchlist, trackCardInteraction, generateGlimpse } from "@/app/actions";
-import { Activity, ShieldCheck, Zap, Brain, Target, Layers } from "lucide-react";
+import { Activity, ShieldCheck, Zap, Brain, Target, Layers, Music, X, Play } from "lucide-react";
+import Link from "next/link";
 
 interface AnimeCardProps {
   anime: Anime & { telemetry?: { views: number } };
   syncRate?: number;
   onOpenVideo: (anime: Anime, videoUrl: string, videoLabel: string) => void;
   onOpenManga: (anime: Anime) => void;
+  onOpenPlayer: (anime: any, episode: any) => void;
 }
 
 const containerVariants = {
@@ -47,12 +49,16 @@ const containerVariants = {
   },
 };
 
-export const AnimeCard = memo(({ anime, syncRate, onOpenVideo, onOpenManga }: AnimeCardProps) => {
+export const AnimeCard = memo(({ anime, syncRate, onOpenVideo, onOpenManga, onOpenPlayer }: AnimeCardProps) => {
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isOpeningSelectorOpen, setIsOpeningSelectorOpen] = useState(false);
   const [glimpseText, setGlimpseText] = useState(anime.glimpse || "");
+  const [showEpisodes, setShowEpisodes] = useState(false);
+  const [showCharacters, setShowCharacters] = useState(false);
+  const [characters, setCharacters] = useState<any[]>([]);
+  const [loadingChars, setLoadingChars] = useState(false);
   const hasTracked = useRef(false);
 
   // Motion values for 3D tilt
@@ -108,6 +114,18 @@ export const AnimeCard = memo(({ anime, syncRate, onOpenVideo, onOpenManga }: An
       } else {
         onOpenVideo(anime, anime.trailerUrl, "OFFICIAL TRAILER");
       }
+    }
+  };
+
+  const handleOpenCharacters = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowCharacters(true);
+    if (characters.length === 0) {
+      setLoadingChars(true);
+      const { getCharactersForAnime } = await import("@/app/actions");
+      const data = await getCharactersForAnime(anime.id);
+      setCharacters(data);
+      setLoadingChars(false);
     }
   };
 
@@ -415,40 +433,148 @@ export const AnimeCard = memo(({ anime, syncRate, onOpenVideo, onOpenManga }: An
                 whileTap={{ scale: 0.95 }}
                 onClick={(e) => {
                   e.stopPropagation();
-                  onOpenVideo(anime, anime.trailerUrl, "OFFICIAL TRAILER");
+                  onOpenVideo(anime, anime.trailerUrl, "EPISODE 01");
                 }}
-                className="w-full py-3 bg-manga-ink text-manga-paper border-[4px] border-manga-ink font-black uppercase transition-colors shadow-[6px_6px_0px_1px_var(--manga-shadow-color)]"
+                className="w-full py-4 bg-manga-ink text-manga-paper border-[4px] border-manga-ink font-black uppercase italic text-lg shadow-[6px_6px_0px_0px_var(--manga-shadow-color)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all flex items-center justify-center gap-3"
               >
-                WATCH TRAILER
-              </motion.button>
-              
-              <motion.button 
-                whileHover={{ y: -4, scale: 1.02, transition: { type: "spring", stiffness: 400, damping: 10 } }}
-                whileTap={{ scale: 0.95 }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsOpeningSelectorOpen(true);
-                }}
-                className="w-full py-3 bg-manga-paper text-manga-ink border-[4px] border-manga-ink font-black uppercase transition-colors shadow-[6px_6px_0px_0px_var(--manga-shadow-color)]"
-              >
-                WATCH OPENING
+                <Zap className="w-6 h-6 fill-current" />
+                WATCH NOW (FREE)
               </motion.button>
 
-              {anime.hasArchive && (
+              <div className="grid grid-cols-3 gap-2">
                 <motion.button 
-                  whileHover={{ y: -4, scale: 1.02, transition: { type: "spring", stiffness: 400, damping: 10 } }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ y: -2 }}
                   onClick={(e) => {
                     e.stopPropagation();
-                    router.push(`/archive/${anime.id}`);
+                    setIsOpeningSelectorOpen(true);
                   }}
-                  className="w-full py-3 bg-manga-ink text-manga-paper border-[4px] border-manga-ink font-black uppercase transition-colors shadow-[6px_6px_0px_0px_var(--manga-shadow-color)] relative overflow-hidden group/archive"
+                  className="py-2 border-2 border-manga-ink font-black uppercase italic text-[8px] flex flex-col items-center justify-center gap-1 hover:bg-manga-ink hover:text-manga-paper transition-all"
                 >
-                  <div className="absolute inset-0 bg-manga-paper translate-x-full group-hover/archive:translate-x-0 transition-transform duration-300" />
-                  <span className="relative z-10 group-hover/archive:text-manga-ink transition-colors flex items-center justify-center gap-2">
-                    <User className="w-5 h-5" />
-                    THE ARCHIVE
-                  </span>
+                  <Music className="w-3 h-3" />
+                  MUSIC
+                </motion.button>
+                
+                <motion.button 
+                  whileHover={{ y: -2 }}
+                  onClick={handleOpenCharacters}
+                  className="py-2 border-2 border-manga-ink font-black uppercase italic text-[8px] flex flex-col items-center justify-center gap-1 hover:bg-manga-ink hover:text-manga-paper transition-all"
+                >
+                  <User className="w-3 h-3" />
+                  PERSONS
+                </motion.button>
+
+                <motion.button 
+                  whileHover={{ y: -2 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowEpisodes(true);
+                  }}
+                  className="py-2 border-2 border-manga-ink font-black uppercase italic text-[8px] flex flex-col items-center justify-center gap-1 hover:bg-manga-ink hover:text-manga-paper transition-all"
+                >
+                  <Layers className="w-3 h-3" />
+                  EPISODES
+                </motion.button>
+              </div>
+
+              {/* Episode Browser Overlay */}
+              <AnimatePresence>
+                {showEpisodes && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    className="absolute inset-0 z-50 bg-manga-paper p-6 flex flex-col"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="flex justify-between items-center mb-4 border-b-4 border-manga-ink pb-2">
+                      <h4 className="font-black uppercase italic text-lg">Episode Ledger</h4>
+                      <button onClick={() => setShowEpisodes(false)}><X className="w-6 h-6" /></button>
+                    </div>
+                    
+                    <div className="flex-1 overflow-y-auto space-y-2 custom-scrollbar">
+                      {anime.seasons?.map((s: any) => (
+                        <div key={s.number} className="space-y-1">
+                          <p className="text-[10px] font-black uppercase opacity-40">Season {s.number}</p>
+                          {s.episodes.map((ep: any) => (
+                            <button
+                              key={ep.number}
+                              onClick={() => onOpenPlayer(anime, { ...ep, season: s.number })}
+                              className="w-full p-2 border-2 border-transparent hover:border-manga-ink hover:bg-manga-ink/5 flex items-center justify-between group transition-all"
+                            >
+                              <span className="font-bold text-xs uppercase italic">{ep.number}. {ep.title}</span>
+                              <Play className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </button>
+                          ))}
+                        </div>
+                      ))}
+                      {(!anime.seasons || anime.seasons.length === 0) && (
+                        <div className="flex flex-col items-center justify-center h-full opacity-20">
+                          <Layers className="w-12 h-12 mb-2" />
+                          <p className="font-black uppercase italic text-center text-xs">No episodes archivated yet.</p>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Character Personnel Overlay */}
+              <AnimatePresence>
+                {showCharacters && (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="absolute inset-0 z-[60] bg-manga-ink text-manga-paper p-6 flex flex-col"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="flex justify-between items-center mb-4 border-b-4 border-manga-paper/20 pb-2">
+                      <h4 className="font-black uppercase italic text-lg">Personnel Registry</h4>
+                      <button onClick={() => setShowCharacters(false)}><X className="w-6 h-6" /></button>
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto custom-scrollbar space-y-4">
+                      {loadingChars ? (
+                        <div className="flex items-center justify-center h-full animate-pulse uppercase font-black italic">Decrypting Data...</div>
+                      ) : characters.length > 0 ? (
+                        characters.map((char) => (
+                          <Link 
+                            key={char._id || char.name} 
+                            href={`/characters/${char._id || encodeURIComponent(char.name)}`}
+                            className="flex gap-4 p-2 border-b-2 border-white/5 group hover:bg-white/5 transition-all cursor-pointer"
+                          >
+                            <div className="w-12 h-12 relative grayscale group-hover:grayscale-0 transition-all">
+                              <Image src={char.image} alt={char.name} fill className="object-cover" />
+                            </div>
+                            <div>
+                              <p className="font-black uppercase italic text-sm leading-none group-hover:translate-x-1 transition-transform">{char.name}</p>
+                              <p className="text-[10px] font-bold uppercase text-white/50">{char.role || "FIELD AGENT"}</p>
+                            </div>
+                          </Link>
+                        ))
+                      ) : (
+                        <div className="flex flex-col items-center justify-center h-full opacity-30">
+                          <Brain className="w-12 h-12 mb-2" />
+                          <p className="font-black uppercase italic text-center text-[10px]">No personnel files found.</p>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {anime.mangaChapters && anime.mangaChapters.length > 0 && (
+                <motion.button 
+                  whileHover={{ y: -2, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenManga(anime);
+                  }}
+                  className="w-full py-2 bg-red-500 text-white border-4 border-manga-ink font-black uppercase italic text-xs flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_var(--manga-shadow-color)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  READ MANGA
                 </motion.button>
               )}
             </div>

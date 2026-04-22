@@ -21,6 +21,9 @@ export const Navbar = () => {
 
   // Update search in URL
   useEffect(() => {
+    const currentS = searchParams.get("s") || "";
+    if (searchTerm === currentS) return;
+
     const timer = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());
       if (searchTerm) {
@@ -29,14 +32,20 @@ export const Navbar = () => {
         params.delete("s");
       }
       
-      // Only push if on home page or if search was active
-      if (pathname === "/" || params.get("s")) {
-        router.push(pathname + "?" + params.toString());
-      }
-    }, 300);
+      // If searching, always redirect to home page to show results
+      const targetPath = searchTerm ? (pathname.startsWith('/manga') ? '/manga' : '/') : pathname;
+      const newUrl = `${targetPath}${params.toString() ? "?" + params.toString() : ""}`;
+      router.push(newUrl, { scroll: false });
+    }, 500);
 
     return () => clearTimeout(timer);
   }, [searchTerm, pathname, router, searchParams]);
+
+  // Sync from URL only on mount or when moving between pages
+  useEffect(() => {
+    const s = searchParams.get("s") || "";
+    setSearchTerm(s);
+  }, [pathname]);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-manga-paper border-b-[6px] border-manga-ink p-4 transition-colors duration-300">
@@ -50,6 +59,22 @@ export const Navbar = () => {
             Manga<span className="bg-manga-ink text-manga-paper px-2 ml-1 transition-colors duration-300">Stream</span>
           </h1>
         </Link>
+
+        {/* Library Toggles */}
+        <div className="hidden lg:flex items-center bg-manga-ink/5 border-4 border-manga-ink p-1 rounded-lg">
+          <Link 
+            href="/"
+            className={`px-4 py-1.5 font-black uppercase italic text-xs transition-all ${pathname === '/' ? 'bg-manga-ink text-manga-paper shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]' : 'hover:bg-manga-ink/10'}`}
+          >
+            Anime
+          </Link>
+          <Link 
+            href="/manga"
+            className={`px-4 py-1.5 font-black uppercase italic text-xs transition-all ${pathname === '/manga' ? 'bg-manga-ink text-manga-paper shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]' : 'hover:bg-manga-ink/10'}`}
+          >
+            Manga
+          </Link>
+        </div>
 
         {/* Global Search Bar */}
         <div className="flex-1 max-w-xl mx-4">

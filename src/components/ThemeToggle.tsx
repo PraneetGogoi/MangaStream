@@ -12,15 +12,15 @@ export const ThemeToggle = ({ isDarkMode, toggleTheme }: ThemeToggleProps) => {
   return (
     <motion.button
       onClick={toggleTheme}
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       whileHover={{ 
         scale: 1.1, 
         rotate: isDarkMode ? -20 : 20,
         boxShadow: "0px 0px 20px var(--manga-shadow-glow)"
       }}
       whileTap={{ scale: 0.9 }}
-      className="fixed top-6 right-6 z-[200] p-4 bg-manga-ink text-manga-paper border-[4px] border-manga-ink shadow-[8px_8px_0px_0px_var(--manga-shadow-color)] hover:shadow-none transition-all flex items-center justify-center group"
+      className="fixed bottom-8 right-8 z-[200] p-4 bg-manga-ink text-manga-paper border-[4px] border-manga-ink shadow-[8px_8px_0px_0px_var(--manga-shadow-color)] hover:shadow-none transition-all flex items-center justify-center group"
       title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
     >
       <div className="relative w-8 h-8 flex items-center justify-center">

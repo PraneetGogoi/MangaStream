@@ -14,6 +14,7 @@ import { authOptions } from "@/lib/auth";
 import Notification from "@/models/Notification";
 import { pusherServer } from "@/lib/pusher";
 import mongoose from "mongoose";
+import Manga from "@/models/Manga";
 
 export async function getAllAnime() {
   try {
@@ -67,6 +68,40 @@ export async function getCharactersForAnime(animeId: string) {
     return [];
   } catch (error) {
     return [];
+  }
+}
+export async function getCharacterById(id: string) {
+  try {
+    await dbConnect();
+    console.log(`🔍 LOGGING: Seeking Character Archive ${id}`);
+    
+    let character;
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      character = await Character.findById(id).lean();
+    } else {
+      character = await Character.findOne({ name: id }).lean();
+    }
+    
+    if (!character) {
+      console.warn(`⚠️ LOGGING: Character ${id} not found in vault. Searching Mock Registry...`);
+      // Search all mock series for this character
+      const { CharacterRegistry } = await import("@/data/characterRegistry");
+      for (const seriesId in CharacterRegistry) {
+        const mockChars = await getMockCharacters(seriesId);
+        const mockMatch = mockChars.find(c => c.name === id || (c as any).id === id);
+        if (mockMatch) {
+          console.log(`✅ LOGGING: Found Mock Match for ${id} in ${seriesId}`);
+          return { ...mockMatch, animeId: seriesId, _id: id };
+        }
+      }
+      return null;
+    }
+    
+    console.log(`✅ LOGGING: Character ${character.name} archivated.`);
+    return JSON.parse(JSON.stringify(character));
+  } catch (error: any) {
+    console.error("❌ LOGGING: Character Retrieval Error:", error.message);
+    return null;
   }
 }
 
@@ -283,6 +318,42 @@ export async function upsertAnime(data: any) {
     // Return specific validation error if available
     const errorMsg = error.message || error.toString();
     return { error: errorMsg };
+  }
+}
+
+export async function ingestAnimeEpisodes(animeId: string, query: string) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user || (session.user as any).role !== "admin") {
+    return { error: "Administrative privileges required" };
+  }
+
+  try {
+    await dbConnect();
+    console.log(`📡 Searching for Anime Artifact: ${query}`);
+
+    // Simulated ingestion from a provider (e.g. Consumet/Gogo)
+    // In a real scenario, this would fetch from an API
+    const seasons = [
+      {
+        number: 1,
+        episodes: Array.from({ length: 12 }, (_, i) => ({
+          number: i + 1,
+          title: `Episode ${i + 1}`,
+          url: `https://vidsrc.me/embed/anime/${animeId}/1/${i + 1}`
+        }))
+      }
+    ];
+
+    await Anime.findOneAndUpdate(
+      { id: animeId },
+      { seasons, hasArchive: true },
+      { upsert: true }
+    );
+
+    return { success: true, seasons: seasons.length, episodes: seasons[0].episodes.length };
+  } catch (error: any) {
+    console.error("❌ Anime Ingestion Error:", error);
+    return { error: error.message };
   }
 }
 
@@ -563,7 +634,8 @@ export async function getEngagementAnalytics() {
       trending,
       signals,
       totalUsers: await User.countDocuments(),
-      totalLogs: await Review.countDocuments()
+      totalLogs: await Review.countDocuments(),
+      totalManga: await Manga.countDocuments()
     };
   } catch (error: any) {
     console.error("❌ Leyline Analysis Error:", error);
@@ -772,7 +844,7 @@ export async function getPersonalizedAffinities() {
     }
 
     const user = await User.findById(userId).lean();
-    if (!user || !user.watchlist || user.watchlist.length === 0) {
+    if (!user) {
       return {};
     }
 
@@ -784,13 +856,36 @@ export async function getPersonalizedAffinities() {
       "Queued Artifact": 1
     };
 
-    for (const entry of user.watchlist) {
-      const animeObj = allAnime.find((a: any) => a.id === entry.animeId);
-      if (animeObj && animeObj.categories) {
-        const weight = statusWeights[entry.status] || 1;
-        animeObj.categories.forEach((cat: string) => {
-          genreSoul[cat] = (genreSoul[cat] || 0) + weight;
-        });
+    if (user.watchlist && user.watchlist.length > 0) {
+      for (const entry of user.watchlist) {
+        const animeObj = allAnime.find((a: any) => a.id === entry.animeId);
+        if (animeObj && animeObj.categories) {
+          const weight = statusWeights[entry.status] || 1;
+          animeObj.categories.forEach((cat: string) => {
+            genreSoul[cat] = (genreSoul[cat] || 0) + weight;
+          });
+        }
+      }
+    }
+
+    // Incorporate Manga 'Genre Soul' fragments
+    if (user.mangaList && user.mangaList.length > 0) {
+      const allManga = await Manga.find({}).lean();
+      const mangaStatusWeights: Record<string, number> = {
+        "Reading": 3,
+        "Completed": 2,
+        "Plan to Read": 1,
+        "Dropped": 0.5
+      };
+
+      for (const entry of user.mangaList) {
+        const mangaObj = allManga.find((m: any) => m.id === entry.mangaId);
+        if (mangaObj && mangaObj.categories) {
+          const weight = mangaStatusWeights[entry.status] || 1;
+          mangaObj.categories.forEach((cat: string) => {
+            genreSoul[cat] = (genreSoul[cat] || 0) + weight;
+          });
+        }
       }
     }
 
@@ -798,18 +893,22 @@ export async function getPersonalizedAffinities() {
     const finalAffinities: Record<string, number> = {};
     const soulTotal = Object.values(genreSoul).reduce((a, b) => a + b, 0);
 
-    allAnime.forEach((anime: any) => {
-      let score = 0;
-      anime.categories.forEach((cat: string) => {
-        if (genreSoul[cat]) {
-          score += genreSoul[cat];
+    if (allAnime && allAnime.length > 0) {
+      allAnime.forEach((anime: any) => {
+        let score = 0;
+        if (anime.categories) {
+          anime.categories.forEach((cat: string) => {
+            if (genreSoul[cat]) {
+              score += genreSoul[cat];
+            }
+          });
         }
-      });
 
-      // Normalize to a 0-100% Sync Rate, with a healthy baseline (min 40%)
-      const syncPercentage = soulTotal > 0 ? (score / soulTotal) * 100 : 50;
-      finalAffinities[anime.id] = Math.min(Math.floor(syncPercentage + 40), 99); 
-    });
+        // Normalize to a 0-100% Sync Rate, with a healthy baseline (min 40%)
+        const syncPercentage = soulTotal > 0 ? (score / soulTotal) * 100 : 50;
+        finalAffinities[anime.id] = Math.min(Math.floor(syncPercentage + 40), 99); 
+      });
+    }
 
     return finalAffinities;
   } catch (error) {

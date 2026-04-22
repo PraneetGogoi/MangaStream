@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CustomCursor } from "@/components/CustomCursor";
 import { MangaLoader } from "@/components/MangaLoader";
+import Script from "next/script";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +24,6 @@ export const metadata: Metadata = {
 import { AuthProvider } from "@/components/AuthProvider";
 import { Navbar } from "@/components/Navbar";
 import { PulseProvider } from "@/components/PulseProvider";
-import Script from "next/script";
 
 export default function RootLayout({
   children,

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, BookOpen, Layers } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Anime } from "@/data/mockAnime";
+import { getMangaChapterPages } from "@/app/manga-actions";
 
 interface MangaReaderProps {
   anime: Anime;
@@ -12,17 +13,39 @@ interface MangaReaderProps {
 
 export const MangaReader = ({ anime, onClose }: MangaReaderProps) => {
   const [currentChapterIdx, setCurrentChapterIdx] = useState(0);
+  const [pages, setPages] = useState<string[]>([]);
+  const [isLoadingPages, setIsLoadingPages] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  const currentChapter = anime.mangaChapters?.[currentChapterIdx];
-  const totalChapters = anime.mangaChapters?.length || 0;
+  // Support both Anime (mangaChapters) and Manga (chapters) structures
+  const chapters = (anime as any).chapters || (anime as any).mangaChapters || [];
+  const currentChapter = chapters[currentChapterIdx];
+  const totalChapters = chapters.length;
 
   useEffect(() => {
+    const fetchPages = async () => {
+      if (!currentChapter) return;
+      
+      // If chapter already has pages (mock data case), use them
+      if (currentChapter.pages && currentChapter.pages.length > 0) {
+        setPages(currentChapter.pages);
+        return;
+      }
+
+      // Otherwise fetch from vault
+      setIsLoadingPages(true);
+      const fetchedPages = await getMangaChapterPages((anime as any).id, currentChapter.id, anime.title);
+      setPages(fetchedPages);
+      setIsLoadingPages(false);
+    };
+
+    fetchPages();
+
     // Scroll to top when chapter changes
     if (containerRef.current) {
       containerRef.current.scrollTo(0, 0);
     }
-  }, [currentChapterIdx]);
+  }, [currentChapterIdx, currentChapter, (anime as any).id]);
 
   if (!currentChapter) return null;
 
@@ -104,25 +127,42 @@ export const MangaReader = ({ anime, onClose }: MangaReaderProps) => {
           </motion.div>
 
           {/* Manga Pages */}
-          {currentChapter.pages.map((pageUrl, idx) => (
-            <motion.div
-              key={`${currentChapter.id}-page-${idx}`}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
-              className="relative w-full border-[8px] border-black bg-white shadow-[15px_15px_0px_0px_rgba(0,0,0,0.3)] mb-4"
-            >
-              <img 
-                src={pageUrl} 
-                alt={`Page ${idx + 1}`} 
-                className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700" 
-              />
-              <div className="absolute bottom-4 right-4 bg-black text-white px-3 py-1 font-black text-[10px] uppercase">
-                P. {idx + 1}
-              </div>
-            </motion.div>
-          ))}
+          {isLoadingPages ? (
+            <div className="flex flex-col items-center py-20">
+              <div className="w-16 h-16 border-t-4 border-black border-solid rounded-full animate-spin mb-4" />
+              <p className="font-black uppercase italic animate-pulse">DECRYPTING ARCHIVAL LEDGER...</p>
+            </div>
+          ) : pages.length > 0 ? (
+            pages.map((pageUrl, idx) => (
+              <motion.div
+                key={`${currentChapter.id}-page-${idx}`}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6 }}
+                className="relative w-full mb-8 flex flex-col items-center"
+              >
+                <img 
+                  src={pageUrl} 
+                  alt={`Page ${idx + 1}`}
+                  className="max-w-full min-h-[400px] h-auto shadow-[15px_15px_0px_0px_rgba(0,0,0,1)] border-[4px] border-black transition-all hover:translate-x-1 hover:translate-y-1 bg-white object-contain"
+                  loading="lazy"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "https://placehold.co/600x800?text=DATA+CORRUPTED+OR+REDACTED";
+                  }}
+                />
+                <div className="absolute bottom-4 right-4 bg-black text-white px-3 py-1 font-black text-[10px] uppercase">
+                  P. {idx + 1}
+                </div>
+              </motion.div>
+            ))
+          ) : (
+            <div className="flex flex-col items-center py-20 border-[10px] border-black p-10 bg-white/10">
+               <BookOpen className="w-20 h-20 mb-4 opacity-20" />
+               <p className="font-black uppercase italic text-center">NO DATA FOUND FOR THIS CHAPTER IN VAULT.</p>
+            </div>
+          )}
 
           {/* End of Chapter Navigation */}
           <div className="w-full flex flex-col items-center py-20 gap-8">
@@ -150,7 +190,7 @@ export const MangaReader = ({ anime, onClose }: MangaReaderProps) => {
       </div>
 
       {/* Floating Side Nav (Mobile) */}
-      <div className="sm:hidden fixed bottom-8 right-8 flex flex-col gap-4 z-[100]">
+      <div className="sm:hidden fixed bottom-32 right-8 flex flex-col gap-4 z-[100]">
         <button 
           onClick={() => setCurrentChapterIdx(prev => Math.max(0, prev - 1))}
           className="bg-white border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:scale-90 transition-transform"

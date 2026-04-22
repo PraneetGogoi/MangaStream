@@ -16,6 +16,14 @@ export interface IAnime extends Document {
   }[];
   hasArchive?: boolean;
   glimpse?: string;
+  seasons?: {
+    number: number;
+    episodes: {
+      number: number;
+      title: string;
+      url: string;
+    }[];
+  }[];
   telemetry?: {
     views: number;
     watchlistAdds: number;
@@ -41,6 +49,14 @@ const AnimeSchema: Schema = new Schema({
   }],
   hasArchive: { type: Boolean, default: false },
   glimpse: { type: String },
+  seasons: [{
+    number: { type: Number, required: true },
+    episodes: [{
+      number: { type: Number, required: true },
+      title: { type: String, required: true },
+      url: { type: String, required: true }
+    }]
+  }],
   telemetry: {
     views: { type: Number, default: 0 },
     watchlistAdds: { type: Number, default: 0 }

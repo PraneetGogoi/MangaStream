@@ -14,6 +14,7 @@ import { useSearchParams } from "next/navigation";
 const TrailerModal = dynamic(() => import("@/components/TrailerModal").then(mod => mod.TrailerModal));
 const LandingPage = dynamic(() => import("@/components/LandingPage").then(mod => mod.LandingPage));
 const MangaReader = dynamic(() => import("@/components/MangaReader").then(mod => mod.MangaReader));
+const AnimePlayer = dynamic(() => import("@/components/AnimePlayer").then(mod => mod.AnimePlayer));
 
 function HomeContent() {
   const [showLanding, setShowLanding] = useState(true);
@@ -24,6 +25,8 @@ function HomeContent() {
   const [selectedMangaAnime, setSelectedMangaAnime] = useState<Anime | null>(null);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
   const [selectedVideoLabel, setSelectedVideoLabel] = useState("");
+  const [playingEpisode, setPlayingEpisode] = useState<any>(null);
+  const [playingAnime, setPlayingAnime] = useState<any>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [animeData, setAnimeData] = useState<Anime[]>([]);
   const [affinities, setAffinities] = useState<Record<string, number>>({});
@@ -87,6 +90,11 @@ function HomeContent() {
     setSelectedMangaAnime(anime);
   }, []);
 
+  const handleOpenPlayer = useCallback((anime: any, episode: any) => {
+    setPlayingAnime(anime);
+    setPlayingEpisode(episode);
+  }, []);
+
   const filteredAnime = useMemo(() => {
     if (!searchTerm) return animeData;
     return animeData.filter(
@@ -144,9 +152,10 @@ function HomeContent() {
                     <AnimeCard
                       key={anime.id}
                       anime={anime}
-                      syncRate={affinities[anime.id]}
+                      syncRate={affinities[anime.id] || 0}
                       onOpenVideo={handleOpenVideo}
                       onOpenManga={handleOpenManga}
+                      onOpenPlayer={handleOpenPlayer}
                     />
                   ))}
                 </div>
@@ -174,6 +183,17 @@ function HomeContent() {
             key={`manga-${selectedMangaAnime.id}`}
             anime={selectedMangaAnime}
             onClose={() => setSelectedMangaAnime(null)}
+          />
+        )}
+
+        {playingAnime && playingEpisode && (
+          <AnimePlayer
+            anime={playingAnime}
+            initialEpisode={playingEpisode}
+            onClose={() => {
+              setPlayingAnime(null);
+              setPlayingEpisode(null);
+            }}
           />
         )}
       </AnimatePresence>
