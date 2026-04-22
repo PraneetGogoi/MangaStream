@@ -1,4 +1,5 @@
 export type Character = {
+  _id?: string;
   name: string;
   role: string;
   description: string;
@@ -27,6 +28,14 @@ export type Anime = {
   characters?: Character[];
   hasArchive?: boolean;
   glimpse?: string;
+  seasons?: {
+    number: number;
+    episodes: {
+      number: number;
+      title: string;
+      url: string;
+    }[];
+  }[];
   telemetry?: {
     views: number;
     watchlistAdds: number;
