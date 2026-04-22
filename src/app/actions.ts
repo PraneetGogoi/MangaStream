@@ -11,6 +11,9 @@ import Syndicate from "@/models/Syndicate";
 import User from "@/models/User";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import Notification from "@/models/Notification";
+import { pusherServer } from "@/lib/pusher";
+import mongoose from "mongoose";
 
 export async function getAllAnime() {
   try {
@@ -430,6 +433,42 @@ export async function submitArchiveLog(animeId: string, data: { content: string,
 
     await newReview.save();
 
+    // --- PULSE NOTIFICATION LOGIC ---
+    // Identify users who have this anime in their watchlist
+    const targetedUsers = await User.find({
+      "watchlist.animeId": animeId,
+      _id: { $ne: userId } // Don't notify the author
+    }).select("_id").lean();
+
+    if (targetedUsers.length > 0) {
+      const anime = await Anime.findOne({ id: animeId }).select("title").lean();
+      const archivist = await User.findById(userId).select("username").lean();
+
+      const notificationData = targetedUsers.map(u => ({
+        recipientId: u._id,
+        title: "PULSE DETECTED",
+        message: `High-Level Archivist ${archivist?.username} committed a log to ${anime?.title}`,
+        type: "archival_log",
+        animeId: animeId
+      }));
+
+      // Persist in DB
+      await Notification.insertMany(notificationData);
+
+      // Trigger Real-Time Pulse via Pusher
+      try {
+        for (const user of targetedUsers) {
+          await pusherServer.trigger(`user-${user._id}-notifications`, "pulse-ping", {
+            title: "PULSE DETECTED",
+            message: `New Archival Intel: ${anime?.title}`,
+            animeId: animeId
+          });
+        }
+      } catch (pusherErr) {
+        console.warn("⚠️ Pusher Transmission Failed (Credentials likely missing):", pusherErr);
+      }
+    }
+
     // Increment Trust Level (User Reputation)
     await User.findByIdAndUpdate(userId, { $inc: { trustLevel: 2 } });
 
@@ -807,5 +846,33 @@ export async function generateGlimpse(animeId: string) {
     return { glimpse: randomGlimpse };
   } catch (error) {
     return { error: "Oracle fail" };
+  }
+}
+export async function getNotifications() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) return [];
+
+  try {
+    await dbConnect();
+    const userId = (session.user as any).id;
+    const notifications = await Notification.find({ recipientId: userId })
+      .sort({ createdAt: -1 })
+      .limit(20)
+      .lean();
+    
+    return JSON.parse(JSON.stringify(notifications));
+  } catch (error) {
+    console.error("❌ Notification Retrieval Failure:", error);
+    return [];
+  }
+}
+
+export async function markNotificationRead(notificationId: string) {
+  try {
+    await dbConnect();
+    await Notification.findByIdAndUpdate(notificationId, { read: true });
+    return { success: true };
+  } catch (error) {
+    return { error: "Failed to update notification status." };
   }
 }

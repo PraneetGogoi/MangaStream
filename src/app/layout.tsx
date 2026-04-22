@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 
 import { AuthProvider } from "@/components/AuthProvider";
 import { Navbar } from "@/components/Navbar";
+import { PulseProvider } from "@/components/PulseProvider";
 import Script from "next/script";
 
 export default function RootLayout({
@@ -45,8 +46,10 @@ export default function RootLayout({
         <MangaLoader />
         <CustomCursor />
         <AuthProvider>
-          <Navbar />
-          {children}
+          <PulseProvider>
+            <Navbar />
+            {children}
+          </PulseProvider>
         </AuthProvider>
       </body>
     </html>

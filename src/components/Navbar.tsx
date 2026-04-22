@@ -1,7 +1,9 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Zap, LogIn, LogOut, Bookmark, UserCircle, Settings, Search, PlusCircle, Target } from "lucide-react";
+import { Zap, LogIn, LogOut, Bookmark, UserCircle, Settings, Search, PlusCircle, Target, Bell, Trash } from "lucide-react";
+import { usePulse } from "./PulseProvider";
+import { markNotificationRead } from "@/app/actions";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -13,7 +15,9 @@ export const Navbar = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   
+  const { notifications, unreadCount, refreshNotifications } = usePulse();
   const [searchTerm, setSearchTerm] = useState(searchParams.get("s") || "");
+  const [showNotifications, setShowNotifications] = useState(false);
 
   // Update search in URL
   useEffect(() => {
@@ -104,6 +108,81 @@ export const Navbar = () => {
                     <span className="hidden md:inline">Vault Control</span>
                   </Link>
                 )}
+
+                {/* Pulse Bell / Notifications */}
+                <div className="relative">
+                  <motion.button 
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setShowNotifications(!showNotifications)}
+                    className={`relative p-2 border-4 border-manga-ink transition-all ${unreadCount > 0 ? 'bg-red-500 text-white animate-pulse' : 'bg-manga-paper text-manga-ink hover:bg-manga-ink hover:text-manga-paper'}`}
+                  >
+                    <Bell className="w-5 h-5" />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-3 -right-3 bg-black text-white text-[10px] font-black px-1.5 py-0.5 border-2 border-white">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </motion.button>
+
+                  <AnimatePresence>
+                    {showNotifications && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        className="absolute right-0 mt-4 w-80 bg-manga-paper border-4 border-manga-ink p-4 shadow-[12px_12px_0px_0px_var(--manga-shadow-color)] z-[100]"
+                      >
+                        <h4 className="text-sm font-black uppercase italic border-b-4 border-manga-ink pb-2 mb-4 flex items-center justify-between">
+                          Archival Intel
+                          <span className="text-[10px] opacity-40 font-bold">SIGNAL v1.0</span>
+                        </h4>
+
+                        <div className="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar">
+                          {notifications.length === 0 ? (
+                            <div className="py-8 text-center opacity-30 italic font-bold">The Vault is silent...</div>
+                          ) : (
+                            notifications.map((n) => (
+                              <div 
+                                key={n._id} 
+                                className={`p-3 border-2 border-manga-ink/10 relative group ${!n.read ? 'bg-red-500/5 border-l-4 border-l-red-500' : ''}`}
+                              >
+                                <div className="flex justify-between items-start gap-2">
+                                  <p className="text-[10px] font-black uppercase tracking-tighter leading-tight flex-1">
+                                    {n.message}
+                                  </p>
+                                  {!n.read && (
+                                    <button 
+                                      onClick={async () => {
+                                        await markNotificationRead(n._id);
+                                        refreshNotifications();
+                                      }}
+                                      className="text-red-500 hover:scale-110 transition-all"
+                                    >
+                                      <Zap className="w-3 h-3 fill-current" />
+                                    </button>
+                                  )}
+                                </div>
+                                <div className="flex items-center justify-between mt-2">
+                                  <span className="text-[8px] font-mono opacity-40">{new Date(n.createdAt).toLocaleTimeString()}</span>
+                                  {n.animeId && (
+                                    <Link 
+                                      href={`/archive/${n.animeId}`}
+                                      onClick={() => setShowNotifications(false)}
+                                      className="text-[8px] font-black uppercase italic bg-manga-ink text-manga-paper px-2 py-0.5 hover:bg-red-500 transition-colors"
+                                    >
+                                      Jump to Archive
+                                    </Link>
+                                  )}
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
                 {/* User Profile / Logout */}
                 <div className="flex items-center gap-3">
