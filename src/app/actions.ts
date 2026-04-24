@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/mongoose";
 import Anime from "@/models/Anime";
 import Character from "../models/Character";
@@ -484,6 +485,29 @@ export async function uploadCharacterImage(formData: FormData) {
   } catch (error) {
     console.error("❌ Character Upload Error:", error);
     return { error: "Biometric forgery failed. Signal lost." };
+  }
+}
+
+export async function updateCharacterImageInDB(characterId: string, formData: FormData) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user || (session.user as any).role !== "admin") {
+    return { error: "Unauthorized access detected." };
+  }
+
+  try {
+    const uploadResult = await uploadCharacterImage(formData);
+    if (!uploadResult.success || !uploadResult.url) {
+      return { error: uploadResult.error || "Failed to process image." };
+    }
+
+    await dbConnect();
+    await Character.findByIdAndUpdate(characterId, { image: uploadResult.url });
+    
+    revalidatePath(`/characters/${characterId}`);
+    return { success: true, url: uploadResult.url };
+  } catch (error) {
+    console.error("❌ Character Inline Update Error:", error);
+    return { error: "Database transaction failed." };
   }
 }
 

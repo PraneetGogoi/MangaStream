@@ -4,6 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Shield, Zap, Target, Activity, FileText, Globe, Info } from "lucide-react";
 import { CharacterRegistry, getCharactersForAnime } from "@/data/characterRegistry";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import AdminCharacterUploader from "@/components/AdminCharacterUploader";
 
 
 export default async function CharacterPage({ params }: { params: Promise<{ id: string }> }) {
@@ -12,6 +15,9 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
   if (!char) notFound();
 
   const anime = await getAnimeById(char.animeId);
+  
+  const session = await getServerSession(authOptions);
+  const isAdmin = !!(session?.user && (session.user as any).role === "admin");
 
   return (
     <div className="min-h-screen bg-manga-paper text-manga-ink selection:bg-manga-ink selection:text-manga-paper p-4 md:p-8">
@@ -33,23 +39,12 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
       <main className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
         {/* Left Col: Portrait & Physicals */}
         <div className="lg:col-span-5 space-y-8">
-          <div className="relative aspect-[3/4] border-[12px] border-manga-ink shadow-[20px_20px_0px_0px_var(--manga-shadow-color)] group overflow-hidden bg-white">
-            <Image 
-              src={char.image} 
-              alt={char.name} 
-              fill 
-              className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105" 
-            />
-            
-            {/* Scanning Line Animation */}
-            <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-               <div className="w-full h-1 bg-red-500/50 absolute top-0 animate-[scan_3s_linear_infinite]" />
-            </div>
-
-            <div className="absolute bottom-4 left-4 bg-manga-ink text-manga-paper px-4 py-2 font-black uppercase italic text-xl -rotate-3 border-2 border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]">
-              PERSONNEL: ACTIVE
-            </div>
-          </div>
+          <AdminCharacterUploader 
+            characterId={char._id.toString()} 
+            imageUrl={char.image} 
+            characterName={char.name}
+            isAdmin={isAdmin} 
+          />
 
           {/* Technical Specifications Grid */}
           <div className="grid grid-cols-2 gap-4">
