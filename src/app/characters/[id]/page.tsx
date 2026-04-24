@@ -5,18 +5,6 @@ import Link from "next/link";
 import { ArrowLeft, Shield, Zap, Target, Activity, FileText, Globe, Info } from "lucide-react";
 import { CharacterRegistry, getCharactersForAnime } from "@/data/characterRegistry";
 
-export async function generateStaticParams() {
-  const allParams: { id: string }[] = [];
-  
-  for (const seriesId in CharacterRegistry) {
-    const chars = await getCharactersForAnime(seriesId);
-    for (const char of chars) {
-      allParams.push({ id: char.name });
-    }
-  }
-  
-  return allParams;
-}
 
 export default async function CharacterPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
