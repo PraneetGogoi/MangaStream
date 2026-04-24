@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏴‍☠️ MangaStream : The Ultimate Anime Vault
 
-## Getting Started
+![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)
+![Next.js](https://img.shields.io/badge/Next.js%2015-black?style=for-the-badge&logo=next.js)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 
-First, run the development server:
+A high-fidelity, dynamic, full-stack anime discovery and archival platform. Designed with a brutalist manga-inspired aesthetic, the system provides an immersive experience for tracking, logging, and discovering anime.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 🌐 **[Click here to view the Live Website](https://manga-stream-thpe.vercel.app/)**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚡ Core Features
+- **Dynamic Archival Vault**: High-performance database syncing through MongoDB Atlas.
+- **Admin Command Terminal**: A secure backend dashboard for High-Level Archivists to forge new anime records, upload preview galleries, and manage character registries.
+- **Personnel Registry**: Detailed character archives featuring Base64 image compression directly tied to the central database.
+- **Leyline Analytics**: Real-time engagement telemetry tracking watchlist pulses and archive logs.
+- **NextAuth Security**: Encrypted Matrix Keys and session handling.
+- **Manga Aesthetic**: High-contrast, monochromatic brutalism with interactive micro-animations.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
+- **Framework**: Next.js 15 (App Router)
+- **Database**: MongoDB (Mongoose)
+- **Authentication**: NextAuth.js
+- **Styling**: TailwindCSS & Framer Motion
+- **Hosting**: Vercel Serverless
 
-## Learn More
+## 🚀 Getting Started Locally
 
-To learn more about Next.js, take a look at the following resources:
+To run the Vault locally on your own machine:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up your `.env.local` file with the following keys:
+   ```env
+   MONGODB_URI=your_mongodb_connection_string
+   NEXTAUTH_SECRET=your_secret_key
+   ```
+4. Start the server:
+   ```bash
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*Authorized Personnel Only. Stay off the grid.*
