@@ -1,6 +1,6 @@
-export const dynamic = "force-static";
 import { NextResponse } from "next/server";
 import { migrateData } from "@/lib/migration";
+import dbConnect from "@/lib/mongoose";
 
 export async function GET() {
   try {

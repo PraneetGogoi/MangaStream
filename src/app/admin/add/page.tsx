@@ -8,7 +8,7 @@ import {
   Link as LinkIcon, Image as ImageIcon, Music, 
   CheckCircle2, ArrowLeft, Zap, Sparkles, UserPlus, Users
 } from "lucide-react";
-import { useSession } from "@/components/AuthProvider";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 

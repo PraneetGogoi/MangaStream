@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useSession } from "@/components/AuthProvider";
+import { useSession } from "next-auth/react";
 import { getPusherClient } from "@/lib/pusher";
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap, Bell, X } from "lucide-react";

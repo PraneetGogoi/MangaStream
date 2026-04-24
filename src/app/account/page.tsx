@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession } from "@/components/AuthProvider";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Settings, Save, Lock, AlertTriangle, ShieldCheck, ArrowLeft, Zap, Sparkles, X, Camera, Upload } from "lucide-react";

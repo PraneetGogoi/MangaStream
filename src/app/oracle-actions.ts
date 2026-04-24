@@ -1,5 +1,7 @@
 
 
+"use server";
+
 import { MOCK_ANIME } from "@/data/mockAnime";
 import { MOCK_MANGA } from "@/data/mockManga";
 

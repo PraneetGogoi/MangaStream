@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, memo } from "react";
 import { BookOpen, User, Hash, Star, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useSession } from "@/components/AuthProvider";
+import { useSession } from "next-auth/react";
 import { updateMangaReadingStatus } from "@/app/manga-actions";
 import { Activity, Target } from "lucide-react";
 

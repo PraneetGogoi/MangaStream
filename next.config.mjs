@@ -1,12 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  basePath: '/MangaStream',
-  env: {
-    NEXT_PUBLIC_BASE_PATH: '/MangaStream',
-  },
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',

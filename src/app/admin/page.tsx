@@ -5,7 +5,7 @@ import { getAllAnime, upsertAnime, deleteAnime, getCharactersForAnime, upsertCha
 import { Anime } from "@/data/mockAnime";
 import { motion, AnimatePresence } from "framer-motion";
 import { Settings, Plus, Edit, Trash2, X, Save, AlertTriangle, ShieldCheck, Link as LinkIcon, Image as ImageIcon, Music, CheckCircle2, Circle, UserPlus, Users, Upload, HardDrive, FilePlus, Loader2 } from "lucide-react";
-import { useSession } from "@/components/AuthProvider";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
-import { loginUser } from "../actions";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { Zap, ArrowRight, LogIn } from "lucide-react";
 
@@ -26,7 +26,14 @@ export default function LoginPage() {
     setError("");
 
     const formData = new FormData(e.currentTarget);
-    const result = await loginUser(formData);
+    const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
+
+    const result = await signIn("credentials", {
+      username,
+      password,
+      redirect: false,
+    });
 
     if (result?.error) {
       setError(result.error);
@@ -34,9 +41,7 @@ export default function LoginPage() {
     } else {
       router.push("/");
       router.refresh();
-      // Force a reload to update the AuthGuard state if needed, 
-      // though router.push("/") should trigger the useEffect in AuthGuard.
-      window.location.href = window.location.origin + "/MangaStream/";
+      window.location.href = window.location.origin + "/";
     }
   }
 

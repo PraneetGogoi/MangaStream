@@ -9,7 +9,7 @@ import { PreviewNode } from "./PreviewNode";
 import { OpeningSelector } from "./OpeningSelector";
 import Image from "next/image";
 import { Bookmark, CheckCircle2 } from "lucide-react";
-import { useSession } from "@/components/AuthProvider";
+import { useSession } from "next-auth/react";
 import { toggleWatchlist, isAnimeInWatchlist, trackCardInteraction, generateGlimpse } from "@/app/actions";
 import { Activity, ShieldCheck, Zap, Brain, Target, Layers, Music, X, Play } from "lucide-react";
 import Link from "next/link";

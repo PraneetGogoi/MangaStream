@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Zap, LogIn, LogOut, Bookmark, UserCircle, Settings, Search, PlusCircle, Target, Bell, Trash } from "lucide-react";
 import { usePulse } from "./PulseProvider";
 import { markNotificationRead } from "@/app/actions";
-import { useSession, signOut } from "@/components/AuthProvider";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
