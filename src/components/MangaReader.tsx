@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, BookOpen, Layers } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { getAssetPath } from "@/utils/path";
 import { Anime } from "@/data/mockAnime";
 import { getMangaChapterPages } from "@/app/manga-actions";
 
@@ -143,7 +144,7 @@ export const MangaReader = ({ anime, onClose }: MangaReaderProps) => {
                 className="relative w-full mb-8 flex flex-col items-center"
               >
                 <img 
-                  src={pageUrl} 
+                  src={getAssetPath(pageUrl)} 
                   alt={`Page ${idx + 1}`}
                   className="max-w-full min-h-[400px] h-auto shadow-[15px_15px_0px_0px_rgba(0,0,0,1)] border-[4px] border-black transition-all hover:translate-x-1 hover:translate-y-1 bg-white object-contain"
                   loading="lazy"

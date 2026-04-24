@@ -8,6 +8,7 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import { getAssetPath } from "@/utils/path";
 
 export const Navbar = () => {
   const { data: session } = useSession();
@@ -224,7 +225,7 @@ export const Navbar = () => {
                     <div className="w-8 h-8 rounded-full bg-manga-paper border-2 border-manga-ink overflow-hidden flex-shrink-0 ml-1">
                       {(session.user as any).profileImage ? (
                         <img 
-                          src={(session.user as any).profileImage} 
+                          src={getAssetPath((session.user as any).profileImage)} 
                           alt="" 
                           className="w-full h-full object-cover grayscale transition-all duration-300 group-hover:grayscale-0"
                         />

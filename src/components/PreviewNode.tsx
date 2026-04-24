@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState, memo } from "react";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
+import { getAssetPath } from "@/utils/path";
 
 interface PreviewNodeProps {
   url: string;
@@ -72,7 +73,7 @@ export const PreviewNode = memo(({ url, posterImage, angle, radius, delayStart }
       {/* Background Poster (Acts as a blurry low-res placeholder) */}
       <div className="absolute inset-0 z-0">
         <Image
-          src={posterImage}
+          src={getAssetPath(posterImage)}
           alt="Placeholder"
           fill
           className="object-cover grayscale opacity-20 blur-[2px]"
@@ -86,7 +87,7 @@ export const PreviewNode = memo(({ url, posterImage, angle, radius, delayStart }
       <div className="relative w-full h-full z-10">
         {isImage ? (
           <Image
-            src={url}
+            src={getAssetPath(url)}
             alt="Preview"
             fill
             className="object-cover"
@@ -95,7 +96,7 @@ export const PreviewNode = memo(({ url, posterImage, angle, radius, delayStart }
         ) : (
           <video
             ref={videoRef}
-            src={url}
+            src={getAssetPath(url)}
             className="w-full h-full object-cover"
             autoPlay
             muted

@@ -5,6 +5,18 @@ import { getCharactersForAnime as getMockCharacters } from "@/data/characterRegi
 const stubError = (msg: string): any => ({ success: false, error: msg || "Backend not available in static mode." });
 const stubSuccess = (data: any = {}): any => ({ success: true, ...data });
 
+// Helper for localStorage persistence in static mode
+const getStore = (key: string) => {
+  if (typeof window === "undefined") return [];
+  const data = localStorage.getItem(`manga_${key}`);
+  return data ? JSON.parse(data) : [];
+};
+
+const setStore = (key: string, data: any) => {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(`manga_${key}`, JSON.stringify(data));
+};
+
 export async function getAllAnime(): Promise<any> {
   return MOCK_ANIME;
 }
@@ -38,19 +50,38 @@ export async function registerUser(formData: FormData): Promise<any> {
 }
 
 export async function toggleWatchlist(animeId: string): Promise<any> {
-  return stubError("Watchlist disabled in static mode.");
+  const watchlist = getStore("watchlist");
+  const exists = watchlist.find((a: any) => a.id === animeId);
+  
+  let newWatchlist;
+  if (exists) {
+    newWatchlist = watchlist.filter((a: any) => a.id !== animeId);
+  } else {
+    const anime = MOCK_ANIME.find(a => a.id === animeId);
+    if (!anime) return stubError("Anime not found.");
+    newWatchlist = [...watchlist, { ...anime, watchlistStatus: "Queued Artifact" }];
+  }
+  
+  setStore("watchlist", newWatchlist);
+  return stubSuccess({ inWatchlist: !exists });
 }
 
 export async function updateWatchlistStatus(animeId: string, status: any): Promise<any> {
-  return stubError("Watchlist status disabled in static mode.");
+  const watchlist = getStore("watchlist");
+  const newWatchlist = watchlist.map((a: any) => 
+    a.id === animeId ? { ...a, watchlistStatus: status } : a
+  );
+  setStore("watchlist", newWatchlist);
+  return stubSuccess();
 }
 
 export async function getUserWatchlist(): Promise<any> {
-  return [];
+  return getStore("watchlist");
 }
 
 export async function isAnimeInWatchlist(animeId: string): Promise<any> {
-  return false;
+  const watchlist = getStore("watchlist");
+  return watchlist.some((a: any) => a.id === animeId);
 }
 
 export async function upsertAnime(data: any): Promise<any> {
@@ -78,11 +109,25 @@ export async function uploadCharacterImage(formData: FormData): Promise<any> {
 }
 
 export async function submitArchiveLog(animeId: string, data: any): Promise<any> {
-  return stubError("Logs disabled in static mode.");
+  const logs = getStore(`logs_${animeId}`);
+  const newLog = {
+    _id: Math.random().toString(36).substr(2, 9),
+    animeId,
+    content: data.content,
+    rating: data.rating,
+    createdAt: new Date().toISOString(),
+    userId: {
+      username: "Guest Personnel",
+      trustLevel: 1,
+      profileImage: null
+    }
+  };
+  setStore(`logs_${animeId}`, [newLog, ...logs]);
+  return stubSuccess();
 }
 
 export async function getArchiveLogs(animeId: string): Promise<any> {
-  return [];
+  return getStore(`logs_${animeId}`);
 }
 
 export async function getEngagementAnalytics(): Promise<any> {

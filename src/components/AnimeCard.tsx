@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 import { toggleWatchlist, isAnimeInWatchlist, trackCardInteraction, generateGlimpse } from "@/app/actions";
 import { Activity, ShieldCheck, Zap, Brain, Target, Layers, Music, X, Play } from "lucide-react";
 import Link from "next/link";
+import { getAssetPath } from "@/utils/path";
 
 interface AnimeCardProps {
   anime: Anime & { telemetry?: { views: number } };
@@ -228,7 +229,7 @@ export const AnimeCard = memo(({ anime, syncRate, onOpenVideo, onOpenManga, onOp
         >
             <div className="flex-1 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all duration-700 delay-500 group-hover:delay-0 ease-in-out">
               <Image
-                src={anime.posterImage}
+                src={getAssetPath(anime.posterImage)}
                 alt={anime.title}
                 fill
                 className="object-cover scale-100 group-hover:scale-110 transition-transform duration-700"
@@ -544,7 +545,7 @@ export const AnimeCard = memo(({ anime, syncRate, onOpenVideo, onOpenManga, onOp
                             className="flex gap-4 p-2 border-b-2 border-white/5 group hover:bg-white/5 transition-all cursor-pointer"
                           >
                             <div className="w-12 h-12 relative grayscale group-hover:grayscale-0 transition-all">
-                              <Image src={char.image} alt={char.name} fill className="object-cover" />
+                              <Image src={getAssetPath(char.image)} alt={char.name} fill className="object-cover" />
                             </div>
                             <div>
                               <p className="font-black uppercase italic text-sm leading-none group-hover:translate-x-1 transition-transform">{char.name}</p>

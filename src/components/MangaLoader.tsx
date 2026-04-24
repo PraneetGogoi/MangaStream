@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { getAssetPath } from "@/utils/path";
 
 export const MangaLoader = () => {
   const [show, setShow] = useState(true);
@@ -51,7 +52,7 @@ export const MangaLoader = () => {
                 <motion.img 
                   animate={{ scale: [1, 1.05, 1], rotate: [0, 0.5, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  src="/1.jpg" 
+                  src={getAssetPath("/1.jpg")} 
                   alt="Loading panel 1"
                   className="w-full h-full object-cover grayscale opacity-40 hover:grayscale-0 transition-all"
                 />
@@ -66,7 +67,7 @@ export const MangaLoader = () => {
                 <motion.img 
                   animate={{ scale: [1, 1.05, 1], rotate: [0, -0.5, 0] }}
                   transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-                  src="/2.jpg" 
+                  src={getAssetPath("/2.jpg")} 
                   alt="Loading panel 2"
                   className="w-full h-full object-cover grayscale opacity-40 transition-all"
                 />
@@ -81,7 +82,7 @@ export const MangaLoader = () => {
                 <motion.img 
                   animate={{ scale: [1, 1.05, 1], rotate: [0, 0.3, 0] }}
                   transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-                  src="/3.jpg" 
+                  src={getAssetPath("/3.jpg")} 
                   alt="Loading panel 3"
                   className="w-full h-full object-cover grayscale opacity-40 transition-all"
                 />
@@ -96,7 +97,7 @@ export const MangaLoader = () => {
                 <motion.img 
                   animate={{ scale: [1, 1.05, 1], rotate: [0, -0.3, 0] }}
                   transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 0.1 }}
-                  src="/4.jpg" 
+                  src={getAssetPath("/4.jpg")} 
                   alt="Loading panel 4"
                   className="w-full h-full object-cover grayscale opacity-40 transition-all"
                 />

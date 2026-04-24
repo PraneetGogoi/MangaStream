@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import { Onomatopoeia } from "./Onomatopoeia";
 import { SlashOverlay } from "./SlashOverlay";
 import { InkSplatter } from "./InkSplatter";
+import { getAssetPath } from "@/utils/path";
 
 interface LandingPageProps {
   onEnter: () => void;
@@ -109,7 +110,7 @@ export const LandingPage = ({ onEnter }: LandingPageProps) => {
           className="relative w-64 h-96 sm:w-80 sm:h-[500px] border-[10px] border-manga-ink bg-manga-ink shadow-[20px_20px_0px_0px_var(--manga-shadow-color)] flex-shrink-0 group overflow-hidden transition-all duration-300"
         >
           <motion.img 
-            src="/assets/manga_hero.png" 
+            src={getAssetPath("/assets/manga_hero.png")} 
             alt="Manga Hero" 
             initial={{ scale: 1.2, opacity: 0 }}
             animate={{ 

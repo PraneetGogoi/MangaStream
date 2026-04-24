@@ -17,6 +17,7 @@ import {
   Clock, Play, CheckCircle2, Bookmark, 
   ShieldCheck, Zap, ChevronDown
 } from "lucide-react";
+import { getAssetPath } from "@/utils/path";
 
 export default function ArchiveClient({ id }: { id: string }) {
   const { data: session } = useSession();
@@ -282,7 +283,7 @@ export default function ArchiveClient({ id }: { id: string }) {
                 <div className="w-14 h-14 border-2 border-inherit overflow-hidden bg-gray-200">
                   <motion.img 
                     whileHover={{ scale: 1.1 }}
-                    src={char.image} 
+                    src={getAssetPath(char.image)} 
                     alt={char.name} 
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" 
                   />
@@ -331,7 +332,7 @@ export default function ArchiveClient({ id }: { id: string }) {
                 >
                   <div className="absolute inset-0 halftone opacity-20 z-10" />
                   <img 
-                    src={selectedChar.image} 
+                    src={getAssetPath(selectedChar.image)} 
                     alt={selectedChar.name} 
                     className="w-full h-full object-cover grayscale group-hover/visual:grayscale-0 group-hover/visual:scale-105 transition-all duration-1000 ease-out"
                   />
@@ -696,7 +697,7 @@ export default function ArchiveClient({ id }: { id: string }) {
                                     <div className="flex items-center gap-4">
                                        <div className="w-16 h-16 bg-black flex-shrink-0 relative overflow-hidden group-hover:rotate-6 transition-transform">
                                           {log.userId?.profileImage ? (
-                                             <img src={log.userId.profileImage} alt="" className="w-full h-full object-cover grayscale" />
+                                             <img src={getAssetPath(log.userId.profileImage)} alt="" className="w-full h-full object-cover grayscale" />
                                           ) : (
                                              <div className="w-full h-full flex items-center justify-center"><User className="text-white w-8 h-8" /></div>
                                           )}
