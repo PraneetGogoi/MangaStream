@@ -105,6 +105,8 @@ export async function getCurrentUser(): Promise<any> {
   if (Array.isArray(session)) return null; // getStore returns [] by default if not found
   return session;
 }
+
+export async function toggleWatchlist(animeId: string): Promise<any> {
   const watchlist = getStore("watchlist");
   const exists = watchlist.find((a: any) => a.id === animeId);
   
