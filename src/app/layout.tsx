@@ -25,6 +25,7 @@ export const metadata: Metadata = {
 import { AuthProvider } from "@/components/AuthProvider";
 import { Navbar } from "@/components/Navbar";
 import { PulseProvider } from "@/components/PulseProvider";
+import { AuthGuard } from "@/components/AuthGuard";
 
 export default function RootLayout({
   children,
@@ -50,8 +51,10 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <AuthProvider>
             <PulseProvider>
-              <Navbar />
-              {children}
+              <AuthGuard>
+                <Navbar />
+                {children}
+              </AuthGuard>
             </PulseProvider>
           </AuthProvider>
         </Suspense>

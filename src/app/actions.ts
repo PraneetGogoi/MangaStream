@@ -46,10 +46,65 @@ export async function upsertCharacters(animeId: string, characters: any[]): Prom
 }
 
 export async function registerUser(formData: FormData): Promise<any> {
-  return stubError("Registration disabled in static mode.");
+  const username = formData.get("username") as string;
+  const password = formData.get("password") as string;
+
+  if (!username || !password) return stubError("Credentials required.");
+
+  const users = getStore("users");
+  if (users.find((u: any) => u.username.toLowerCase() === username.toLowerCase())) {
+    return stubError("Username already exists in the registry.");
+  }
+
+  // Admin check
+  const role = (username === "praneet" && password === "praneet7888") ? "admin" : "regular";
+
+  const newUser = {
+    username,
+    password, // In a real app, we would hash this, but for this static mock we store as is
+    role,
+    createdAt: new Date().toISOString()
+  };
+
+  setStore("users", [...users, newUser]);
+  return stubSuccess();
 }
 
-export async function toggleWatchlist(animeId: string): Promise<any> {
+export async function loginUser(formData: FormData): Promise<any> {
+  const username = formData.get("username") as string;
+  const password = formData.get("password") as string;
+
+  if (!username || !password) return stubError("Credentials required.");
+
+  // Hardcoded Admin bypass/check if not in users list yet
+  if (username === "praneet" && password === "praneet7888") {
+    const session = { username, role: "admin", loginTime: Date.now() };
+    setStore("session", session);
+    return stubSuccess({ user: session });
+  }
+
+  const users = getStore("users");
+  const user = users.find((u: any) => u.username === username && u.password === password);
+
+  if (!user) return stubError("Invalid credentials.");
+
+  const session = { username: user.username, role: user.role, loginTime: Date.now() };
+  setStore("session", session);
+  return stubSuccess({ user: session });
+}
+
+export async function logoutUser(): Promise<any> {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("manga_session");
+  }
+  return stubSuccess();
+}
+
+export async function getCurrentUser(): Promise<any> {
+  const session = getStore("session");
+  if (Array.isArray(session)) return null; // getStore returns [] by default if not found
+  return session;
+}
   const watchlist = getStore("watchlist");
   const exists = watchlist.find((a: any) => a.id === animeId);
   
