@@ -5,8 +5,6 @@ import Anime from "@/models/Anime";
 import Character from "../models/Character";
 import Review from "../models/Review";
 import { MOCK_ANIME } from "@/data/mockAnime";
-import fs from "fs/promises";
-import path from "path";
 import Syndicate from "@/models/Syndicate";
 import User from "@/models/User";
 import { getServerSession } from "next-auth";
@@ -433,44 +431,21 @@ export async function uploadProfilePicture(formData: FormData) {
     await dbConnect();
     const userId = (session.user as any).id;
     
-    // Create directory if it doesn't exist
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "profile-pics");
-    try {
-      await fs.mkdir(uploadDir, { recursive: true });
-    } catch (e) {
-      console.warn("📂 Profile Upload: Directory already exists or creation skipped");
-    }
-    
-    // Prepare filename
-    const fileExtension = file.type.split("/")[1];
-    const filename = `profile-${userId}-${Date.now()}.${fileExtension}`;
-    const filePath = path.join(uploadDir, filename);
-    const publicPath = `/uploads/profile-pics/${filename}`;
-
     // Read file as buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Write to disk
-    console.log(`💾 Profile Upload: Writing to ${filePath}`);
-    await fs.writeFile(filePath, buffer);
+    // Convert to Base64 String
+    const base64String = buffer.toString('base64');
+    const publicPath = `data:${file.type};base64,${base64String}`;
+    
+    console.log(`💾 Profile Upload: Forged Base64 string for user ${userId}`);
 
     // Update user record
     const user = await User.findById(userId);
     if (!user) {
       console.error("❌ Profile Upload: User record not found in DB");
       return { error: "User record lost from network" };
-    }
-
-    // Delete old picture if exists
-    if (user.profileImage && user.profileImage.startsWith("/uploads")) {
-      const oldPath = path.join(process.cwd(), "public", user.profileImage);
-      try {
-        await fs.unlink(oldPath);
-        console.log(`♻️ Profile Upload: Purged old artifact ${oldPath}`);
-      } catch (e) {
-        // Ignore if file doesn't exist
-      }
     }
 
     user.profileImage = publicPath;
@@ -496,23 +471,14 @@ export async function uploadCharacterImage(formData: FormData) {
   }
 
   try {
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "characters");
-    try {
-      await fs.mkdir(uploadDir, { recursive: true });
-    } catch (e) {
-      // Ignore if exists
-    }
-
-    const fileExtension = file.type.split("/")[1] || "jpg";
-    const filename = `char-${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExtension}`;
-    const filePath = path.join(uploadDir, filename);
-    const publicPath = `/uploads/characters/${filename}`;
-
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
+    
+    // Convert to Base64 String
+    const base64String = buffer.toString('base64');
+    const publicPath = `data:${file.type};base64,${base64String}`;
 
-    await fs.writeFile(filePath, buffer);
-    console.log(`💾 Character Upload: Forge successful at ${filePath}`);
+    console.log(`💾 Character Upload: Forge successful as Base64 string`);
 
     return { success: true, url: publicPath };
   } catch (error) {
@@ -812,25 +778,13 @@ export async function uploadArchiveAsset(formData: FormData) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     
-    const sanitizedName = file.name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-0\.\-]/g, '');
-    const filename = `${Date.now()}-${sanitizedName}`;
-    
-    // Absolute Pathing to the Archival Vault
-    const uploadDir = path.join(process.cwd(), "public", "assets", "uploads");
-    const filePath = path.join(uploadDir, filename);
-
-    // Auto-create Vault directory
-    try {
-      await fs.access(uploadDir);
-    } catch {
-      await fs.mkdir(uploadDir, { recursive: true });
-    }
-
-    await fs.writeFile(filePath, buffer);
+    // Convert to Base64 String
+    const base64String = buffer.toString('base64');
+    const dataUrl = `data:${file.type};base64,${base64String}`;
     
     return { 
       success: true, 
-      url: `/assets/uploads/${filename}` 
+      url: dataUrl 
     };
   } catch (error) {
     console.error("❌ Artifact Commit Failed:", error);
