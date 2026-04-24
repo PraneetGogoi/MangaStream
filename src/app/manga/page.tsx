@@ -9,7 +9,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { ThemeSlice } from "@/components/ThemeSlice";
 import { BookOpen, Sparkles, Zap, Search, Download, Terminal } from "lucide-react";
 import { searchMangaVault, ingestMangaFromDex, getAllManga } from "../manga-actions";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/components/AuthProvider";
 import Image from "next/image";
 
 const MangaReader = dynamic(() => import("@/components/MangaReader").then(mod => mod.MangaReader));

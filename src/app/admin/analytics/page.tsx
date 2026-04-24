@@ -7,7 +7,7 @@ import {
   Radio
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/components/AuthProvider";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getEngagementAnalytics } from "../../actions";

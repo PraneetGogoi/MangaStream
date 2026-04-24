@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, User, ArrowLeft, Layers, BookOpen, MessageSquare, Send, Quote, Sparkle, ShieldAlert } from "lucide-react";
 import { useState, use, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/components/AuthProvider";
 import { Anime } from "@/data/mockAnime";
 import { 
   getCharactersForAnime, getAnimeById, submitArchiveLog, 

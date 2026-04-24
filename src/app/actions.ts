@@ -17,12 +17,50 @@ const setStore = (key: string, data: any) => {
   localStorage.setItem(`manga_${key}`, JSON.stringify(data));
 };
 
-export async function getAllAnime(): Promise<any> {
-  return MOCK_ANIME;
+// Database Merging Logic
+export async function getAllAnime(): Promise<any[]> {
+  const customAnime = getStore("custom_anime");
+  const deletedIds = getStore("deleted_anime_ids") as string[];
+  
+  const baseAnime = MOCK_ANIME.filter(a => !deletedIds.includes(a.id));
+  return [...baseAnime, ...customAnime];
 }
 
 export async function getAnimeById(id: string): Promise<any> {
-  return MOCK_ANIME.find(a => a.id === id) || null;
+  const all = await getAllAnime();
+  return all.find(a => a.id === id) || null;
+}
+
+export async function upsertAnime(data: any): Promise<any> {
+  const customAnime = getStore("custom_anime");
+  const existingIndex = customAnime.findIndex((a: any) => a.id === data.id);
+  
+  let newCustomAnime;
+  if (existingIndex >= 0) {
+    newCustomAnime = [...customAnime];
+    newCustomAnime[existingIndex] = data;
+  } else {
+    newCustomAnime = [...customAnime, data];
+  }
+  
+  setStore("custom_anime", newCustomAnime);
+  return stubSuccess({ action: existingIndex >= 0 ? 'updated' : 'created' });
+}
+
+export async function deleteAnime(animeId: string): Promise<any> {
+  // If it's a custom anime, remove it from custom list
+  const customAnime = getStore("custom_anime");
+  const isCustom = customAnime.some((a: any) => a.id === animeId);
+  
+  if (isCustom) {
+    setStore("custom_anime", customAnime.filter((a: any) => a.id !== animeId));
+  } else {
+    // If it's a base anime, add to deleted list
+    const deletedIds = getStore("deleted_anime_ids");
+    setStore("deleted_anime_ids", [...deletedIds, animeId]);
+  }
+  
+  return stubSuccess();
 }
 
 export async function getCharactersForAnime(animeId: string): Promise<any> {
@@ -42,7 +80,16 @@ export async function getCharacterById(id: string): Promise<any> {
 }
 
 export async function upsertCharacters(animeId: string, characters: any[]): Promise<any> {
-  return stubError("Admin character forge disabled in static mode.");
+  setStore(`chars_${animeId}`, characters);
+  return stubSuccess();
+}
+
+export async function getMockCharacters(animeId: string): Promise<any[]> {
+  const customChars = getStore(`chars_${animeId}`);
+  if (customChars.length > 0) return customChars;
+
+  const { CharacterRegistry } = await import("@/data/characterRegistry");
+  return (CharacterRegistry as any)[animeId] || [];
 }
 
 export async function registerUser(formData: FormData): Promise<any> {
@@ -141,31 +188,40 @@ export async function isAnimeInWatchlist(animeId: string): Promise<any> {
   return watchlist.some((a: any) => a.id === animeId);
 }
 
-export async function upsertAnime(data: any): Promise<any> {
-  return stubError("Admin anime edit disabled in static mode.");
-}
-
 export async function ingestAnimeEpisodes(animeId: string, query: string): Promise<any> {
   return stubError("Ingestion disabled in static mode.");
 }
 
-export async function deleteAnime(animeId: string): Promise<any> {
-  return stubError("Deletion disabled in static mode.");
-}
-
 export async function updateUserProfile(data: any): Promise<any> {
-  return stubError("Profile update disabled in static mode.");
+  const session = getStore("session");
+  if (!session) return stubError("Not authenticated.");
+  
+  const users = getStore("users");
+  const userIndex = users.findIndex((u: any) => u.username === session.username);
+  
+  if (userIndex >= 0) {
+    const newUsers = [...users];
+    newUsers[userIndex] = { ...newUsers[userIndex], ...data };
+    setStore("users", newUsers);
+    
+    // Update session too
+    setStore("session", { ...session, ...data });
+    return stubSuccess();
+  }
+  
+  return stubError("User not found.");
 }
 
 export async function uploadProfilePicture(formData: FormData): Promise<any> {
-  return stubError("Upload disabled in static mode.");
+  return uploadArchiveAsset(formData);
 }
 
 export async function uploadCharacterImage(formData: FormData): Promise<any> {
-  return stubError("Upload disabled in static mode.");
+  return uploadArchiveAsset(formData);
 }
 
 export async function submitArchiveLog(animeId: string, data: any): Promise<any> {
+  const session = getStore("session");
   const logs = getStore(`logs_${animeId}`);
   const newLog = {
     _id: Math.random().toString(36).substr(2, 9),
@@ -174,9 +230,9 @@ export async function submitArchiveLog(animeId: string, data: any): Promise<any>
     rating: data.rating,
     createdAt: new Date().toISOString(),
     userId: {
-      username: "Guest Personnel",
-      trustLevel: 1,
-      profileImage: null
+      username: session?.username || "Guest Personnel",
+      trustLevel: session?.role === 'admin' ? 99 : 1,
+      profileImage: session?.profileImage || null
     }
   };
   setStore(`logs_${animeId}`, [newLog, ...logs]);
@@ -188,23 +244,51 @@ export async function getArchiveLogs(animeId: string): Promise<any> {
 }
 
 export async function getEngagementAnalytics(): Promise<any> {
-  return stubSuccess({ views: 0, interactions: 0 });
+  const customAnime = getStore("custom_anime");
+  return stubSuccess({ 
+    views: Math.floor(Math.random() * 1000) + 500, 
+    interactions: Math.floor(Math.random() * 200) + 50,
+    forgedCount: customAnime.length
+  });
 }
 
 export async function getSyndicates(): Promise<any> {
-  return [];
+  const baseSyndicates = [
+    { name: "Shadow Garden", slug: "shadow-garden", description: "The elite archive task force.", members: 124, status: "Active" },
+    { name: "Order of Yggdrasil", slug: "yggdrasil", description: "Protectors of the digital world tree.", members: 89, status: "Active" }
+  ];
+  const joined = getStore("joined_syndicates");
+  return baseSyndicates.map(s => ({ ...s, isJoined: joined.includes(s.slug) }));
 }
 
 export async function joinSyndicate(slug: string): Promise<any> {
-  return stubError("Syndicates disabled in static mode.");
+  const joined = getStore("joined_syndicates");
+  if (!joined.includes(slug)) {
+    setStore("joined_syndicates", [...joined, slug]);
+  }
+  return stubSuccess();
 }
 
 export async function leaveSyndicate(slug: string): Promise<any> {
-  return stubError("Syndicates disabled in static mode.");
+  const joined = getStore("joined_syndicates");
+  setStore("joined_syndicates", joined.filter((s: string) => s !== slug));
+  return stubSuccess();
 }
 
 export async function uploadArchiveAsset(formData: FormData): Promise<any> {
-  return stubError("Upload disabled in static mode.");
+  const file = formData.get("file") as File;
+  if (!file) return stubError("No file provided.");
+
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      resolve(stubSuccess({ url: reader.result }));
+    };
+    reader.onerror = () => {
+      resolve(stubError("Failed to read file."));
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 export async function trackCardInteraction(animeId: string): Promise<any> {
@@ -212,21 +296,33 @@ export async function trackCardInteraction(animeId: string): Promise<any> {
 }
 
 export async function getPersonalizedAffinities(): Promise<any> {
-  return {};
+  return { "Seinen": 0.8, "Cyberpunk": 0.6, "Supernatural": 0.4 };
 }
 
 export async function generateGlimpse(animeId: string): Promise<any> {
-  return "Glimpse generation unavailable.";
+  return "Fragment analyzed. Glimpse generated in neural buffer.";
 }
 
 export async function getNotifications(): Promise<any> {
-  return [];
+  const notifications = getStore("notifications");
+  if (notifications.length === 0) {
+    return [
+      { id: "1", title: "New Vault Entry", message: "A legendary artifact has been forged.", time: "2m ago", read: false },
+      { id: "2", title: "System Update", message: "Static archival protocols engaged.", time: "1h ago", read: true }
+    ];
+  }
+  return notifications;
 }
 
 export async function markNotificationRead(notificationId: string): Promise<any> {
+  const notifications = await getNotifications();
+  const newNotifications = notifications.map((n: any) => 
+    n.id === notificationId ? { ...n, read: true } : n
+  );
+  setStore("notifications", newNotifications);
   return stubSuccess();
 }
 
 export async function uploadArchiveImage(formData: FormData): Promise<any> {
-  return stubError("Upload disabled in static mode.");
+  return uploadArchiveAsset(formData);
 }
