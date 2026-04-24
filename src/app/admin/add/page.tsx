@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { upsertAnime, upsertCharacters } from "../../actions";
+import { upsertAnime, upsertCharacters, uploadCharacterImage } from "../../actions";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Plus, X, Save, AlertTriangle, ShieldCheck, 
@@ -16,6 +16,7 @@ export default function ForgeAnimePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploadingChar, setIsUploadingChar] = useState<number | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
   // Dynamic Form States
@@ -70,6 +71,19 @@ export default function ForgeAnimePage() {
       next[index] = { ...next[index], [field]: value };
       return next;
     });
+  };
+  const handleCharacterImageUpload = async (index: number, file: File) => {
+    setIsUploadingChar(index);
+    const formData = new FormData();
+    formData.append("file", file);
+    
+    const result = await uploadCharacterImage(formData);
+    if (result.success && result.url) {
+      updateCharacter(index, 'image', result.url);
+    } else {
+      setMessage({ type: 'error', text: result.error || "IMAGE FORGERY FAILED." });
+    }
+    setIsUploadingChar(null);
   };
 
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -459,6 +473,12 @@ export default function ForgeAnimePage() {
                                         {/* Character Photo Input */}
                                         <div className="lg:col-span-3 space-y-4">
                                             <div className="aspect-[3/4] bg-manga-ink border-[6px] border-manga-ink relative overflow-hidden group/photo shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)]">
+                                                {isUploadingChar === idx ? (
+                                                    <div className="absolute inset-0 flex items-center justify-center bg-manga-ink/80 z-30">
+                                                        <div className="w-8 h-8 border-4 border-manga-paper border-t-transparent rounded-full animate-spin" />
+                                                    </div>
+                                                ) : null}
+
                                                 {char.image ? (
                                                     <img src={char.image} alt={char.name} className="w-full h-full object-cover grayscale group-hover/photo:grayscale-0 transition-all duration-500" />
                                                 ) : (
@@ -467,16 +487,45 @@ export default function ForgeAnimePage() {
                                                         <p className="text-[10px] font-black uppercase text-manga-paper/40">Visual Source Needed</p>
                                                     </div>
                                                 )}
-                                                <div className="absolute bottom-0 inset-x-0 bg-manga-ink p-2 text-center text-[10px] font-black uppercase text-manga-paper tracking-widest translate-y-full group-hover/photo:translate-y-0 transition-transform">
+                                                
+                                                <label className="absolute bottom-0 inset-x-0 bg-manga-ink p-2 text-center text-[10px] font-black uppercase text-manga-paper tracking-widest translate-y-full group-hover/photo:translate-y-0 transition-transform cursor-pointer hover:bg-red-600">
                                                     Biometric Link
-                                                </div>
+                                                    <input 
+                                                        type="file" 
+                                                        accept="image/*" 
+                                                        className="hidden" 
+                                                        onChange={(e) => {
+                                                            const file = e.target.files?.[0];
+                                                            if (file) handleCharacterImageUpload(idx, file);
+                                                        }}
+                                                    />
+                                                </label>
                                             </div>
-                                            <input 
-                                                value={char.image}
-                                                onChange={(e) => updateCharacter(idx, 'image', e.target.value)}
-                                                className="w-full bg-gray-50 border-b-4 border-manga-ink p-2 text-xs font-bold italic focus:bg-white outline-none"
-                                                placeholder="PHOTO URL..."
-                                            />
+                                            <div className="flex gap-2">
+                                                <input 
+                                                    value={char.image}
+                                                    onChange={(e) => updateCharacter(idx, 'image', e.target.value)}
+                                                    className="flex-1 bg-gray-50 border-b-4 border-manga-ink p-2 text-[10px] font-bold italic focus:bg-white outline-none truncate"
+                                                    placeholder="PHOTO URL..."
+                                                />
+                                                <button 
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const input = document.createElement('input');
+                                                        input.type = 'file';
+                                                        input.accept = 'image/*';
+                                                        input.onchange = (e: any) => {
+                                                            const file = e.target.files?.[0];
+                                                            if (file) handleCharacterImageUpload(idx, file);
+                                                        };
+                                                        input.click();
+                                                    }}
+                                                    className="bg-manga-ink text-manga-paper p-2 hover:bg-red-600 transition-colors"
+                                                    title="Upload Local Artifact"
+                                                >
+                                                    <Plus className="w-4 h-4" />
+                                                </button>
+                                            </div>
                                         </div>
 
                                         {/* Character Intel Input */}

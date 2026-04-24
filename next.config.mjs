@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -30,12 +32,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: '*.mangadex.org',
       },
+      {
+        protocol: 'https',
+        hostname: 'example.com',
+      },
     ],
-  },
-  experimental: {
-    serverActions: {
-      bodySizeLimit: '10mb',
-    },
   },
 };
 

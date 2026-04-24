@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import { CustomCursor } from "@/components/CustomCursor";
 import { MangaLoader } from "@/components/MangaLoader";
@@ -46,12 +47,14 @@ export default function RootLayout({
         />
         <MangaLoader />
         <CustomCursor />
-        <AuthProvider>
-          <PulseProvider>
-            <Navbar />
-            {children}
-          </PulseProvider>
-        </AuthProvider>
+        <Suspense fallback={null}>
+          <AuthProvider>
+            <PulseProvider>
+              <Navbar />
+              {children}
+            </PulseProvider>
+          </AuthProvider>
+        </Suspense>
       </body>
     </html>
   );

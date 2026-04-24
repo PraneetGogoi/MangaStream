@@ -15,6 +15,7 @@ import Link from "next/link";
 
 const TrailerModal = dynamic(() => import("@/components/TrailerModal").then(mod => mod.TrailerModal));
 const MangaReader = dynamic(() => import("@/components/MangaReader").then(mod => mod.MangaReader));
+const AnimePlayer = dynamic(() => import("@/components/AnimePlayer").then(mod => mod.AnimePlayer));
 
 type WatchlistStatus = "All" | "Queued Artifact" | "Active Transmission" | "Synchronized";
 
@@ -26,6 +27,8 @@ export default function WatchlistPage() {
   const [selectedMangaAnime, setSelectedMangaAnime] = useState<Anime | null>(null);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
   const [selectedVideoLabel, setSelectedVideoLabel] = useState("");
+  const [playingAnime, setPlayingAnime] = useState<any>(null);
+  const [playingEpisode, setPlayingEpisode] = useState<any>(null);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -60,6 +63,11 @@ export default function WatchlistPage() {
 
   const handleOpenManga = useCallback((anime: Anime) => {
     setSelectedMangaAnime(anime);
+  }, []);
+
+  const handleOpenPlayer = useCallback((anime: any, episode: any) => {
+    setPlayingAnime(anime);
+    setPlayingEpisode(episode);
   }, []);
 
   const filteredData = activeTab === "All" 
@@ -180,6 +188,7 @@ export default function WatchlistPage() {
                                 anime={anime}
                                 onOpenVideo={handleOpenVideo}
                                 onOpenManga={handleOpenManga}
+                                onOpenPlayer={handleOpenPlayer}
                             />
                         </div>
                         
@@ -224,6 +233,17 @@ export default function WatchlistPage() {
             key={`manga-${selectedMangaAnime.id}`}
             anime={selectedMangaAnime}
             onClose={() => setSelectedMangaAnime(null)}
+          />
+        )}
+
+        {playingAnime && playingEpisode && (
+          <AnimePlayer
+            anime={playingAnime}
+            initialEpisode={playingEpisode}
+            onClose={() => {
+              setPlayingAnime(null);
+              setPlayingEpisode(null);
+            }}
           />
         )}
       </AnimatePresence>

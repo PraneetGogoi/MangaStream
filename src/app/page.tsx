@@ -15,6 +15,8 @@ const TrailerModal = dynamic(() => import("@/components/TrailerModal").then(mod 
 const LandingPage = dynamic(() => import("@/components/LandingPage").then(mod => mod.LandingPage));
 const MangaReader = dynamic(() => import("@/components/MangaReader").then(mod => mod.MangaReader));
 const AnimePlayer = dynamic(() => import("@/components/AnimePlayer").then(mod => mod.AnimePlayer));
+const OracleToggle = dynamic(() => import("@/components/OracleToggle").then(mod => mod.OracleToggle));
+const OracleChat = dynamic(() => import("@/components/OracleChat").then(mod => mod.OracleChat));
 
 function HomeContent() {
   const [showLanding, setShowLanding] = useState(true);
@@ -31,6 +33,7 @@ function HomeContent() {
   const [animeData, setAnimeData] = useState<Anime[]>([]);
   const [affinities, setAffinities] = useState<Record<string, number>>({});
   const [isSlicing, setIsSlicing] = useState(false);
+  const [isOracleOpen, setIsOracleOpen] = useState(false);
 
   // Initialize theme from localStorage
   useEffect(() => {
@@ -110,6 +113,15 @@ function HomeContent() {
     <div className="min-h-screen bg-manga-paper text-manga-ink selection:bg-manga-ink selection:text-manga-paper pb-20 relative manga-background-texture transition-colors duration-300">
       <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       <ThemeSlice isActive={isSlicing} />
+      
+      <OracleToggle 
+        isOpen={isOracleOpen} 
+        toggle={() => setIsOracleOpen(!isOracleOpen)} 
+      />
+      <OracleChat 
+        isOpen={isOracleOpen} 
+        onClose={() => setIsOracleOpen(false)} 
+      />
       
       <AnimatePresence mode="wait">
         {showLanding ? (
