@@ -289,9 +289,10 @@ export async function isAnimeInWatchlist(animeId: string) {
 
 export async function upsertAnime(data: any) {
   const session = await getServerSession(authOptions);
-  if (!session?.user || (session.user as any).role !== "admin") {
-    return { error: "Administrative privileges required" };
+  if (!session?.user) {
+    return { error: "Authentication required" };
   }
+  const isAdmin = (session.user as any).role === "admin";
 
   console.log("🛠️ UPSERTING ANIME:", data.id, data.title);
   
@@ -303,11 +304,21 @@ export async function upsertAnime(data: any) {
     
     if (existing) {
       console.log("📝 Updating existing record:", data.id);
+      if (!isAdmin) {
+        data.trailerUrl = existing.trailerUrl;
+        data.openings = existing.openings;
+        data.hasArchive = existing.hasArchive;
+      }
       Object.assign(existing, data);
       await existing.save();
       return { success: true, action: "updated" };
     } else {
       console.log("🆕 Creating new record:", data.id);
+      if (!isAdmin) {
+        data.trailerUrl = "";
+        data.openings = [];
+        data.hasArchive = false;
+      }
       const newAnime = new Anime(data);
       await newAnime.save();
       return { success: true, action: "created" };
@@ -358,8 +369,8 @@ export async function ingestAnimeEpisodes(animeId: string, query: string) {
 
 export async function deleteAnime(animeId: string) {
   const session = await getServerSession(authOptions);
-  if (!session?.user || (session.user as any).role !== "admin") {
-    return { error: "Administrative privileges required" };
+  if (!session?.user) {
+    return { error: "Authentication required" };
   }
 
   try {

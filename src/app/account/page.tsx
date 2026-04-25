@@ -64,9 +64,9 @@ export default function AccountSettingsPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Client-side size check (10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      setMessage({ type: 'error', text: "FILE TOO HEAVY. MATRIX LIMIT IS 10MB." });
+    // Client-side size check (3MB to respect server limits)
+    if (file.size > 3 * 1024 * 1024) {
+      setMessage({ type: 'error', text: "FILE TOO HEAVY. MATRIX LIMIT IS 3MB." });
       return;
     }
 
@@ -76,14 +76,19 @@ export default function AccountSettingsPage() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const result = await uploadProfilePicture(formData);
-    setIsSubmitting(false);
+    try {
+      const result = await uploadProfilePicture(formData);
+      setIsSubmitting(false);
 
-    if (result.success) {
-      setMessage({ type: 'success', text: "BIO-LINK (IMAGE) FORGED SUCCESSFULLY." });
-      update({ profileImage: result.profileImage });
-    } else {
-      setMessage({ type: 'error', text: result.error || "IMAGE FORGERY FAILED DUE TO SYSTEM CRASH." });
+      if (result.success) {
+        setMessage({ type: 'success', text: "BIO-LINK (IMAGE) FORGED SUCCESSFULLY." });
+        update(); // Triggers session re-fetch from DB
+      } else {
+        setMessage({ type: 'error', text: result.error || "IMAGE FORGERY FAILED DUE TO SYSTEM CRASH." });
+      }
+    } catch (e) {
+      setIsSubmitting(false);
+      setMessage({ type: 'error', text: "SERVER REJECTED PAYLOAD. IMAGE IS TOO LARGE OR NETWORK ERROR." });
     }
   };
 

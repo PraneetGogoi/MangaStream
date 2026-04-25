@@ -43,11 +43,14 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update" && session?.name) {
+        token.name = session.name;
+      }
       if (user) {
         token.role = (user as any).role;
         token.id = user.id;
-        token.profileImage = (user as any).profileImage;
+        // Do NOT store profileImage in token, it's a huge base64 string
       }
       return token;
     },
@@ -55,7 +58,16 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         (session.user as any).role = token.role;
         (session.user as any).id = token.id;
-        (session.user as any).profileImage = token.profileImage;
+        
+        try {
+          await dbConnect();
+          const user = await User.findById(token.id).select('profileImage').lean();
+          if (user && user.profileImage) {
+            (session.user as any).profileImage = user.profileImage;
+          }
+        } catch (e) {
+          console.error("Failed to fetch profile image for session", e);
+        }
       }
       return session;
     }

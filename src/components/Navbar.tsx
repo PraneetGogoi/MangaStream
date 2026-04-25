@@ -124,16 +124,14 @@ export const Navbar = () => {
                   <span className="hidden lg:inline">Syndicate</span>
                 </Link>
 
-                {/* Admin Link (Conditional) */}
-                {(session.user as any).role === 'admin' && (
-                  <Link 
-                    href="/admin"
-                    className={`flex items-center gap-2 bg-blue-500 text-white px-3 py-1.5 border-4 border-manga-ink font-black uppercase italic text-xs group shadow-[4px_4px_0px_0px_var(--manga-shadow-color)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all ${pathname === '/admin' ? 'bg-manga-ink' : ''}`}
-                  >
-                    <PlusCircle className="w-5 h-5 group-hover:rotate-90 transition-all" />
-                    <span className="hidden md:inline">Vault Control</span>
-                  </Link>
-                )}
+                {/* Vault Control Link */}
+                <Link 
+                  href={(session.user as any).role === 'admin' ? "/admin" : "/vault"}
+                  className={`flex items-center gap-2 ${(session.user as any).role === 'admin' ? 'bg-blue-500 text-white' : 'bg-manga-paper text-manga-ink'} px-3 py-1.5 border-4 border-manga-ink font-black uppercase italic text-xs group shadow-[4px_4px_0px_0px_var(--manga-shadow-color)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all ${pathname === '/admin' || pathname === '/vault' ? 'bg-manga-ink text-manga-paper !border-manga-paper' : ''}`}
+                >
+                  <PlusCircle className="w-5 h-5 group-hover:rotate-90 transition-all" />
+                  <span className="hidden md:inline">Vault Control</span>
+                </Link>
 
                 {/* Pulse Bell / Notifications */}
                 <div className="relative">

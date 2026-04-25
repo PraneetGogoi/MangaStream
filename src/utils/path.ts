@@ -1,8 +1,8 @@
 export const getAssetPath = (path: string) => {
   if (!path) return "";
   
-  // Return absolute URLs as is
-  if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("//")) {
+  // Return absolute URLs and data URIs as is
+  if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("//") || path.startsWith("data:")) {
     return path;
   }
 
