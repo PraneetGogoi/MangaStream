@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     let result = "";
     let error = "";
 
-    return new Promise((resolve) => {
+    return new Promise<NextResponse>((resolve) => {
       pythonProcess.stdout.on("data", (data) => {
         result += data.toString();
       });
