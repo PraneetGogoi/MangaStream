@@ -46,7 +46,7 @@ export default function DiscoveryPage() {
       try {
         const res = await fetch(`/api/discovery/search?type=${type}&q=${query}&sortBy=${sortBy}&genre=${genre}`);
         const data = await res.json();
-        setItems(data);
+        setItems(data.items || []);
       } catch (error) {
         console.error("Search error:", error);
       } finally {
