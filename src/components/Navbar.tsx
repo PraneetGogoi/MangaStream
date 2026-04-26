@@ -9,6 +9,12 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { getAssetPath } from "@/utils/path";
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+function cn(...inputs: any[]) {
+  return twMerge(clsx(inputs));
+}
 
 export const Navbar = () => {
   const { data: session } = useSession();
@@ -62,29 +68,69 @@ export const Navbar = () => {
         </Link>
 
         {/* Library Toggles */}
-        <div className="hidden lg:flex items-center bg-manga-ink/5 border-4 border-manga-ink p-1 rounded-lg">
+        <div className="hidden lg:flex items-center bg-manga-ink/5 border-[4px] border-manga-ink p-1 rounded-lg relative">
           <Link 
             href="/"
-            className={`px-4 py-1.5 font-black uppercase italic text-xs transition-all ${pathname === '/' ? 'bg-manga-ink text-manga-paper shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]' : 'hover:bg-manga-ink/10'}`}
+            className={cn(
+              "relative px-6 py-2 font-black uppercase italic text-xs transition-all z-10",
+              pathname === '/' ? "text-manga-paper" : "text-manga-ink hover:opacity-70"
+            )}
           >
+            {pathname === '/' && (
+              <motion.div 
+                layoutId="nav-pill" 
+                className="absolute inset-0 bg-manga-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] z-[-1]"
+                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+              />
+            )}
             Anime
           </Link>
           <Link 
             href="/manga"
-            className={`px-4 py-1.5 font-black uppercase italic text-xs transition-all ${pathname === '/manga' ? 'bg-manga-ink text-manga-paper shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]' : 'hover:bg-manga-ink/10'}`}
+            className={cn(
+              "relative px-6 py-2 font-black uppercase italic text-xs transition-all z-10",
+              pathname === '/manga' ? "text-manga-paper" : "text-manga-ink hover:opacity-70"
+            )}
           >
+            {pathname === '/manga' && (
+              <motion.div 
+                layoutId="nav-pill" 
+                className="absolute inset-0 bg-manga-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] z-[-1]"
+                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+              />
+            )}
             Manga
           </Link>
           <Link 
             href="/analytics"
-            className={`px-4 py-1.5 font-black uppercase italic text-xs transition-all ${pathname === '/analytics' ? 'bg-manga-ink text-manga-paper shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]' : 'hover:bg-manga-ink/10'}`}
+            className={cn(
+              "relative px-6 py-2 font-black uppercase italic text-xs transition-all z-10",
+              pathname === '/analytics' ? "text-manga-paper" : "text-manga-ink hover:opacity-70"
+            )}
           >
+            {pathname === '/analytics' && (
+              <motion.div 
+                layoutId="nav-pill" 
+                className="absolute inset-0 bg-manga-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] z-[-1]"
+                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+              />
+            )}
             Dashboard
           </Link>
           <Link 
             href="/discovery"
-            className={`px-4 py-1.5 font-black uppercase italic text-xs transition-all ${pathname === '/discovery' ? 'bg-manga-ink text-manga-paper shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]' : 'hover:bg-manga-ink/10'}`}
+            className={cn(
+              "relative px-6 py-2 font-black uppercase italic text-xs transition-all z-10",
+              pathname === '/discovery' ? "text-manga-paper" : "text-manga-ink hover:opacity-70"
+            )}
           >
+            {pathname === '/discovery' && (
+              <motion.div 
+                layoutId="nav-pill" 
+                className="absolute inset-0 bg-manga-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] z-[-1]"
+                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+              />
+            )}
             Encyclopedia
           </Link>
         </div>

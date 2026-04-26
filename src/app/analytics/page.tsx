@@ -24,7 +24,11 @@ export default function AnalyticsPage() {
     fetch("/api/discovery/analytics")
       .then(res => res.json())
       .then(data => {
-        setData(data);
+        if (data.anime) {
+          setData(data.anime);
+        } else {
+          setData(data);
+        }
         setLoading(false);
       });
   }, []);
@@ -89,7 +93,7 @@ export default function AnalyticsPage() {
             </h3>
             <div className="h-[350px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data.trends}>
+                <AreaChart data={data?.trends || []}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#00000010" />
                   <XAxis dataKey="_id" axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 'bold' }} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 'bold' }} />
@@ -111,7 +115,7 @@ export default function AnalyticsPage() {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={data.genres}
+                    data={data?.genres || []}
                     cx="50%"
                     cy="50%"
                     innerRadius={80}
@@ -140,7 +144,7 @@ export default function AnalyticsPage() {
           </h3>
           <div className="h-[400px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data.formats}>
+              <BarChart data={data?.types || []}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#00000010" />
                 <XAxis dataKey="_id" axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 'bold' }} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 'bold' }} />
