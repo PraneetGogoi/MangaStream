@@ -46,7 +46,7 @@ export default function DiscoveryDetailPage() {
     </div>
   );
 
-  if (!item) return (
+  if (!item || item.error) return (
     <div className="min-h-screen bg-manga-paper flex flex-col items-center justify-center text-manga-ink p-8">
       <h2 className="text-5xl font-black uppercase italic mb-4 tracking-tighter">Entry Redacted</h2>
       <button onClick={() => router.back()} className="text-manga-ink font-black uppercase italic border-b-4 border-manga-ink">Return to Catalog</button>
@@ -92,11 +92,11 @@ export default function DiscoveryDetailPage() {
               </div>
               <div className="space-y-1">
                 <div className="text-xs font-black uppercase opacity-40 italic">Members</div>
-                <div className="text-2xl font-black">{item.members.toLocaleString()}</div>
+                <div className="text-2xl font-black">{item.members?.toLocaleString()}</div>
               </div>
               <div className="space-y-1">
                 <div className="text-xs font-black uppercase opacity-40 italic">Favorites</div>
-                <div className="text-2xl font-black">{item.favorites.toLocaleString()}</div>
+                <div className="text-2xl font-black">{item.favorites?.toLocaleString()}</div>
               </div>
             </div>
           </div>
@@ -122,7 +122,7 @@ export default function DiscoveryDetailPage() {
               <Share2 className="text-manga-ink" size={32} /> Archives & Tags
             </h2>
             <div className="flex flex-wrap gap-3">
-              {[...item.genres, ...item.themes, ...item.demographics].map(tag => (
+              {[...(item.genres || []), ...(item.themes || []), ...(item.demographics || [])].map(tag => (
                 <span key={tag} className="px-6 py-3 bg-manga-paper border-[4px] border-manga-ink font-black uppercase italic hover:bg-manga-ink hover:text-manga-paper transition-all cursor-default">
                   {tag}
                 </span>
@@ -168,7 +168,7 @@ export default function DiscoveryDetailPage() {
                 { label: "Episodes", value: item.episodes || item.chapters },
                 { label: "Release Year", value: item.year },
                 { label: "Popularity", value: `#${item.popularity}`, accent: true },
-              ].map((row, i) => (
+              ].map((row, i) => (row.value || row.accent) && (
                 <div key={i} className="flex justify-between items-center pb-4 border-b-2 border-manga-ink/10 border-dashed last:border-0">
                   <span className="text-xs font-black uppercase opacity-40 italic">{row.label}</span>
                   <span className={cn("font-black uppercase italic", row.accent && "text-manga-ink bg-manga-paper px-2 py-0.5 border-2 border-manga-ink")}>
