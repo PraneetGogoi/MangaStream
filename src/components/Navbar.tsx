@@ -133,6 +133,22 @@ export const Navbar = () => {
             )}
             Encyclopedia
           </Link>
+          <Link 
+            href="/account"
+            className={cn(
+              "relative px-6 py-2 font-black uppercase italic text-xs transition-all z-10",
+              pathname === '/account' ? "text-manga-paper" : "text-manga-ink hover:opacity-70"
+            )}
+          >
+            {pathname === '/account' && (
+              <motion.div 
+                layoutId="nav-pill" 
+                className="absolute inset-0 bg-manga-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] z-[-1]"
+                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+              />
+            )}
+            Account
+          </Link>
         </div>
 
         {/* Global Search Bar */}

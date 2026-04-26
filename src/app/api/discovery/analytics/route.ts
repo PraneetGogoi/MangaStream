@@ -32,7 +32,7 @@ export async function GET() {
       { $match: { score: { $gt: 0 } } },
       { $bucket: {
         groupBy: "$score",
-        boundaries: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.1],
+        boundaries: [0, 5, 6, 7, 8, 9, 10.1],
         default: "Other",
         output: { count: { $sum: 1 } }
       }}
@@ -43,7 +43,19 @@ export async function GET() {
       { $unwind: "$studios" },
       { $group: { _id: "$studios", count: { $sum: 1 }, avgScore: { $avg: "$score" } } },
       { $sort: { count: -1 } },
-      { $limit: 10 }
+      { $limit: 12 }
+    ]);
+
+    // 6. Status Distribution
+    const statusDist = await DiscoveryAnime.aggregate([
+      { $group: { _id: "$status", count: { $sum: 1 } } }
+    ]);
+
+    // 7. Source Material Distribution
+    const sourceDist = await DiscoveryAnime.aggregate([
+      { $group: { _id: "$source", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 8 }
     ]);
 
     return NextResponse.json({
@@ -52,7 +64,9 @@ export async function GET() {
         genres: animeGenres,
         trends: animeTrends,
         scores: animeScores,
-        studios: topStudios
+        studios: topStudios,
+        status: statusDist,
+        sources: sourceDist
       }
     });
 
