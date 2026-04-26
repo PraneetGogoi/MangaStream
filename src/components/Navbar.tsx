@@ -75,6 +75,18 @@ export const Navbar = () => {
           >
             Manga
           </Link>
+          <Link 
+            href="/analytics"
+            className={`px-4 py-1.5 font-black uppercase italic text-xs transition-all ${pathname === '/analytics' ? 'bg-manga-ink text-manga-paper shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]' : 'hover:bg-manga-ink/10'}`}
+          >
+            Dashboard
+          </Link>
+          <Link 
+            href="/discovery"
+            className={`px-4 py-1.5 font-black uppercase italic text-xs transition-all ${pathname === '/discovery' ? 'bg-manga-ink text-manga-paper shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]' : 'hover:bg-manga-ink/10'}`}
+          >
+            Encyclopedia
+          </Link>
         </div>
 
         {/* Global Search Bar */}

@@ -12,6 +12,7 @@
     "@auth/mongodb-adapter": "^3.11.2",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.0",
+    "dotenv": "^16.4.5",
     "framer-motion": "^11.0.8",
     "lucide-react": "^0.344.0",
     "mongoose": "^9.5.0",
@@ -21,19 +22,19 @@
     "pusher-js": "^8.5.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "tailwind-merge": "^2.2.1",
-    "dotenv": "^16.4.5"
+    "recharts": "^3.8.1",
+    "tailwind-merge": "^2.2.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/bcryptjs": "^3.0.0",
+    "@types/dotenv": "^8.2.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "@types/dotenv": "^8.2.3"
+    "typescript": "^5"
   }
 }
