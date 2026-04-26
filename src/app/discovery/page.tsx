@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Filter, SortAsc, Star, Users, Info } from "lucide-react";
+import { Search, Filter, SortAsc, Star, Users, Info, Zap, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -13,17 +13,21 @@ function cn(...inputs: any[]) {
   return twMerge(clsx(inputs));
 }
 
-interface DiscoveryItem {
+type DiscoveryItem = {
   _id: string;
   mal_id: number;
   title: string;
-  score: number;
-  popularity: number;
+  title_english: string;
   main_picture: string;
+  type: string;
+  score: number;
+  scored_by: number;
+  status: string;
   genres: string[];
   synopsis: string;
-  type: string;
-}
+  popularity: number;
+  rank: number;
+};
 
 export default function DiscoveryPage() {
   const router = useRouter();
@@ -31,159 +35,165 @@ export default function DiscoveryPage() {
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [type, setType] = useState("anime");
-  const [sort, setSort] = useState("popularity");
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [sortBy, setSortBy] = useState("popularity");
+  const [genre, setGenre] = useState("");
 
-  const fetchItems = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/discovery/search?type=${type}&q=${query}&sort=${sort}&page=${page}`);
-      const data = await res.json();
-      setItems(data.items);
-      setTotalPages(data.pages);
-    } catch (error) {
-      console.error("Fetch error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const GENRES = ["Action", "Adventure", "Comedy", "Drama", "Fantasy", "Mystery", "Romance", "Sci-Fi", "Slice of Life", "Supernatural"];
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchItems();
-    }, 500);
+    const fetchItems = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/discovery/search?type=${type}&q=${query}&sortBy=${sortBy}&genre=${genre}`);
+        const data = await res.json();
+        setItems(data);
+      } catch (error) {
+        console.error("Search error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const timer = setTimeout(fetchItems, 300);
     return () => clearTimeout(timer);
-  }, [query, type, sort, page]);
+  }, [query, type, sortBy, genre]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0c] text-white p-8">
-      {/* Header */}
-      <div className="max-w-7xl mx-auto mb-12">
-        <motion.h1 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-5xl font-bold mb-4 bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-transparent"
-        >
-          Encyclopedia
-        </motion.h1>
-        <p className="text-gray-400 text-lg">Explore over 50,000+ anime and manga titles with AI insights.</p>
-      </div>
+    <div className="min-h-screen bg-manga-paper text-manga-ink manga-background-texture pt-32 pb-20 px-8">
+      <div className="max-w-7xl mx-auto">
+        <header className="mb-16 relative">
+          <div className="absolute -top-12 -left-6 opacity-10 pointer-events-none text-8xl font-black uppercase italic">
+            Archive
+          </div>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="bg-manga-ink p-2 rotate-[-5deg]">
+                  <Sparkles className="text-manga-paper w-8 h-8" />
+                </div>
+                <h1 className="text-6xl font-black tracking-tighter uppercase italic">Encyclopedia</h1>
+              </div>
+              <p className="text-xl font-bold border-l-4 border-manga-ink pl-4 max-w-2xl uppercase">
+                THE DEFINITIVE DIGITAL ARCHIVE OF ALL KNOWN ANIME AND MANGA DATA. <br />
+                UPDATED UP TO 2026.
+              </p>
+            </div>
 
-      {/* Controls */}
-      <div className="max-w-7xl mx-auto mb-12 flex flex-col md:flex-row gap-6 items-center">
-        <div className="relative flex-1 group w-full">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-pink-500 transition-colors" size={20} />
-          <input 
-            type="text"
-            placeholder="Search titles..."
-            className="w-full bg-[#16161e] border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-pink-500/50 focus:ring-4 focus:ring-pink-500/10 transition-all text-lg"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
-
-        <div className="flex gap-4 w-full md:w-auto">
-          <div className="flex bg-[#16161e] p-1 rounded-xl border border-gray-800">
-            {["anime", "manga"].map((t) => (
-              <button
-                key={t}
-                onClick={() => { setType(t); setPage(1); }}
+            <div className="flex bg-manga-ink/5 border-4 border-manga-ink p-1 rounded-lg">
+              <button 
+                onClick={() => setType("anime")}
                 className={cn(
-                  "px-6 py-2 rounded-lg capitalize transition-all",
-                  type === t ? "bg-pink-500 text-white shadow-lg shadow-pink-500/20" : "text-gray-400 hover:text-white"
+                  "px-8 py-2 font-black uppercase italic text-sm transition-all",
+                  type === "anime" ? "bg-manga-ink text-manga-paper shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]" : "hover:bg-manga-ink/10"
                 )}
               >
-                {t}
+                Anime
               </button>
-            ))}
+              <button 
+                onClick={() => setType("manga")}
+                className={cn(
+                  "px-8 py-2 font-black uppercase italic text-sm transition-all",
+                  type === "manga" ? "bg-manga-ink text-manga-paper shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]" : "hover:bg-manga-ink/10"
+                )}
+              >
+                Manga
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* Filters */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-12">
+          <div className="lg:col-span-2 relative group">
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 opacity-40 group-focus-within:opacity-100 transition-opacity" />
+            <input 
+              type="text"
+              placeholder="SEARCH THE ANNALS..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full bg-manga-paper border-[4px] border-manga-ink rounded-xl py-4 pl-16 pr-6 font-black uppercase italic focus:outline-none shadow-[8px_8px_0px_0px_var(--manga-shadow-color)]"
+            />
           </div>
 
-          <select 
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className="bg-[#16161e] border border-gray-800 rounded-xl px-4 py-2 text-gray-400 focus:outline-none focus:border-pink-500/50"
-          >
-            <option value="popularity">Popularity</option>
-            <option value="score">Score</option>
-            <option value="rank">Rank</option>
-          </select>
-        </div>
-      </div>
+          <div className="relative">
+            <Filter className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 opacity-40" />
+            <select 
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
+              className="w-full bg-manga-paper border-[4px] border-manga-ink rounded-xl py-4 pl-16 pr-6 font-black uppercase italic appearance-none focus:outline-none shadow-[8px_8px_0px_0px_var(--manga-shadow-color)]"
+            >
+              <option value="">All Genres</option>
+              {GENRES.map(g => <option key={g} value={g}>{g}</option>)}
+            </select>
+          </div>
 
-      {/* Grid */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-        <AnimatePresence mode="popLayout">
-          {loading ? (
-            Array.from({ length: 10 }).map((_, i) => (
-              <div key={i} className="aspect-[2/3] bg-[#16161e] rounded-3xl animate-pulse" />
-            ))
-          ) : (
-            items.map((item, idx) => (
-              <motion.div
-                key={item._id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ delay: idx * 0.05 }}
-                onClick={() => router.push(`/discovery/${type}/${item.mal_id}`)}
-                className="group relative bg-[#16161e] rounded-3xl overflow-hidden border border-gray-800 hover:border-pink-500/50 transition-all hover:shadow-2xl hover:shadow-pink-500/10 cursor-pointer"
-              >
-                <div className="aspect-[2/3] relative overflow-hidden">
-                  <img 
-                    src={item.main_picture || "/placeholder.jpg"} 
-                    alt={item.title}
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#16161e] via-transparent to-transparent opacity-60" />
+          <div className="relative">
+            <SortAsc className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 opacity-40" />
+            <select 
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="w-full bg-manga-paper border-[4px] border-manga-ink rounded-xl py-4 pl-16 pr-6 font-black uppercase italic appearance-none focus:outline-none shadow-[8px_8px_0px_0px_var(--manga-shadow-color)]"
+            >
+              <option value="popularity">Popularity</option>
+              <option value="score">Top Rated</option>
+              <option value="rank">Ranking</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
+          <AnimatePresence mode="popLayout">
+            {loading ? (
+              [...Array(8)].map((_, i) => (
+                <div key={i} className="aspect-[2/3] bg-manga-ink/5 border-[4px] border-manga-ink rounded-2xl animate-pulse" />
+              ))
+            ) : (
+              items.map((item, idx) => (
+                <motion.div
+                  key={item._id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ delay: idx * 0.03 }}
+                  onClick={() => router.push(`/discovery/${type}/${item.mal_id}`)}
+                  className="group relative bg-manga-paper border-[4px] border-manga-ink rounded-2xl overflow-hidden hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[12px_12px_0px_0px_var(--manga-shadow-color)] transition-all cursor-pointer"
+                >
+                  <div className="aspect-[2/3] relative overflow-hidden border-b-[4px] border-manga-ink">
+                    <img 
+                      src={item.main_picture} 
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"
+                    />
+                    <div className="absolute top-4 left-4 bg-manga-ink text-manga-paper px-3 py-1 font-black text-xs uppercase italic rotate-[-2deg]">
+                      #{item.rank || item.popularity}
+                    </div>
+                    <div className="absolute bottom-4 right-4 bg-manga-paper border-2 border-manga-ink px-2 py-1 flex items-center gap-1">
+                      <Star size={14} className="fill-manga-ink" />
+                      <span className="font-black text-sm">{item.score}</span>
+                    </div>
+                  </div>
                   
-                  <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-white/10">
-                    <Star size={14} className="text-yellow-500 fill-yellow-500" />
-                    <span className="text-sm font-bold">{item.score || "N/A"}</span>
+                  <div className="p-6 space-y-3 bg-manga-paper">
+                    <h3 className="font-black uppercase italic text-lg leading-tight line-clamp-2 group-hover:text-manga-ink transition-colors">
+                      {item.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {item.genres.slice(0, 2).map(g => (
+                        <span key={g} className="text-[10px] font-black uppercase tracking-widest bg-manga-ink/5 px-2 py-0.5 border border-manga-ink/20">
+                          {g}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                <div className="p-5">
-                  <h3 className="font-bold text-lg mb-2 line-clamp-1 group-hover:text-pink-500 transition-colors">
-                    {item.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {item.genres.slice(0, 2).map((g) => (
-                      <span key={g} className="text-[10px] uppercase tracking-wider bg-white/5 border border-white/10 px-2 py-0.5 rounded-md text-gray-400">
-                        {g}
-                      </span>
-                    ))}
-                  </div>
-                  <p className="text-gray-500 text-sm line-clamp-3 leading-relaxed">
-                    {item.synopsis}
-                  </p>
-                </div>
-              </motion.div>
-            ))
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Pagination */}
-      <div className="max-w-7xl mx-auto mt-16 flex justify-center gap-4">
-        <button 
-          disabled={page === 1}
-          onClick={() => setPage(p => p - 1)}
-          className="px-6 py-2 bg-[#16161e] border border-gray-800 rounded-xl disabled:opacity-30"
-        >
-          Previous
-        </button>
-        <div className="flex items-center text-gray-400 px-4">
-          Page {page} of {totalPages}
+                  {/* Impact Overlay */}
+                  <div className="absolute inset-0 border-[4px] border-manga-ink opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity" />
+                </motion.div>
+              ))
+            )}
+          </AnimatePresence>
         </div>
-        <button 
-          disabled={page === totalPages}
-          onClick={() => setPage(p => p + 1)}
-          className="px-6 py-2 bg-[#16161e] border border-gray-800 rounded-xl disabled:opacity-30"
-        >
-          Next
-        </button>
       </div>
     </div>
   );

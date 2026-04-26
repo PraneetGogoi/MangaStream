@@ -6,11 +6,15 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  LineChart, Line, AreaChart, Area, PieChart, Pie, Cell, ScatterChart, Scatter, ZAxis
+  LineChart, Line, PieChart, Pie, Cell, AreaChart, Area
 } from "recharts";
-import { TrendingUp, Users, Star, BarChart3, PieChart as PieChartIcon } from "lucide-react";
+import { TrendingUp, Calendar, PieChart as PieIcon, BarChart3, Activity, Zap, Box } from "lucide-react";
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-const COLORS = ["#ec4899", "#8b5cf6", "#3b82f6", "#10b981", "#f59e0b", "#ef4444"];
+function cn(...inputs: any[]) {
+  return twMerge(clsx(inputs));
+}
 
 export default function AnalyticsPage() {
   const [data, setData] = useState<any>(null);
@@ -19,165 +23,135 @@ export default function AnalyticsPage() {
   useEffect(() => {
     fetch("/api/discovery/analytics")
       .then(res => res.json())
-      .then(setData)
-      .finally(() => setLoading(false));
+      .then(data => {
+        setData(data);
+        setLoading(false);
+      });
   }, []);
 
-  if (loading) return <div className="min-h-screen bg-[#0a0a0c] flex items-center justify-center text-white text-2xl font-bold">Calculating insights...</div>;
+  if (loading) return (
+    <div className="min-h-screen bg-manga-paper flex items-center justify-center text-manga-ink">
+      <div className="text-4xl font-black uppercase italic animate-pulse">Scanning Archives...</div>
+    </div>
+  );
+
+  const MANGA_COLORS = ["#000000", "#333333", "#666666", "#999999", "#CCCCCC"];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0c] text-white p-8">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-12">
-          <motion.h1 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-5xl font-bold mb-4 bg-gradient-to-r from-violet-500 to-emerald-500 bg-clip-text text-transparent"
-          >
-            Intelligence Hub
-          </motion.h1>
-          <p className="text-gray-400 text-lg">Statistical trends and deep-dives into the anime industry.</p>
+    <div className="min-h-screen bg-manga-paper text-manga-ink manga-background-texture pt-32 pb-20 px-8">
+      <div className="max-w-7xl mx-auto space-y-16">
+        
+        <header className="relative">
+          <div className="absolute -top-12 -left-6 opacity-10 pointer-events-none text-8xl font-black uppercase italic">
+            Intelligence
+          </div>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="bg-manga-ink p-2 rotate-[5deg]">
+              <Activity className="text-manga-paper w-8 h-8" />
+            </div>
+            <h1 className="text-6xl font-black tracking-tighter uppercase italic">Intelligence Hub</h1>
+          </div>
+          <p className="text-xl font-bold border-l-4 border-manga-ink pl-4 max-w-2xl uppercase">
+            LIVE ANALYTICS AND DEEP DATA INSIGHTS INTO THE GLOBAL ANIME & MANGA ECOSYSTEM.
+          </p>
         </header>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
-            { label: "Total Anime", value: "30k+", icon: BarChart3, color: "text-violet-500" },
-            { label: "Avg Score", value: "6.82", icon: Star, color: "text-yellow-500" },
-            { label: "Database Size", value: "65MB", icon: Users, color: "text-emerald-500" },
-            { label: "Updates", value: "Real-time", icon: TrendingUp, color: "text-pink-500" }
+            { label: "Total Titles", value: "95k+", icon: Box },
+            { label: "Avg Score", value: "7.42", icon: Zap },
+            { label: "Active Studios", value: "480", icon: BarChart3 },
+            { label: "Growth Rate", value: "+12%", icon: TrendingUp },
           ].map((stat, i) => (
             <motion.div 
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              key={i}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-[#16161e] border border-gray-800 p-6 rounded-3xl"
+              className="bg-manga-paper border-[4px] border-manga-ink p-8 rounded-2xl shadow-[8px_8px_0px_0px_var(--manga-shadow-color)] group hover:translate-x-[-4px] hover:translate-y-[-4px] transition-all"
             >
-              <stat.icon className={`${stat.color} mb-4`} size={28} />
-              <div className="text-3xl font-bold mb-1">{stat.value}</div>
-              <div className="text-gray-500 text-sm uppercase tracking-wider">{stat.label}</div>
+              <div className="flex items-center justify-between mb-4">
+                <stat.icon className="text-manga-ink group-hover:rotate-12 transition-transform" size={24} />
+                <span className="text-[10px] font-black uppercase tracking-widest opacity-30">v1.0.4</span>
+              </div>
+              <h3 className="text-sm font-black uppercase italic opacity-60 mb-1">{stat.label}</h3>
+              <div className="text-4xl font-black tracking-tighter">{stat.value}</div>
             </motion.div>
           ))}
         </div>
 
-        {/* Charts Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Release Trends */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#16161e] border border-gray-800 p-8 rounded-[2rem]"
-          >
-            <h3 className="text-xl font-bold mb-8 flex items-center gap-2">
-              <TrendingUp className="text-emerald-500" /> Release Trends (1980-2024)
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Release Trend */}
+          <div className="bg-manga-paper border-[4px] border-manga-ink p-10 rounded-[2.5rem] shadow-[12px_12px_0px_0px_var(--manga-shadow-color)]">
+            <h3 className="text-2xl font-black uppercase italic mb-8 flex items-center gap-3">
+              <Calendar className="text-manga-ink" /> Historical Release Trends
             </h3>
-            <div className="h-[300px]">
+            <div className="h-[350px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data.anime.trends}>
-                  <defs>
-                    <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
-                  <XAxis dataKey="_id" stroke="#555" />
-                  <YAxis stroke="#555" />
+                <AreaChart data={data.trends}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#00000010" />
+                  <XAxis dataKey="_id" axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 'bold' }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 'bold' }} />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: "#16161e", border: "1px solid #333", borderRadius: "12px" }}
+                    contentStyle={{ backgroundColor: '#fff', border: '4px solid #000', borderRadius: '12px', fontWeight: 'bold' }}
                   />
-                  <Area type="monotone" dataKey="count" stroke="#10b981" fillOpacity={1} fill="url(#colorCount)" />
+                  <Area type="monotone" dataKey="count" stroke="#000" fill="#000" fillOpacity={0.05} strokeWidth={4} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Genre Performance */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#16161e] border border-gray-800 p-8 rounded-[2rem]"
-          >
-            <h3 className="text-xl font-bold mb-8 flex items-center gap-2">
-              <Star className="text-yellow-500" /> Genre Popularity vs Quality
+          {/* Genre Distribution */}
+          <div className="bg-manga-paper border-[4px] border-manga-ink p-10 rounded-[2.5rem] shadow-[12px_12px_0px_0px_var(--manga-shadow-color)]">
+            <h3 className="text-2xl font-black uppercase italic mb-8 flex items-center gap-3">
+              <PieIcon className="text-manga-ink" /> Dominant Genres
             </h3>
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data.anime.genres}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
-                  <XAxis dataKey="_id" stroke="#555" tick={{ fontSize: 10 }} />
-                  <YAxis stroke="#555" />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: "#16161e", border: "1px solid #333", borderRadius: "12px" }}
-                  />
-                  <Bar dataKey="avgScore" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </motion.div>
-
-          {/* Type Distribution */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#16161e] border border-gray-800 p-8 rounded-[2rem]"
-          >
-            <h3 className="text-xl font-bold mb-8 flex items-center gap-2">
-              <PieChartIcon className="text-violet-500" /> Format Breakdown
-            </h3>
-            <div className="h-[300px] flex items-center">
+            <div className="h-[350px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={data.anime.types}
+                    data={data.genres}
+                    cx="50%"
+                    cy="50%"
                     innerRadius={80}
                     outerRadius={120}
                     paddingAngle={5}
                     dataKey="count"
                     nameKey="_id"
                   >
-                    {data.anime.types.map((entry: any, index: number) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    {data.genres.map((entry: any, index: number) => (
+                      <Cell key={`cell-${index}`} fill={MANGA_COLORS[index % MANGA_COLORS.length]} stroke="#fff" strokeWidth={4} />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#fff', border: '4px solid #000', borderRadius: '12px', fontWeight: 'bold' }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
-              <div className="flex flex-col gap-2">
-                {data.anime.types.map((t: any, i: number) => (
-                  <div key={t._id} className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
-                    <span className="text-xs text-gray-400 capitalize">{t._id}</span>
-                  </div>
-                ))}
-              </div>
             </div>
-          </motion.div>
+          </div>
+        </div>
 
-          {/* Top Studios */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#16161e] border border-gray-800 p-8 rounded-[2rem]"
-          >
-            <h3 className="text-xl font-bold mb-8 flex items-center gap-2">
-              <BarChart3 className="text-pink-500" /> Leading Studios
-            </h3>
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data.anime.studios} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="#222" horizontal={false} />
-                  <XAxis type="number" stroke="#555" />
-                  <YAxis dataKey="_id" type="category" stroke="#555" tick={{ fontSize: 10 }} width={100} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: "#16161e", border: "1px solid #333", borderRadius: "12px" }}
-                  />
-                  <Bar dataKey="count" fill="#ec4899" radius={[0, 4, 4, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </motion.div>
+        {/* Format Breakdown */}
+        <div className="bg-manga-paper border-[4px] border-manga-ink p-10 rounded-[2.5rem] shadow-[12px_12px_0px_0px_var(--manga-shadow-color)]">
+          <h3 className="text-2xl font-black uppercase italic mb-8 flex items-center gap-3">
+            <BarChart3 className="text-manga-ink" /> Content Formats
+          </h3>
+          <div className="h-[400px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data.formats}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#00000010" />
+                <XAxis dataKey="_id" axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 'bold' }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 'bold' }} />
+                <Tooltip 
+                  cursor={{ fill: '#00000005' }}
+                  contentStyle={{ backgroundColor: '#fff', border: '4px solid #000', borderRadius: '12px', fontWeight: 'bold' }}
+                />
+                <Bar dataKey="count" fill="#000" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
     </div>

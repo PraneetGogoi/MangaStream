@@ -4,7 +4,13 @@ export const dynamic = "force-dynamic";
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Sparkles, Send, RefreshCcw, TrendingUp } from "lucide-react";
+import { Brain, Sparkles, Send, RefreshCcw, TrendingUp, Zap } from "lucide-react";
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+function cn(...inputs: any[]) {
+  return twMerge(clsx(inputs));
+}
 
 export default function PredictorPage() {
   const [formData, setFormData] = useState({
@@ -56,48 +62,54 @@ export default function PredictorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0c] text-white p-8">
+    <div className="min-h-screen bg-manga-paper text-manga-ink manga-background-texture pt-32 pb-20 px-8">
       <div className="max-w-4xl mx-auto">
-        <header className="text-center mb-16">
+        <header className="text-center mb-16 relative">
+          <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-10 pointer-events-none text-8xl font-black uppercase italic whitespace-nowrap">
+            Oracle AI
+          </div>
           <motion.div 
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="w-20 h-20 bg-gradient-to-tr from-pink-500 to-violet-500 rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-2xl shadow-pink-500/20"
+            className="w-24 h-24 bg-manga-ink p-4 rotate-[5deg] mx-auto mb-6 flex items-center justify-center shadow-[12px_12px_0px_0px_rgba(0,0,0,0.2)]"
           >
-            <Brain size={40} className="text-white" />
+            <Brain size={48} className="text-manga-paper" />
           </motion.div>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl font-bold mb-4"
+            className="text-6xl font-black tracking-tighter uppercase italic mb-4"
           >
             AI Score Predictor
           </motion.h1>
-          <p className="text-gray-400 text-lg">Input your project details and let our neural network estimate its potential MAL score.</p>
+          <p className="text-xl font-bold uppercase max-w-lg mx-auto">
+            SUBMIT YOUR PROJECT SPECS. <br />
+            OUR NEURAL NETWORK WILL ESTIMATE ITS SUCCESS.
+          </p>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-12">
           <motion.form 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             onSubmit={handleSubmit}
-            className="lg:col-span-2 space-y-8 bg-[#16161e] p-8 rounded-[2.5rem] border border-gray-800"
+            className="space-y-12 bg-manga-paper p-12 border-[4px] border-manga-ink rounded-[2.5rem] shadow-[20px_20px_0px_0px_var(--manga-shadow-color)]"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-gray-500 font-bold ml-1">Type</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-3">
+                <label className="text-xs uppercase tracking-widest font-black opacity-50 ml-1 italic">Release Format</label>
                 <select 
-                  className="w-full bg-[#0a0a0c] border border-gray-800 rounded-2xl p-4 focus:outline-none focus:border-pink-500/50"
+                  className="w-full bg-manga-paper border-[4px] border-manga-ink rounded-xl p-4 font-black uppercase italic focus:outline-none"
                   value={formData.type}
                   onChange={(e) => setFormData({...formData, type: e.target.value})}
                 >
                   <option>TV</option><option>Movie</option><option>OVA</option><option>Special</option><option>ONA</option>
                 </select>
               </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-gray-500 font-bold ml-1">Source</label>
+              <div className="space-y-3">
+                <label className="text-xs uppercase tracking-widest font-black opacity-50 ml-1 italic">Source Material</label>
                 <select 
-                  className="w-full bg-[#0a0a0c] border border-gray-800 rounded-2xl p-4 focus:outline-none focus:border-pink-500/50"
+                  className="w-full bg-manga-paper border-[4px] border-manga-ink rounded-xl p-4 font-black uppercase italic focus:outline-none"
                   value={formData.source}
                   onChange={(e) => setFormData({...formData, source: e.target.value})}
                 >
@@ -106,8 +118,8 @@ export default function PredictorPage() {
               </div>
             </div>
 
-            <div className="space-y-4">
-              <label className="text-xs uppercase tracking-widest text-gray-500 font-bold ml-1">Select Genres</label>
+            <div className="space-y-6">
+              <label className="text-xs uppercase tracking-widest font-black opacity-50 ml-1 italic">Select Genres (Select Multiple)</label>
               <div className="flex flex-wrap gap-3">
                 {GENRES.map(genre => (
                   <button
@@ -115,10 +127,10 @@ export default function PredictorPage() {
                     type="button"
                     onClick={() => handleGenreToggle(genre)}
                     className={cn(
-                      "px-4 py-2 rounded-xl text-sm border transition-all",
+                      "px-6 py-3 rounded-xl text-sm font-black uppercase italic border-2 transition-all",
                       formData.genres.includes(genre)
-                        ? "bg-pink-500/10 border-pink-500 text-pink-500"
-                        : "bg-black/20 border-gray-800 text-gray-500 hover:border-gray-700"
+                        ? "bg-manga-ink text-manga-paper border-manga-ink shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]"
+                        : "bg-manga-paper border-manga-ink/20 text-manga-ink/40 hover:border-manga-ink/60"
                     )}
                   >
                     {genre}
@@ -127,21 +139,21 @@ export default function PredictorPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-gray-500 font-bold ml-1">Expected Episodes</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-3">
+                <label className="text-xs uppercase tracking-widest font-black opacity-50 ml-1 italic">Expected Episodes</label>
                 <input 
                   type="number"
-                  className="w-full bg-[#0a0a0c] border border-gray-800 rounded-2xl p-4 focus:outline-none focus:border-pink-500/50"
+                  className="w-full bg-manga-paper border-[4px] border-manga-ink rounded-xl p-4 font-black uppercase italic focus:outline-none"
                   value={formData.episodes}
                   onChange={(e) => setFormData({...formData, episodes: parseInt(e.target.value)})}
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-gray-500 font-bold ml-1">Expected Year</label>
+              <div className="space-y-3">
+                <label className="text-xs uppercase tracking-widest font-black opacity-50 ml-1 italic">Target Year</label>
                 <input 
                   type="number"
-                  className="w-full bg-[#0a0a0c] border border-gray-800 rounded-2xl p-4 focus:outline-none focus:border-pink-500/50"
+                  className="w-full bg-manga-paper border-[4px] border-manga-ink rounded-xl p-4 font-black uppercase italic focus:outline-none"
                   value={formData.year}
                   onChange={(e) => setFormData({...formData, year: parseInt(e.target.value)})}
                 />
@@ -151,52 +163,36 @@ export default function PredictorPage() {
             <button 
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-pink-500 to-violet-600 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-pink-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+              className="w-full bg-manga-ink text-manga-paper py-6 rounded-2xl font-black text-2xl uppercase italic shadow-[12px_12px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[16px_16px_0px_0px_rgba(0,0,0,0.3)] active:translate-x-0 active:translate-y-0 transition-all flex items-center justify-center gap-4 disabled:opacity-50"
             >
-              {loading ? <RefreshCcw className="animate-spin" /> : <Sparkles />}
-              Generate AI Prediction
+              {loading ? <RefreshCcw className="animate-spin" /> : <Zap />}
+              Execute Prediction
             </button>
           </motion.form>
 
           {/* Result Section */}
-          <div className="flex flex-col gap-8">
-            <AnimatePresence mode="wait">
-              {prediction ? (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="bg-gradient-to-br from-gray-900 to-black p-1 rounded-[2.5rem] shadow-2xl"
-                >
-                  <div className="bg-[#16161e] rounded-[2.4rem] p-10 text-center border border-white/5">
-                    <TrendingUp className="text-pink-500 mx-auto mb-6" size={48} />
-                    <h2 className="text-gray-400 uppercase tracking-widest font-bold mb-2">Predicted Score</h2>
-                    <div className="text-8xl font-black text-white mb-6">
-                      {prediction.toFixed(2)}
-                    </div>
-                    <div className="bg-white/5 rounded-2xl p-4 text-sm text-gray-400">
-                      Based on current industry trends for {formData.year}
-                    </div>
+          <AnimatePresence mode="wait">
+            {prediction && (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="mt-12 bg-manga-ink p-1 rounded-[2.5rem] shadow-[20px_20px_0px_0px_rgba(0,0,0,0.2)]"
+              >
+                <div className="bg-manga-paper rounded-[2.4rem] p-12 text-center border-[8px] border-manga-ink">
+                  <TrendingUp className="text-manga-ink mx-auto mb-6" size={64} />
+                  <h2 className="text-xl font-black uppercase italic opacity-40 mb-2">Calculated mal_score</h2>
+                  <div className="text-9xl font-black tracking-tighter text-manga-ink mb-6">
+                    {prediction.toFixed(2)}
                   </div>
-                </motion.div>
-              ) : (
-                <div className="h-full bg-[#16161e]/50 border border-dashed border-gray-800 rounded-[2.5rem] flex items-center justify-center text-gray-600 text-center p-12">
-                  <div className="space-y-4">
-                    <Brain size={48} className="mx-auto opacity-20" />
-                    <p>Enter details and run the model to see results</p>
+                  <div className="bg-manga-ink/5 border-2 border-dashed border-manga-ink rounded-2xl p-6 text-sm font-black uppercase italic text-manga-ink/60">
+                    DATA SYNCHRONIZATION COMPLETE FOR FISCAL YEAR {formData.year}
                   </div>
                 </div>
-              )}
-            </AnimatePresence>
-          </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
   );
 }
-
-function cn(...inputs: any[]) {
-  return twMerge(clsx(inputs));
-}
-
-import { twMerge } from "tailwind-merge";
-import { clsx } from "clsx";
