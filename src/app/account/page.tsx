@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Settings, Save, Lock, AlertTriangle, ShieldCheck, ArrowLeft, Zap, Sparkles, X, Camera, Upload } from "lucide-react";
+import { User, Settings, Save, Lock, AlertTriangle, ShieldCheck, ArrowLeft, Zap, Sparkles, X, Camera, Upload, LogOut } from "lucide-react";
 import { updateUserProfile, uploadProfilePicture } from "../actions";
 import Link from "next/link";
 
@@ -273,6 +273,17 @@ export default function AccountSettingsPage() {
                 )}
               </motion.button>
             </form>
+
+            {/* Sign Out */}
+            <motion.button
+              whileHover={{ scale: 1.02, x: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              className="w-full mt-6 py-6 bg-manga-paper text-manga-ink border-[6px] border-manga-ink text-2xl font-black uppercase italic shadow-[12px_12px_0px_0px_var(--manga-shadow-color)] hover:bg-red-500 hover:text-white hover:border-red-500 hover:shadow-none transition-all flex items-center justify-center gap-6 group"
+            >
+              <LogOut size={32} className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
+              Sign Out of Stream
+            </motion.button>
           </section>
         </div>
       </main>
