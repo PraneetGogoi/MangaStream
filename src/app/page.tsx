@@ -9,6 +9,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { ThemeSlice } from "@/components/ThemeSlice";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 // Dynamic imports for heavy components
 const TrailerModal = dynamic(() => import("@/components/TrailerModal").then(mod => mod.TrailerModal));
@@ -155,8 +156,12 @@ function HomeContent() {
                   <p className="text-manga-ink text-3xl font-black uppercase">Result: EMPTY PANEL!</p>
                 </div>
               ) : animeData.length === 0 ? (
-                 <div className="text-center py-20 border-[4px] border-dashed border-manga-ink rounded-xl">
-                  <p className="text-manga-ink text-3xl font-black uppercase animate-pulse">LOADING ARCHIVES...</p>
+                 <div className="text-center py-20 border-[4px] border-dashed border-manga-ink rounded-xl bg-manga-ink/5">
+                  <p className="text-manga-ink text-3xl font-black uppercase mb-4">ARCHIVE DEPLETED</p>
+                  <p className="text-manga-ink font-bold uppercase opacity-60">
+                    Your personal vault is empty. <br />
+                    Synchronize artifacts from the <Link href="/discovery" className="underline hover:bg-manga-ink hover:text-manga-paper transition-colors">ENCYCLOPEDIA</Link> to populate this section.
+                  </p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">

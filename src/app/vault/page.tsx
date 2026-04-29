@@ -176,9 +176,15 @@ export default function UserVaultDashboard() {
           </div>
 
           <div className="flex flex-col md:flex-row md:items-center gap-6">
-            <div className="hidden md:block opacity-20 italic font-black uppercase text-sm">
-              Standard Dashboard v1.1
-            </div>
+            {session.user.role === "admin" ? (
+              <div className="bg-manga-ink text-manga-paper px-4 py-2 font-black uppercase italic text-sm">
+                Administrative Level Access
+              </div>
+            ) : (
+              <div className="opacity-40 italic font-black uppercase text-sm">
+                Standard Vault Access
+              </div>
+            )}
           </div>
         </div>
 
@@ -525,21 +531,23 @@ export default function UserVaultDashboard() {
         )}
       </AnimatePresence>
 
-      {/* Floating Action Button (FAB) */}
-      <motion.button
-        initial={{ scale: 0, rotate: -180 }}
-        animate={{ scale: 1, rotate: 0 }}
-        whileHover={{ 
-          scale: 1.15, 
-          rotate: 90,
-          transition: { type: "spring", stiffness: 400, damping: 10 }
-        }}
-        whileTap={{ scale: 0.85 }}
-        onClick={handleAddNew}
-        className="fixed bottom-12 right-12 z-[100] w-20 h-20 bg-manga-ink text-manga-paper border-[6px] border-manga-ink shadow-[12px_12px_0px_0px_var(--manga-shadow-color)] hover:shadow-none transition-all flex items-center justify-center cursor-pointer"
-      >
-        <Plus className="w-12 h-12" />
-      </motion.button>
+      {/* Floating Action Button (FAB) - Admin Only */}
+      {session.user.role === "admin" && (
+        <motion.button
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          whileHover={{ 
+            scale: 1.15, 
+            rotate: 90,
+            transition: { type: "spring", stiffness: 400, damping: 10 }
+          }}
+          whileTap={{ scale: 0.85 }}
+          onClick={handleAddNew}
+          className="fixed bottom-12 right-12 z-[100] w-20 h-20 bg-manga-ink text-manga-paper border-[6px] border-manga-ink shadow-[12px_12px_0px_0px_var(--manga-shadow-color)] hover:shadow-none transition-all flex items-center justify-center cursor-pointer"
+        >
+          <Plus className="w-12 h-12" />
+        </motion.button>
+      )}
     </div>
   );
 }

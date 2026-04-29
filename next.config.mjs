@@ -38,8 +38,17 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'cdn.myanimelist.net',
       },
+      {
+        protocol: 'https',
+        hostname: 'myanimelist.net',
+      },
     ],
   },
+  experimental: {
+    turbopack: {
+      root: '.', // Force current directory as root
+    }
+  }
 };
 
 export default nextConfig;

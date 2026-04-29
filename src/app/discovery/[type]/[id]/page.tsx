@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Star, Clock, Calendar, Users, Heart, Share2, ArrowLeft, Bookmark, Info, Sparkles, Zap } from "lucide-react";
+import { Star, Clock, Calendar, Users, Heart, Share2, ArrowLeft, Bookmark, Info, Sparkles, Zap, Loader2, CheckCircle2 } from "lucide-react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -21,6 +21,8 @@ export default function DiscoveryDetailPage() {
   const [item, setItem] = useState<any>(null);
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isSynced, setIsSynced] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,8 +31,12 @@ export default function DiscoveryDetailPage() {
         const itemData = await fetch(`/api/discovery/item?type=${type}&id=${id}`).then(r => r.json());
         const recData = await fetch(`/api/discovery/recommend?id=${id}&type=${type}`).then(r => r.json());
         
+        // Check sync status (we'll need an endpoint or use existing actions)
+        const checkSync = await fetch(`/api/discovery/sync-status?type=${type}&id=${id}`).then(r => r.json());
+        
         setItem(itemData);
         setRecommendations(recData);
+        setIsSynced(checkSync.isSynced);
       } catch (error) {
         console.error("Fetch error:", error);
       } finally {
@@ -39,6 +45,25 @@ export default function DiscoveryDetailPage() {
     };
     fetchData();
   }, [id, type]);
+
+  const handleSync = async () => {
+    setIsSyncing(true);
+    try {
+      const res = await fetch("/api/discovery/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type, id })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setIsSynced(data.isSynced);
+      }
+    } catch (error) {
+      console.error("Sync error:", error);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   if (loading) return (
     <div className="min-h-screen bg-manga-paper flex items-center justify-center text-manga-ink">
@@ -130,11 +155,11 @@ export default function DiscoveryDetailPage() {
             </div>
           </section>
 
-          {/* Recommendations */}
+          {/* Neural Link Recommendations */}
           {recommendations.length > 0 && (
             <section>
               <h2 className="text-3xl font-black uppercase italic mb-12 flex items-center gap-4">
-                <Sparkles className="text-manga-ink" size={32} /> Similar Intel
+                <Zap className="text-manga-ink animate-pulse" size={32} /> Related Artifacts (Neural Link)
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-10">
                 {recommendations.map(rec => (
@@ -179,12 +204,29 @@ export default function DiscoveryDetailPage() {
             </div>
           </div>
 
-          <button className="w-full bg-manga-ink text-manga-paper p-8 border-[4px] border-manga-ink shadow-[12px_12px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all group">
+          <button 
+            onClick={handleSync}
+            disabled={isSyncing}
+            className={cn(
+              "w-full p-8 border-[4px] border-manga-ink shadow-[12px_12px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all group",
+              isSynced ? "bg-green-500 text-white" : "bg-manga-ink text-manga-paper"
+            )}
+          >
             <div className="flex items-center justify-center gap-4">
-              <Zap className="group-hover:animate-pulse" size={32} />
+              {isSyncing ? (
+                <Loader2 className="animate-spin" size={32} />
+              ) : isSynced ? (
+                <CheckCircle2 size={32} />
+              ) : (
+                <Zap className="group-hover:animate-pulse" size={32} />
+              )}
               <div className="text-left">
-                <div className="text-2xl font-black uppercase italic leading-none">Archival Sync</div>
-                <div className="text-[10px] font-black uppercase opacity-60">Add to personal records</div>
+                <div className="text-2xl font-black uppercase italic leading-none">
+                  {isSyncing ? "Syncing..." : isSynced ? "Archived" : "Archival Sync"}
+                </div>
+                <div className="text-[10px] font-black uppercase opacity-60">
+                  {isSynced ? "Entry available in your sections" : "Add to personal records"}
+                </div>
               </div>
             </div>
           </button>

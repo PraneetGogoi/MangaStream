@@ -13,7 +13,7 @@ interface LandingPageProps {
 }
 
 const CharacterReveal = ({ text, delay = 0 }: { text: string; delay?: number }) => (
-  <span className="inline-block">
+  <span className="inline-block whitespace-nowrap">
     {text.split("").map((char, index) => (
       <motion.span
         key={index}
@@ -147,18 +147,26 @@ export const LandingPage = ({ onEnter }: LandingPageProps) => {
           >
             <div className="flex items-center justify-center sm:justify-start gap-4 mb-4">
               <motion.div
-                animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
+                animate={{ 
+                  scale: [1, 1.05, 1],
+                  rotate: [0, -2, 2, 0]
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="w-20 h-20 sm:w-24 sm:h-24 bg-manga-ink p-4 rotate-[-4deg] shadow-[8px_8px_0px_0px_var(--manga-shadow-color)]"
               >
-                <Zap className="w-10 h-10 fill-manga-ink transition-colors" />
+                <img 
+                  src={getAssetPath("/assets/logo.png")} 
+                  alt="MangaStream Logo" 
+                  className="w-full h-full object-contain invert" 
+                />
               </motion.div>
-              <h1 className="text-6xl font-black uppercase tracking-tighter italic flex items-center text-manga-ink transition-colors">
+              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-black uppercase tracking-tighter italic flex flex-wrap items-center text-manga-ink transition-colors leading-none">
                 <CharacterReveal text="Manga" delay={0.6} />
                 <motion.span 
                   initial={{ width: 0, opacity: 0 }}
                   animate={{ width: "auto", opacity: 1 }}
                   transition={{ delay: 1.2, duration: 0.8 }}
-                  className="text-stroke-ink text-transparent relative overflow-hidden inline-block ml-2 transition-colors"
+                  className="text-stroke-ink text-transparent relative overflow-hidden inline-block ml-4 transition-colors whitespace-nowrap"
                 >
                   Stream
                   <motion.div 

@@ -229,12 +229,12 @@ export const AnimeCard = memo(({ anime, syncRate, onOpenVideo, onOpenManga, onOp
         >
             <div className="flex-1 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all duration-700 delay-500 group-hover:delay-0 ease-in-out">
               <Image
-                src={getAssetPath(anime.posterImage)}
+                src={getAssetPath(anime.posterImage || "/assets/placeholder.png")}
                 alt={anime.title}
                 fill
                 className="object-cover scale-100 group-hover:scale-110 transition-transform duration-700"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                unoptimized={anime.posterImage.startsWith("/")}
+                unoptimized={!anime.posterImage || !anime.posterImage.startsWith("/")}
               />
               
               {/* Interaction Glint */}
@@ -352,7 +352,7 @@ export const AnimeCard = memo(({ anime, syncRate, onOpenVideo, onOpenManga, onOp
             </div>
           
           <div className="p-3 bg-manga-paper border-t-[4px] border-manga-ink transition-colors">
-            <h3 className="text-manga-ink font-black text-xl leading-tight uppercase italic tracking-tighter transition-colors">
+            <h3 className="text-manga-ink font-black text-xl leading-tight uppercase italic tracking-tighter transition-colors line-clamp-2">
               {anime.title}
             </h3>
           </div>

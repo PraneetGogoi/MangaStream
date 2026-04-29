@@ -43,3 +43,9 @@ next-env.d.ts
 
 # uploads
 /public/uploads
+
+# temp and debug
+scratch/
+.node/
+*.log
+sync_errors.log

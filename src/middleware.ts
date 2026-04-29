@@ -11,6 +11,8 @@ export default withAuth(
     const isPublicPath = 
       pathname === "/login" || 
       pathname === "/register" || 
+      pathname.startsWith("/discovery") ||
+      pathname.startsWith("/api/discovery") ||
       pathname.startsWith("/api/auth") ||
       pathname.startsWith("/assets") ||
       pathname.startsWith("/uploads") ||
@@ -38,6 +40,8 @@ export default withAuth(
         if (
           pathname === "/login" || 
           pathname === "/register" || 
+          pathname.startsWith("/discovery") ||
+          pathname.startsWith("/api/discovery") ||
           pathname.startsWith("/api/auth") ||
           pathname.startsWith("/assets") ||
           pathname.startsWith("/uploads") ||

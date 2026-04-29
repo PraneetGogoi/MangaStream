@@ -18,17 +18,33 @@ import Manga from "@/models/Manga";
 export async function getAllAnime() {
   try {
     await dbConnect();
-    // We clean up the MongoDB specific fields like _id and __v for the frontend
-    const anime = await Anime.find({}).lean();
-    if (anime && anime.length > 0) {
-      console.log("🔍 DB Anime Previews (First):", anime[0].title, anime[0].previews);
+    const session = await getServerSession(authOptions);
+    
+    // Admin View: See everything
+    if (session?.user && (session.user as any).role === "admin") {
+      const anime = await Anime.find({}).lean();
       return JSON.parse(JSON.stringify(anime));
     }
-    console.log("📂 Database empty, falling back to mock data");
-    return MOCK_ANIME;
+
+    // Regular User View: See only synced items
+    if (session?.user) {
+      const userId = (session.user as any).id;
+      const user = await User.findById(userId).lean();
+      if (user && user.watchlist && user.watchlist.length > 0) {
+        const animeIds = user.watchlist.map((item: any) => 
+          typeof item === 'string' ? item : item.animeId
+        );
+        const anime = await Anime.find({ id: { $in: animeIds } }).lean();
+        return JSON.parse(JSON.stringify(anime));
+      }
+      return []; // Empty for regular users with no syncs
+    }
+
+    // Unauthenticated: Empty (Encourage discovery)
+    return [];
   } catch (error) {
-    console.error("🌐 Database unreachable, falling back to mock data");
-    return MOCK_ANIME;
+    console.error("🌐 Database unreachable, falling back to empty list");
+    return [];
   }
 }
 

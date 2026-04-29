@@ -59,8 +59,12 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-6">
         {/* Brand */}
         <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
-          <div className="bg-manga-ink p-2 rounded-sm rotate-[-5deg] group-hover:rotate-0 transition-all duration-300">
-            <Zap className="text-manga-paper fill-manga-paper w-8 h-8 transition-colors duration-300" />
+          <div className="bg-manga-ink p-1.5 rounded-sm rotate-[-5deg] group-hover:rotate-0 transition-all duration-300 w-12 h-12 flex items-center justify-center">
+            <img 
+              src={getAssetPath("/assets/logo.png")} 
+              alt="" 
+              className="w-full h-full object-contain invert" 
+            />
           </div>
           <h1 className="hidden md:block text-3xl font-black uppercase tracking-tighter italic scale-y-110">
             Manga<span className="bg-manga-ink text-manga-paper px-2 ml-1 transition-colors duration-300">Stream</span>

@@ -15,15 +15,31 @@ import { searchManga, getMangaChapters, getChapterPages } from "@/lib/mangadex";
 export async function getAllManga() {
   try {
     await dbConnect();
-    // Optimized: Fetch everything EXCEPT the pages array to keep payload light
-    const manga = await Manga.find({}, { "chapters.pages": 0 }).lean();
-    if (manga && manga.length > 0) {
+    const session = await getServerSession(authOptions);
+
+    // Admin View: See everything
+    if (session?.user && (session.user as any).role === "admin") {
+      const manga = await Manga.find({}, { "chapters.pages": 0 }).lean();
       return JSON.parse(JSON.stringify(manga));
     }
-    return MOCK_MANGA;
+
+    // Regular User View: See only synced items
+    if (session?.user) {
+      const userId = (session.user as any).id;
+      const user = await User.findById(userId).lean();
+      if (user && user.mangaList && user.mangaList.length > 0) {
+        const mangaIds = user.mangaList.map((item: any) => item.mangaId);
+        const manga = await Manga.find({ id: { $in: mangaIds } }, { "chapters.pages": 0 }).lean();
+        return JSON.parse(JSON.stringify(manga));
+      }
+      return []; // Empty for regular users with no syncs
+    }
+
+    // Unauthenticated: Empty
+    return [];
   } catch (error) {
     console.error("❌ Manga Retrieval Error:", error);
-    return MOCK_MANGA;
+    return [];
   }
 }
 

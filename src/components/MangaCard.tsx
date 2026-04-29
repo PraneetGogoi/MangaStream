@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { updateMangaReadingStatus } from "@/app/manga-actions";
 import { Activity, Target } from "lucide-react";
+import { getAssetPath } from "@/utils/path";
 
 interface MangaCardProps {
   manga: any;
@@ -120,7 +121,7 @@ export const MangaCard = memo(({ manga, onOpenManga }: MangaCardProps) => {
         >
             <div className="flex-1 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out">
               <img 
-                src={manga.coverImage} 
+                src={getAssetPath(manga.coverImage || "/assets/placeholder.png")} 
                 alt={manga.title}
                 className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-700 min-h-[400px]"
                 loading="lazy"
@@ -148,7 +149,7 @@ export const MangaCard = memo(({ manga, onOpenManga }: MangaCardProps) => {
 
               {/* Title Overlay */}
               <div className="absolute bottom-4 left-4 right-4 z-20">
-                <h3 className="text-white font-black text-2xl leading-none uppercase italic tracking-tighter drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                <h3 className="text-white font-black text-2xl leading-none uppercase italic tracking-tighter drop-shadow-[2px_2px_0px_rgba(0,0,0,1)] line-clamp-2">
                   {manga.title}
                 </h3>
                 <div className="h-1 w-12 bg-red-500 mt-2" />
